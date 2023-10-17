@@ -1,0 +1,62 @@
+service: csci5410-f23-sdp3
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: default
+  region: us-east-2
+  environment:
+    menuTableName: MenuItems
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource: '*'
+
+plugins:
+  - serverless-s3-sync
+  - serverless-webpack
+
+package: 
+  individually: true
+
+custom:
+  s3Sync:
+    - bucketName: menu-items-bucket-csci5410
+      localDir: uploads
+
+functions:
+  getMenu:
+    handler: lambdas/endpoints/getMenu.handler
+    name: get-menu-handler
+    events:
+      - http:
+          path: get-menu/{Id}
+          method: GET
+          cors: true
+  menu:
+    handler: handler.menu
+    name: menu-handler
+
+resources:
+  Resources:
+    MenuImages:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: menu-items-bucket-csci5410
+    MenuItemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: MenuItems
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema: 
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        
