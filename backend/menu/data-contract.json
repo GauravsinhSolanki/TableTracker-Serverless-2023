@@ -1,0 +1,22 @@
+{
+    "id" : 1,
+    "restaurantId" : 1,
+    "items" : [
+        {
+            "id" : 1,
+            "name" : "Pizza",
+            "description" : "Topped with mozarella cheese, tomatoes & spinach",
+            "img" : "https://my-bucket.s3-us-west-2.amazonaws.com",
+            "availability" : true,
+            "price" : 10.0
+        },
+        {
+            "id" : 2,
+            "name" : "Pasta",
+            "description" : "White sauce pasta with corn, mushroom and bell peppers",
+            "img" : "https://my-bucket.s3-us-west-2.amazonaws.com",
+            "availability" : true,
+            "price" : 10.0
+        }
+    ]
+}
