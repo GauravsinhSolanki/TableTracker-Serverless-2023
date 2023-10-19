@@ -10,27 +10,59 @@ import axios from "axios";
 import "../../assets/scss/view-menu.css";
 
 function ViewMenu() {
-  const { restaurantId } = useParams();
+  const { restaurantId, reservationId } = useParams();
 
   const [error, setError] = useState(false);
   const [items, setItems] = useState(null);
+  const [formValues, setFormValues] = useState({});
+
+  const handleChange = (e, itemId) => {
+    // Update the formValues state when input changes
+    const { value } = e.target;
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      [itemId]: value, 
+    }));
+  };
 
   useEffect(() => {
-    const getData = async () => {
+    const getMenuData = async () => {
       const url = config.Menu.getApiUrl;
       try {
         let result = await axios.get(url + restaurantId);
         setItems(result.data.items);
-        console.log(result.data.items);
       } catch (err) {
         setError(err);
       }
     };
-    getData();
+
+    const getMenuReservationData = async () => {
+        const url = config.MenuReservations.getApiUrl;
+        try {
+            let result = await axios.get(url + reservationId);
+            (result.data[0].items).forEach(item => {
+                setFormValues((prevFormValues) => ({
+                    ...prevFormValues,
+                    [item.id]: item.quantity, 
+                  }));
+            });
+        } catch (err) {
+            setError(err);
+        }
+    }
+
+
+    getMenuData();
+    getMenuReservationData();
   }, [restaurantId]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formValues);
+  }
+
   return (
-    <Row className="container mt-5">
+    <Form className="container mt-5 row" onSubmit={handleSubmit}>
         {items && items.map((item, index) => (
             <Card className="menu-item-cards" style={{ width: '18rem' }} key={index} id={"item-" + index}>
                 <Card.Img variant="top" src={item.img} />
@@ -44,7 +76,13 @@ function ViewMenu() {
                             <Button variant="primary input-group-prepend">-</Button>
                         </Col>
                         <Col sm="4">
-                            <Form.Control type="qty" placeholder="Qty" value={0} />
+                            <Form.Control 
+                                id={item.id} 
+                                type="qty" 
+                                placeholder="0"
+                                onChange={(e) => handleChange(e, item.id)}
+                                value={formValues[item.id] || 0}
+                            />
                         </Col>
                         <Col sm="2">
                             <Button variant="primary input-group-append">+</Button>
@@ -53,7 +91,8 @@ function ViewMenu() {
                 </Card.Body>
             </Card>
         ))}
-    </Row>
+        <Button type="submit">Submit</Button>
+    </Form>
   );
 }
 

@@ -9,6 +9,7 @@ provider:
   region: us-east-2
   environment:
     menuTableName: MenuItems
+    menuReservationsTableName: MenuReservations
   iam:
     role:
       statements:
@@ -38,9 +39,14 @@ functions:
           path: get-menu/{Id}
           method: GET
           cors: true
-  menu:
-    handler: handler.menu
-    name: menu-handler
+  getMenuReservations:
+    handler: lambdas/endpoints/getMenuReservations.handler
+    name: get-menu-reservations-handler
+    events:
+      - http:
+          path: get-menu-reservation/{Id}
+          method: GET
+          cors: true
 
 resources:
   Resources:
@@ -59,4 +65,25 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
+    MenuReservationsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: MenuReservations
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: reservationId
+            AttributeType: S
+        KeySchema: 
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: reservation-index
+            KeySchema:
+              - AttributeName: reservationId
+                KeyType: HASH
+            Projection:
+                ProjectionType: ALL
+              
         

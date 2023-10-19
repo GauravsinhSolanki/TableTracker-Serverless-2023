@@ -20,6 +20,18 @@ const Dynamo = {
         }
 
         return data.Item;
+    },
+    async query(params) {
+
+        const data = await documentClient
+            .query(params)
+            .promise();
+
+        if(!data || !data.Items) {
+            throw Error('There was an error fetching the data from ${params.TableName}');
+        }
+
+        return data.Items || [];
     }
 }
 
