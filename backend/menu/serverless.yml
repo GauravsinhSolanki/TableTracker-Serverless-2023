@@ -55,6 +55,22 @@ functions:
           path: update-menu-reservation/{Id}
           method: PUT
           cors: true
+  deleteMenuReservation:
+    handler: lambdas/endpoints/deleteMenuReservation.handler
+    name: delete-menu-reservation-handler
+    events:
+      - http:
+          path: delete-menu-reservation/{Id}
+          method: DELETE
+          cors: true
+  createMenuReservation:
+    handler: lambdas/endpoints/createMenuReservation.handler
+    name: create-menu-reservation-handler
+    events:
+      - http:
+          path: create-menu-reservation/{Id}
+          method: POST
+          cors: true
 
 resources:
   Resources:

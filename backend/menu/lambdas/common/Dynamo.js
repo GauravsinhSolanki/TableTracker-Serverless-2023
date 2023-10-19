@@ -37,6 +37,22 @@ const Dynamo = {
         return documentClient
             .update(params)
             .promise();
+    },
+    async delete(params) {
+        return documentClient
+            .delete(params)
+            .promise();
+    },
+    async write(params) {
+        const res = await documentClient
+            .put(params)
+            .promise();
+
+        if(!res) {
+            throw Error('There was an error inserting a record');
+        }
+
+        return res;
     }
 }
 
