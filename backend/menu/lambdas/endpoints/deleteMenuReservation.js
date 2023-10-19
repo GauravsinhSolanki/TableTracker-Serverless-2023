@@ -23,5 +23,7 @@ module.exports.handler = async (event) => {
 
     const reservation = await Dynamo.delete(params);
 
-    return Responses._200(reservation);
+    return Responses._200({
+        message : 'Menu reservation deleted successfully'
+    });
 };

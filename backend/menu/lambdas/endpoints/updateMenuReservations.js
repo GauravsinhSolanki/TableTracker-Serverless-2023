@@ -32,5 +32,7 @@ module.exports.handler = async (event) => {
 
     const reservation = await Dynamo.update(params);
 
-    return Responses._200(reservation);
+    return Responses._200({
+        message : 'Menu reservation updated successfully'
+    });
 };

@@ -27,7 +27,6 @@ function ViewMenu() {
   };
 
     const updateItemValue = (id, value) => {
-        console.log(value)
         setFormValues((formValues) => ({
             ...formValues,
             [id]: value, 
@@ -57,7 +56,6 @@ function ViewMenu() {
           const url = config.MenuReservations.getApiUrl;
           try {
             let result = await axios.get(`${url}/${reservationId}`);
-            console.log(result.data);
             if (result.data.length > 0) {
               setFormValues((prevFormValues) => {
                 const updatedFormValues = { ...prevFormValues };
@@ -69,7 +67,6 @@ function ViewMenu() {
               setMenuReservationId(result.data[0].id);
             }
       
-            console.log(formValues);
           } catch (err) {
             setError(err);
           }

@@ -32,5 +32,7 @@ module.exports.handler = async (event) => {
         });
     }
 
-    return Responses._200(reservation);
+    return Responses._200({
+        message : 'Menu reservation created successfully'
+    });
 };
