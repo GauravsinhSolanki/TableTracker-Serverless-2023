@@ -3,6 +3,7 @@
         "getApiUrl" : "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu/"
     },
     "MenuReservations" : {
-        "getApiUrl" : "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu-reservation/"
+        "getApiUrl" : "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu-reservation/",
+        "updateApiUrl" : "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/update-menu-reservation/"
     }
 }

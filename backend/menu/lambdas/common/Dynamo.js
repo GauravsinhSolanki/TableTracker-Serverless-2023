@@ -32,6 +32,11 @@ const Dynamo = {
         }
 
         return data.Items || [];
+    },
+    async update(params) {
+        return documentClient
+            .update(params)
+            .promise();
     }
 }
 

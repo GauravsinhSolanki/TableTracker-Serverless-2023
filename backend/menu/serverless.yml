@@ -47,6 +47,14 @@ functions:
           path: get-menu-reservation/{Id}
           method: GET
           cors: true
+  updateMenuReservations:
+    handler: lambdas/endpoints/updateMenuReservations.handler
+    name: update-menu-reservations-handler
+    events:
+      - http:
+          path: update-menu-reservation/{Id}
+          method: PUT
+          cors: true
 
 resources:
   Resources:

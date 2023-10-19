@@ -15,6 +15,7 @@ function ViewMenu() {
   const [error, setError] = useState(false);
   const [items, setItems] = useState(null);
   const [formValues, setFormValues] = useState({});
+  const [menuReservationId, setMenuReservationId] = useState(null);
 
   const handleChange = (e, itemId) => {
     // Update the formValues state when input changes
@@ -24,6 +25,14 @@ function ViewMenu() {
       [itemId]: value, 
     }));
   };
+
+    const updateItemValue = (id, value) => {
+        console.log(value)
+        setFormValues((formValues) => ({
+            ...formValues,
+            [id]: value, 
+        }));
+    }
 
   useEffect(() => {
     const getMenuData = async () => {
@@ -46,6 +55,7 @@ function ViewMenu() {
                     [item.id]: item.quantity, 
                   }));
             });
+            setMenuReservationId(result.data[0].id);
         } catch (err) {
             setError(err);
         }
@@ -54,11 +64,30 @@ function ViewMenu() {
 
     getMenuData();
     getMenuReservationData();
-  }, [restaurantId]);
+  }, [restaurantId, reservationId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formValues);
+    const formattedData = [];
+  
+    for (const key in formValues) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (formValues.hasOwnProperty(key)) {
+        formattedData.push({
+            id: key,
+            quantity: formValues[key],
+        });
+        }
+    }
+    console.log(formattedData);
+
+    axios.put(config.MenuReservations.updateApiUrl + menuReservationId, formattedData)
+      .then(response => {
+        console.log('Update successful:', response.data);
+      })
+      .catch(error => {
+        console.error('Update failed:', error);
+      });
   }
 
   return (
@@ -73,7 +102,13 @@ function ViewMenu() {
                     </Card.Text>
                     <Row className="quantity-row">
                         <Col sm="2">
-                            <Button variant="primary input-group-prepend">-</Button>
+                            <Button 
+                                variant="primary input-group-prepend" 
+                                onClick={() =>updateItemValue(item.id, --formValues[item.id])} 
+                                disabled={formValues[item.id] == 0}
+                            >
+                                -
+                            </Button>
                         </Col>
                         <Col sm="4">
                             <Form.Control 
@@ -85,7 +120,12 @@ function ViewMenu() {
                             />
                         </Col>
                         <Col sm="2">
-                            <Button variant="primary input-group-append">+</Button>
+                            <Button 
+                                variant="primary input-group-append" 
+                                onClick={() =>updateItemValue(item.id, ++formValues[item.id])}
+                            >
+                                +
+                            </Button>
                         </Col>
                     </Row>
                 </Card.Body>
