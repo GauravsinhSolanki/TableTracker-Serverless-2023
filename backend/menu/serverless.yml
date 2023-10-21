@@ -1,0 +1,113 @@
+service: csci5410-f23-sdp3
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: default
+  region: us-east-2
+  environment:
+    menuTableName: MenuItems
+    menuReservationsTableName: MenuReservations
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource: '*'
+
+plugins:
+  - serverless-s3-sync
+  - serverless-webpack
+
+package: 
+  individually: true
+
+custom:
+  s3Sync:
+    - bucketName: menu-items-bucket-csci5410
+      localDir: uploads
+
+functions:
+  getMenu:
+    handler: lambdas/endpoints/getMenu.handler
+    name: get-menu-handler
+    events:
+      - http:
+          path: get-menu/{Id}
+          method: GET
+          cors: true
+  getMenuReservations:
+    handler: lambdas/endpoints/getMenuReservations.handler
+    name: get-menu-reservations-handler
+    events:
+      - http:
+          path: get-menu-reservation/{Id}
+          method: GET
+          cors: true
+  updateMenuReservations:
+    handler: lambdas/endpoints/updateMenuReservations.handler
+    name: update-menu-reservations-handler
+    events:
+      - http:
+          path: update-menu-reservation/{Id}
+          method: PUT
+          cors: true
+  deleteMenuReservation:
+    handler: lambdas/endpoints/deleteMenuReservation.handler
+    name: delete-menu-reservation-handler
+    events:
+      - http:
+          path: delete-menu-reservation/{Id}
+          method: DELETE
+          cors: true
+  createMenuReservation:
+    handler: lambdas/endpoints/createMenuReservation.handler
+    name: create-menu-reservation-handler
+    events:
+      - http:
+          path: create-menu-reservation/{Id}
+          method: POST
+          cors: true
+
+resources:
+  Resources:
+    MenuImages:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: menu-items-bucket-csci5410
+    MenuItemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: MenuItems
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema: 
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+    MenuReservationsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: MenuReservations
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: reservationId
+            AttributeType: S
+        KeySchema: 
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: reservation-index
+            KeySchema:
+              - AttributeName: reservationId
+                KeyType: HASH
+            Projection:
+                ProjectionType: ALL
+              
+        
