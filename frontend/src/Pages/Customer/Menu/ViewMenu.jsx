@@ -5,9 +5,9 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useEffect, useState } from "react";
-import config from "../../../../config.json";
+import config from "../../../../../config.json";
 import axios from "axios";
-import "../../assets/scss/view-menu.css";
+import "../../../assets/scss/view-menu.css";
 
 function ViewMenu() {
   const { restaurantId, reservationId } = useParams();

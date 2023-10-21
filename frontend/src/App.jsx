@@ -3,11 +3,11 @@ import {
   theme
 } from '@chakra-ui/react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from './pages/Authentication/Login';
-import LandingPage from './pages/LandingPage/LandingPage';
-import LayoutWithNavbar from './Pages/Layout/LayoutWithNavbar';
-import LayoutWithoutNavbar from './Pages/Layout/LayoutWithoutNavbar';
-import ViewMenu from './Pages/Menu/ViewMenu';
+import Login from './Pages/Customer/Authentication/Login';
+import LandingPage from './Pages/Customer/LandingPage/LandingPage';
+import LayoutWithNavbar from './Pages/Customer/Layout/LayoutWithNavbar';
+import LayoutWithoutNavbar from './Pages/Customer/Layout/LayoutWithoutNavbar';
+import ViewMenu from './Pages/Customer/Menu/ViewMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
