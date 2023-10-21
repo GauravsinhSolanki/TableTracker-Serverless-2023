@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     element: <LayoutWithNavbar />,
     children: [
       {
-        path: "/menu/:restaurantId/:reservationId",
+        path: "/customer/menu/:restaurantId/:reservationId",
         element: <ViewMenu />
       },
 
