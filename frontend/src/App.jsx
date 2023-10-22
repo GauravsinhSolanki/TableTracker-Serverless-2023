@@ -10,8 +10,8 @@ import LayoutWithoutNavbar from './Pages/Customer/Layout/LayoutWithoutNavbar';
 import ViewMenu from './Pages/Customer/Menu/ViewMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Restaurant from './Pages/Restaurant/Restaurant';
-import RestaurantList from './Pages/Restaurant/RestaurantList';
+import Restaurant from './Pages/Customer/Restaurant/Restaurant';
+import RestaurantList from './Pages/Customer/Restaurant/RestaurantList';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +29,10 @@ const router = createBrowserRouter([
         path: "/restaurantList/:restaurant_id",
         element: <Restaurant />
       },
+      {
+        path: "/customer/menu/:restaurantId/:reservationId",
+        element: <ViewMenu />
+      },
     ]
   },
   {
@@ -40,19 +44,7 @@ const router = createBrowserRouter([
       },
 
     ]
-  },
-  {
-    element: <LayoutWithNavbar />,
-    children: [
-      {
-        path: "/customer/menu/:restaurantId/:reservationId",
-        element: <ViewMenu />
-      },
-
-    ]
-  },
-
-
+  }
 ]);
 
 function App() {

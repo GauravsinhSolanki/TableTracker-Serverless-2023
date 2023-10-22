@@ -6,5 +6,3 @@ jspm_packages
 .serverless
 backend/menu/.serverless
 backend/menu/uploads
-
-package-lock.json
