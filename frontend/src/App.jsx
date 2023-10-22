@@ -10,6 +10,8 @@ import LayoutWithoutNavbar from './Pages/Customer/Layout/LayoutWithoutNavbar';
 import ViewMenu from './Pages/Customer/Menu/ViewMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Restaurant from './Pages/Restaurant/Restaurant';
+import RestaurantList from './Pages/Restaurant/RestaurantList';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <LandingPage />
+      },
+      {
+        path: "/restaurantList",
+        element: <RestaurantList />
+      },
+      {
+        path: "/restaurantList/:restaurant_id",
+        element: <Restaurant />
       },
     ]
   },
@@ -40,7 +50,9 @@ const router = createBrowserRouter([
       },
 
     ]
-  }
+  },
+
+
 ]);
 
 function App() {
