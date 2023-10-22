@@ -2,12 +2,14 @@ import {
   ChakraProvider,
   theme
 } from '@chakra-ui/react';
-import React from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from './pages/Authentication/Login';
-import LandingPage from './pages/LandingPage/LandingPage';
-import LayoutWithNavbar from './Pages/Layout/LayoutWithNavbar';
-import LayoutWithoutNavbar from './Pages/Layout/LayoutWithoutNavbar';
+import Login from './Pages/Customer/Authentication/Login';
+import LandingPage from './Pages/Customer/LandingPage/LandingPage';
+import LayoutWithNavbar from './Pages/Customer/Layout/LayoutWithNavbar';
+import LayoutWithoutNavbar from './Pages/Customer/Layout/LayoutWithoutNavbar';
+import ViewMenu from './Pages/Customer/Menu/ViewMenu';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Restaurant from './Pages/Restaurant/Restaurant';
 import RestaurantList from './Pages/Restaurant/RestaurantList';
 
@@ -35,6 +37,16 @@ const router = createBrowserRouter([
       {
         path: "/user/login",
         element: <Login />
+      },
+
+    ]
+  },
+  {
+    element: <LayoutWithNavbar />,
+    children: [
+      {
+        path: "/customer/menu/:restaurantId/:reservationId",
+        element: <ViewMenu />
       },
 
     ]

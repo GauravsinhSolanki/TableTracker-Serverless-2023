@@ -1,0 +1,16 @@
+{
+    "id" : 1,
+    "userId" : 123,
+    "restaurantId" : 1,
+    "reservationId" : 25,
+    "items" : [
+        {
+            "id" : 1,
+            "quantity" : 2
+        },
+        {
+            "id" : 2,
+            "quantity" : 5
+        }
+    ]
+}
