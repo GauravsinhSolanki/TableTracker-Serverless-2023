@@ -1,6 +1,7 @@
-import { Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { NavLink } from 'react-router-dom';
 import { theme } from '../../theme';
 
 function Navbar() {
@@ -15,6 +16,11 @@ function Navbar() {
             :
             <Flex as="nav" alignItems="center" justify="space-between" h="10vh" w="100%" backgroundColor={theme.secondaryBackground}>
                 <Text color="white">This is Navbar</Text>
+                <Box>
+                    <NavLink to='/restaurantList'>
+                        <Text fontWeight="medium" color="white" fontSize="lg">Restaurants</Text>
+                    </NavLink>
+                </Box>
             </Flex>
     );
 }
