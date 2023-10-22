@@ -8,6 +8,8 @@ import Login from './pages/Authentication/Login';
 import LandingPage from './pages/LandingPage/LandingPage';
 import LayoutWithNavbar from './Pages/Layout/LayoutWithNavbar';
 import LayoutWithoutNavbar from './Pages/Layout/LayoutWithoutNavbar';
+import Restaurant from './Pages/Restaurant/Restaurant';
+import RestaurantList from './Pages/Restaurant/RestaurantList';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <LandingPage />
+      },
+      {
+        path: "/restaurantList",
+        element: <RestaurantList />
+      },
+      {
+        path: "/restaurantList/:restaurant_id",
+        element: <Restaurant />
       },
     ]
   },
@@ -28,7 +38,8 @@ const router = createBrowserRouter([
       },
 
     ]
-  }
+  },
+
 
 ]);
 
