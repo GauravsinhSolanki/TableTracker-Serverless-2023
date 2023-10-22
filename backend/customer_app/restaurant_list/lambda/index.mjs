@@ -53,7 +53,8 @@ export const handler = async (event, context) => {
                 break;
             case "PUT /restaurants":
                 let requestJSON = JSON.parse(event.body);
-                let ruuid = requestJSON.restaurants_id ?? uuid();
+                let ruuid = requestJSON.restaurant_id ?? uuid();
+                let muuid = requestJSON.menu_id ?? uuid();
                 await dynamo.send(
                     new PutCommand({
                         TableName: tableName,
@@ -65,7 +66,7 @@ export const handler = async (event, context) => {
                             image: requestJSON.image,
                             instagram: requestJSON.instagram,
                             menu: {
-                                menu_id: requestJSON.menu.menu_id,
+                                menu_id: muuid,
                                 starter: requestJSON.menu.starter,
                                 main_course: requestJSON.menu.main_course,
                                 desert: requestJSON.menu.desert,
