@@ -1,0 +1,13 @@
+service: my-serverless-app
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+
+functions:
+  welcomeFunction:
+    handler: WelcomeIntentHandler.handler
+    events:
+      - http:
+          path: /welcome
+          method: GET

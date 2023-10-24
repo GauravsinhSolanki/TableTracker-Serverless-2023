@@ -1,0 +1,17 @@
+{
+  "name": "lambda-functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "WelcomeIntentHandler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-lex-runtime-v2": "^3.433.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+  }
+}
