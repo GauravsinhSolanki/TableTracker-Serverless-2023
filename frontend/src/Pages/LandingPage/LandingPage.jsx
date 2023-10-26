@@ -1,5 +1,4 @@
 import { Flex, Text, Button, VStack, Input, HStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 function LandingPage() {
@@ -42,27 +41,6 @@ function LandingPage() {
                     <Text color="white">This is the Landing Page</Text>
                 </Flex>
             )}
-
-            {/* Footer */}
-            <Flex w="100%" backgroundColor="#000C44" alignItems="center" justifyContent="center" py={4}>
-                <VStack spacing={4}>
-                <HStack spacing={3}>
-                <Input 
-                placeholder="Enter email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)} 
-                />
-                <Button 
-                colorScheme="teal" 
-                variant="solid" 
-                onClick={handleSubscribe}
-                >
-                        Subscribe
-                </Button>
-                    </HStack>
-                    <Text color="white" fontSize="sm">© 2023 Table Reservation App. All Rights Reserved.</Text>
-                </VStack>
-            </Flex>
         </>
     );
 }
