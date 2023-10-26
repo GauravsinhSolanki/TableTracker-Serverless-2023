@@ -16,13 +16,13 @@ provider:
         - Effect: Allow
           Action:
             - dynamodb:*
-          Resource: '*'
+          Resource: "*"
 
 plugins:
   - serverless-s3-sync
   - serverless-webpack
 
-package: 
+package:
   individually: true
 
 custom:
@@ -85,7 +85,7 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
-        KeySchema: 
+        KeySchema:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
@@ -98,7 +98,7 @@ resources:
             AttributeType: S
           - AttributeName: reservationId
             AttributeType: S
-        KeySchema: 
+        KeySchema:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
@@ -108,6 +108,4 @@ resources:
               - AttributeName: reservationId
                 KeyType: HASH
             Projection:
-                ProjectionType: ALL
-              
-        
+              ProjectionType: ALL
