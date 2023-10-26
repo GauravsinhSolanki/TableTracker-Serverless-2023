@@ -1,15 +1,15 @@
-import {
+const {
   LexRuntimeV2Client,
   RecognizeTextCommand,
-} from "@aws-sdk/client-lex-runtime-v2";
+} = require("@aws-sdk/client-lex-runtime-v2");
 
-export async function handler(event) {
+exports.handler = async function (event) {
   console.log(event);
 
   const response = {
     sessionState: {
       sessionAttributes: {
-        key: "value", 
+        key: "hi",
       },
     },
     messages: [
@@ -44,4 +44,4 @@ export async function handler(event) {
       body: JSON.stringify({ message: "Internal Server Error" }),
     };
   }
-}
+};
