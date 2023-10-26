@@ -1,0 +1,10 @@
+{
+  "url": "https://4g2fc8txa1.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/book",
+  "type":"POST",
+  "requestBody": {
+    "restaurantId": "R1",
+    "reservationDate": "2023-10-29 21:00:00",
+    "requiredCapacity": 5,
+    "userId": "U1"
+  }
+}
