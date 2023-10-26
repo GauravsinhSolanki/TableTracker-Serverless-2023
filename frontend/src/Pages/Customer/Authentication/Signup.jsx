@@ -1,17 +1,16 @@
 import { auth, app } from './firebase.js'
-// import './firebase'
 import React, { useState } from 'react';
 import "./login.css"
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 
-const Login = () => {
+const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const signIn = (e) => {
+    const signUp = (e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth,email,password)
+        createUserWithEmailAndPassword(auth,email,password)
         .then(userCredential => {
             console.log(userCredential)
         }).catch(error => {
@@ -21,8 +20,8 @@ const Login = () => {
 
     return (
 <main className="form-signin w-100 m-auto">
-  <form onSubmit={signIn}>
-    <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+  <form onSubmit={signUp}>
+    <h1 className="h3 mb-3 fw-normal">Sign up</h1>
 
     <div className="form-floating">
       <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" value={email} onChange={(e)=> setEmail(e.target.value)}/>
@@ -39,4 +38,4 @@ const Login = () => {
     )
 };
 
-export default Login;
+export default SignUp;
