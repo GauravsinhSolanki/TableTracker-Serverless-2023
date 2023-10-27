@@ -4,6 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 import { useParams } from 'react-router-dom';
 import { getRestaurants, getRestaurantsByID } from '../../../Services/RestaurantServices/RestaurantServices';
 import { theme } from '../../../theme';
+import { AuthCheck } from '../Authentication/AuthCheck';
 
 function Restaurant() {
     const isMobile = useMediaQuery({ query: '(max-width: 1080px)' });
@@ -44,4 +45,4 @@ function Restaurant() {
     );
 }
 
-export default Restaurant;
+export default AuthCheck(Restaurant);
