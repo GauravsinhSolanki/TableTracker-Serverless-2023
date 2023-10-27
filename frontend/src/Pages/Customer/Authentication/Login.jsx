@@ -1,42 +1,86 @@
-import { auth, app } from './firebase.js'
-// import './firebase'
-import React, { useState } from 'react';
-import "./login.css"
-import { signInWithEmailAndPassword } from 'firebase/auth';
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth, provider } from './firebase.js';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { theme } from '../../../theme.jsx'
+import { Flex} from '@chakra-ui/react';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    let navigate = useNavigate();
 
     const signIn = (e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth,email,password)
-        .then(userCredential => {
-            console.log(userCredential)
-        }).catch(error => {
-            console.log(error);
-        })
-    }
+        signInWithEmailAndPassword(auth, email, password)
+            .then((result) => {
+                console.log(result);
+                sessionStorage.setItem("userDetails",email);
+                navigate('/restaurantList'); 
+            })
+            .catch((error) => {
+                setError("Invalid credentials");
+            });
+    };
+
+    const signInWithGoogle = () => {
+      signInWithPopup(auth, provider).then((result) => {
+        sessionStorage.setItem("userDetails",true)
+        console.log(result);
+        navigate('/restaurantList'); 
+      }).catch(error => {
+        console.log(error);
+      })
+    };
 
     return (
-<main className="form-signin w-100 m-auto">
-  <form onSubmit={signIn}>
-    <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+      <Flex w="100%" minHeight="90vh"  flexDir="column" alignItems="center" justifyContent="start">
+        <main className="form-signin w-100 m-auto" >
+            <form onSubmit={signIn}>
+                <h1 className="h3 mb-3 fw-normal" style={{color: theme.secondaryBackground}}>Please sign in</h1>
 
-    <div className="form-floating">
-      <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" value={email} onChange={(e)=> setEmail(e.target.value)}/>
-      <label>Email address</label>
-    </div>
-    <div className="form-floating">
-      <input type="password" className="form-control" id="floatingPassword" placeholder="Password"
-      value={password} onChange={(p) => setPassword(p.target.value)}/>
-      <label >Password</label>
-    </div>
-    <button className="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-  </form>
-</main>
-    )
+                {error && <p style={{color:"red"}}>{error}</p>}
+
+                <div className="form-floating">
+                    <input
+                        type="email"
+                        className="form-control"
+                        id="floatingInput"
+                        placeholder="name@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <label>Email address</label>
+                </div>
+                <div className="form-floating">
+                    <input
+                        type="password"
+                        className="form-control"
+                        id="floatingPassword"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(p) => setPassword(p.target.value)}
+                    />
+                    <label>Password</label>
+                </div>
+                <button className="btn  w-100 py-2" style={{backgroundColor:theme.primaryBackground}} type="submit">
+                    Sign in
+                </button>
+            </form>
+
+            <button className='google-btn' onClick={signInWithGoogle}>
+              <span>
+                <img
+                    className="google-icon"
+                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                    alt="google-icon"/>
+                <p className="btn-text">Sign in with Google</p>
+              </span>
+            </button>
+        </main>
+        </Flex>
+    );
 };
 
 export default Login;
