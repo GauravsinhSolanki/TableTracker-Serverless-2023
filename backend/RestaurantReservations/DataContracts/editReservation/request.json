@@ -1,0 +1,12 @@
+{
+  "url": "https://sitynadyuf.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/edit",
+  "type": "PUT",
+  "requestBody": {
+    "reservationId": "AEM5BRFEFqYuJ1u3rvut",
+    "restaurantId": "R1",
+    "reservationDate": "2023-10-28 21:00:00",
+    "requiredCapacity": 5,
+    "userId": "U1"
+  },
+  "NOTE": "ALL FIELDS EXCEPT reservationId ARE OPTIONAL"
+}

@@ -1,0 +1,33 @@
+{
+    "message": "Fetched reservations successfully",
+    "data": [
+        {
+            "id": "RCoqYVEoXP4gsiPnX75U",
+            "reservation_date": "2023-10-26T16:30:00.000Z",
+            "user_id": "U1",
+            "restaurant_id": "R1",
+            "required_capacity": 5
+        },
+        {
+            "id": "XrphkLSd0bcHb30VMsH1",
+            "reservation_date": "2023-10-26T16:00:00.000Z",
+            "user_id": "U1",
+            "restaurant_id": "R1",
+            "required_capacity": 5
+        },
+        {
+            "id": "dI4pvvihRIkyaBtoGGz3",
+            "reservation_date": "2023-10-26T16:00:00.000Z",
+            "user_id": "U1",
+            "restaurant_id": "R1",
+            "required_capacity": 5
+        },
+        {
+            "id": "eEhdXx46SzOTPIzAwDn3",
+            "reservation_date": "2023-10-26T16:30:00.000Z",
+            "user_id": "U1",
+            "restaurant_id": "R1",
+            "required_capacity": 5
+        }
+    ]
+}

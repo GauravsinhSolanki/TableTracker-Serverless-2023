@@ -1,0 +1,10 @@
+{
+    "message": "Fetched reservation successfully",
+    "data": {
+        "reservation_date": "2023-10-26T16:30:00.000Z",
+        "user_id": "U1",
+        "restaurant_id": "R1",
+        "required_capacity": 5,
+        "id": "RCoqYVEoXP4gsiPnX75U"
+    }
+}

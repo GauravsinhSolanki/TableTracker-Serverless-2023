@@ -1,44 +1,31 @@
-import { useState } from "react";
+import { auth } from "./firebase.js";
+import React, { useState } from "react";
+import "./login.css";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, provider } from "./firebase.js";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { theme } from "../../../theme.jsx";
 import { Flex } from "@chakra-ui/react";
+import { theme } from "../../../theme.jsx";
 import { showToastError, showToastSuccess } from '../../../Components/Toast.js'; 
 
-const Login = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [error, setError] = useState("");
   let navigate = useNavigate();
 
-  const signIn = (e) => {
+  const signUp = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      showToastError("Please enter email and password"); 
+    if (password.length < 6) {
+      showToastError("Password should be at least 6 characters long"); 
       return;
-  }
-    signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
+    }
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((res) => {
         sessionStorage.setItem("userDetails", email);
         showToastSuccess("Login Successful")
-        navigate("/restaurantList");
+        navigate("/user/login");
       })
       .catch((error) => {
-        showToastError("Invalid credentials"); 
-      return;
-      });
-  };
-
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        sessionStorage.setItem("userDetails", true);
-        showToastSuccess("Login Successful")
-        navigate("/restaurantList");
-      })
-      .catch((error) => {
-        showToastError("Error Logging in!"); 
+        showToastError(error.code); 
       });
   };
 
@@ -51,14 +38,13 @@ const Login = () => {
       justifyContent="start"
     >
       <main className="form-signin w-100 m-auto">
-        <form onSubmit={signIn}>
+        <form onSubmit={signUp}>
           <h1
             className="h3 mb-3 fw-normal"
             style={{ color: theme.secondaryBackground }}
           >
-            Please sign in
+            Sign up
           </h1>
-
           {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
 
           <div className="form-floating">
@@ -88,23 +74,12 @@ const Login = () => {
             style={{ backgroundColor: theme.primaryBackground }}
             type="submit"
           >
-            Sign in
+            Sign up
           </button>
         </form>
-
-        <button className="google-btn" onClick={signInWithGoogle}>
-          <span>
-            <img
-              className="google-icon"
-              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-              alt="google-icon"
-            />
-            <p className="btn-text">Sign in with Google</p>
-          </span>
-        </button>
       </main>
     </Flex>
   );
 };
 
-export default Login;
+export default SignUp;
