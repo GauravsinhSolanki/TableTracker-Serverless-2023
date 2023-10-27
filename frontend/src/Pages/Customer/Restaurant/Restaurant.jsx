@@ -36,6 +36,31 @@ function Restaurant() {
                         <Text>Address: {restaurant.address}</Text>
                         <Text>Opening Time: {restaurant.opening_time}</Text>
                         <Text>Closing Time: {restaurant.closing_time}</Text>
+                        <Heading fontSize="3xl" fontWeight="medium" color={theme.primaryForeground} mt="24px">MENU</Heading>
+                        <Heading fontSize="2xl" fontWeight="medium" color={theme.primaryForeground} mt="24px">Starter</Heading>
+                        <Flex w="90%" flexDirection="column" mt="24px" gap="16px" alignItems="center" >
+                            {
+                                restaurant.menu.starter?.map((menuItem, ind) => {
+                                    return <Text> {menuItem}</Text>
+                                })
+                            }
+                        </Flex>
+                        <Heading fontSize="2xl" fontWeight="medium" color={theme.primaryForeground} mt="24px">Main course</Heading>
+                        <Flex w="90%" flexDirection="column" mt="24px" gap="16px" alignItems="center" >
+                            {
+                                restaurant.menu.main_course?.map((menuItem, ind) => {
+                                    return <Text> {menuItem}</Text>
+                                })
+                            }
+                        </Flex>
+                        <Heading fontSize="2xl" fontWeight="medium" color={theme.primaryForeground} mt="24px">Desert</Heading>
+                        <Flex w="90%" flexDirection="column" mt="24px" gap="16px" alignItems="center" >
+                            {
+                                restaurant.menu.desert?.map((menuItem, ind) => {
+                                    return <Text> {menuItem}</Text>
+                                })
+                            }
+                        </Flex>
                     </Flex>
                 </Flex>
                 :
