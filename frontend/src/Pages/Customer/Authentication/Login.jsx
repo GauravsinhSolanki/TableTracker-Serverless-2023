@@ -4,22 +4,29 @@ import { auth, provider } from "./firebase.js";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { theme } from "../../../theme.jsx";
 import { Flex } from "@chakra-ui/react";
+import { showToastError, showToastSuccess } from '../../../Components/Toast.js'; 
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   let navigate = useNavigate();
 
   const signIn = (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      showToastError("Please enter email and password"); 
+      return;
+  }
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         sessionStorage.setItem("userDetails", email);
+        showToastSuccess("Login Successful")
         navigate("/restaurantList");
       })
       .catch((error) => {
-        setError("Invalid credentials");
+        showToastError("Invalid credentials"); 
+      return;
       });
   };
 
@@ -27,9 +34,12 @@ const Login = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         sessionStorage.setItem("userDetails", true);
+        showToastSuccess("Login Successful")
         navigate("/restaurantList");
       })
-      .catch((error) => {});
+      .catch((error) => {
+        showToastError("Error Logging in!"); 
+      });
   };
 
   return (
@@ -49,7 +59,7 @@ const Login = () => {
             Please sign in
           </h1>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
 
           <div className="form-floating">
             <input
