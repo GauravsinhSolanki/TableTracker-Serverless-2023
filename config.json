@@ -14,5 +14,12 @@
     "createApiUrl": "https://4g2fc8txa1.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/book",
     "editApiUrl": "https://sitynadyuf.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/edit",
     "deleteApiUrl": "https://snv4smf89c.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/delete/${reservationId}"
+  },
+  "Restaurants": {
+    "get-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants",
+    "put-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants",
+    "get-restaurant-id": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants/:restaurant_id",
+    "delete-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants/:restaurant_id",
+    "edit-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants"
   }
 }

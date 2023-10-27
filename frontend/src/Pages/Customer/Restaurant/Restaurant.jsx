@@ -1,8 +1,8 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, CircularProgress, Flex, Heading, Text } from '@chakra-ui/react';
+import { Button, CircularProgress, Flex, Heading, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useParams } from 'react-router-dom';
-import { getRestaurants, getRestaurantsByID } from '../../../Services/RestaurantServices/RestaurantServices';
+import { getRestaurantsByID } from '../../../Services/RestaurantServices/RestaurantServices';
 import { theme } from '../../../theme';
 import { AuthCheck } from '../Authentication/AuthCheck';
 
@@ -36,6 +36,33 @@ function Restaurant() {
                         <Text>Address: {restaurant.address}</Text>
                         <Text>Opening Time: {restaurant.opening_time}</Text>
                         <Text>Closing Time: {restaurant.closing_time}</Text>
+                        <Button borderColor={theme.secondaryForeground} bgColor={theme.accent}>Book</Button>
+                        <Heading fontSize="3xl" fontWeight="medium" color={theme.primaryForeground} mt="24px">MENU</Heading>
+                        <Heading fontSize="2xl" fontWeight="medium" color={theme.primaryForeground} mt="24px">Starter</Heading>
+                        <Flex w="90%" flexDirection="column" mt="24px" gap="16px" alignItems="center" >
+                            {
+                                restaurant.menu.starter?.map((menuItem, ind) => {
+                                    return <Text> {menuItem}</Text>
+                                })
+                            }
+                        </Flex>
+                        <Heading fontSize="2xl" fontWeight="medium" color={theme.primaryForeground} mt="24px">Main course</Heading>
+                        <Flex w="90%" flexDirection="column" mt="24px" gap="16px" alignItems="center" >
+                            {
+                                restaurant.menu.main_course?.map((menuItem, ind) => {
+                                    return <Text> {menuItem}</Text>
+                                })
+                            }
+                        </Flex>
+                        <Heading fontSize="2xl" fontWeight="medium" color={theme.primaryForeground} mt="24px">Desert</Heading>
+                        <Flex w="90%" flexDirection="column" mt="24px" gap="16px" alignItems="center" >
+                            {
+                                restaurant.menu.desert?.map((menuItem, ind) => {
+                                    return <Text> {menuItem}</Text>
+                                })
+                            }
+                        </Flex>
+
                     </Flex>
                 </Flex>
                 :

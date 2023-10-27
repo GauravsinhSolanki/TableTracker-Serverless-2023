@@ -1,0 +1,84 @@
+[
+    {
+        "twitter": "tawagrillfxtweets",
+        "menu": {
+            "main_course": [
+                "dal tadka",
+                "chana masala",
+                "bagara baigan",
+                "kadai paneer"
+            ],
+            "starter": [
+                "manchow soup",
+                "nacho",
+                "fish taco",
+                "anda tod fod",
+                "gobi manchurian",
+                "onion pakora"
+            ],
+            "desert": [
+                "gulab jamun",
+                "ice cream",
+                "halwa",
+                "kheer"
+            ],
+            "menu_id": "4aa8d7c5-30e3-4f83-9f2e-4db36054d9ee",
+            "drinks": [
+                "virgin colada",
+                "shirtley temple",
+                "rose wine",
+                "absolute vodka"
+            ]
+        },
+        "opening_time": "16:00",
+        "instagram": "tawagrillhfx",
+        "phone_no": "902-417-5707",
+        "restaurant_id": "5309de4a-65ec-479e-93b0-ab74d6b0e6d6",
+        "image": "tghfx.jpg",
+        "restaurant_name": "Tawa Grill 2",
+        "address": "1496 lower water st, Halifax, NS",
+        "closing_time": "21:30",
+        "google_rating": "4.3"
+    },
+    {
+        "twitter": "besharamhfxtweets",
+        "menu": {
+            "main_course": [
+                "dal tadka",
+                "chana masala",
+                "bagara baigan",
+                "kadai paneer"
+            ],
+            "starter": [
+                "manchow soup",
+                "nacho",
+                "fish taco",
+                "anda tod fod",
+                "gobi manchurian",
+                "onion pakora"
+            ],
+            "desert": [
+                "gulab jamun",
+                "ice cream",
+                "halwa",
+                "kheer"
+            ],
+            "menu_id": "M1",
+            "drinks": [
+                "virgin colada",
+                "shirtley temple",
+                "rose wine",
+                "absolute vodka"
+            ]
+        },
+        "opening_time": "16:00",
+        "instagram": "besharamhfx",
+        "phone_no": "902-417-5707",
+        "restaurant_id": "R1",
+        "image": "bhfx.jpg",
+        "restaurant_name": "Besharam",
+        "address": "5680 Spring Garden Rd, Halifax, NS",
+        "closing_time": "00:00",
+        "google_rating": "4.3"
+    }
+]
