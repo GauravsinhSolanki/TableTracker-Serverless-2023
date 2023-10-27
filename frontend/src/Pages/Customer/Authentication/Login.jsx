@@ -4,7 +4,7 @@ import { auth, provider } from "./firebase.js";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { theme } from "../../../theme.jsx";
 import { Flex } from "@chakra-ui/react";
-import { showToastError, showToastSuccess } from '../../../Components/Toast.js'; 
+import { showToastError, showToastSuccess } from "../../../Components/Toast.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,18 +15,19 @@ const Login = () => {
   const signIn = (e) => {
     e.preventDefault();
     if (!email || !password) {
-      showToastError("Please enter email and password"); 
+      showToastError("Please enter email and password");
       return;
-  }
+    }
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         sessionStorage.setItem("userDetails", email);
-        showToastSuccess("Login Successful")
+        sessionStorage.setItem("uId", result?.user?.uid ?? "");
+        showToastSuccess("Login Successful");
         navigate("/restaurantList");
       })
       .catch((error) => {
-        showToastError("Invalid credentials"); 
-      return;
+        showToastError("Invalid credentials");
+        return;
       });
   };
 
@@ -34,11 +35,12 @@ const Login = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         sessionStorage.setItem("userDetails", true);
-        showToastSuccess("Login Successful")
+        sessionStorage.setItem("uId", result?.user?.uid ?? "");
+        showToastSuccess("Login Successful");
         navigate("/restaurantList");
       })
       .catch((error) => {
-        showToastError("Error Logging in!"); 
+        showToastError("Error Logging in!");
       });
   };
 
