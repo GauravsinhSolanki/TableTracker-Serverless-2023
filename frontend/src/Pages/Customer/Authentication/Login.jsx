@@ -15,7 +15,6 @@ const Login = () => {
         e.preventDefault();
         signInWithEmailAndPassword(auth, email, password)
             .then((result) => {
-                console.log(result);
                 sessionStorage.setItem("userDetails",email);
                 navigate('/restaurantList'); 
             })
@@ -27,10 +26,8 @@ const Login = () => {
     const signInWithGoogle = () => {
       signInWithPopup(auth, provider).then((result) => {
         sessionStorage.setItem("userDetails",true)
-        console.log(result);
         navigate('/restaurantList'); 
       }).catch(error => {
-        console.log(error);
       })
     };
 
@@ -64,7 +61,7 @@ const Login = () => {
                     />
                     <label>Password</label>
                 </div>
-                <button className="btn  w-100 py-2" style={{backgroundColor:theme.primaryBackground}} type="submit">
+                <button className="btn w-100 py-2" style={{backgroundColor:theme.primaryBackground}} type="submit">
                     Sign in
                 </button>
             </form>
