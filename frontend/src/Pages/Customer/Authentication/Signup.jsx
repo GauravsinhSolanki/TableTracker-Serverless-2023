@@ -5,7 +5,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import { theme } from "../../../theme.jsx";
-import { showToastError, showToastSuccess } from '../../../Components/Toast.js'; 
+import { showToastError, showToastSuccess } from "../../../Components/Toast.js";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -15,17 +15,18 @@ const SignUp = () => {
   const signUp = (e) => {
     e.preventDefault();
     if (password.length < 6) {
-      showToastError("Password should be at least 6 characters long"); 
+      showToastError("Password should be at least 6 characters long");
       return;
     }
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
         sessionStorage.setItem("userDetails", email);
-        showToastSuccess("Login Successful")
+        sessionStorage.setItem("uId", result?.user?.uid ?? "");
+        showToastSuccess("Login Successful");
         navigate("/user/login");
       })
       .catch((error) => {
-        showToastError(error.code); 
+        showToastError(error.code);
       });
   };
 
