@@ -1,23 +1,12 @@
 "use strict";
 
-const Responses = require("./common/API_Responses");
+const axios = require("axios");
+const Responses = require("../../menu/lambdas/common/API_Responses");
+const Dynamo = require("../../menu/lambdas/common/Dynamo");
 
-const hardcodedMenuData = {
-  restaurantId: "1",
-  menuItems: [
-    {
-      id: "1",
-      name: "Dish 1",
-      price: 10.99,
-    },
-    {
-      id: "2",
-      name: "Dish 2",
-      price: 12.99,
-    },
-    
-  ],
-};
+const menuApiBaseUrl =
+  "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu";
+const tableName = process.env.menuTableName;
 
 module.exports.handler = async (event) => {
   try {
@@ -27,7 +16,8 @@ module.exports.handler = async (event) => {
       });
     }
 
-   
+    const sessionId = event.requestAttributes.sessionId;
+
     const restaurantId = event.sessionState.sessionAttributes.restaurantId;
 
     if (!restaurantId) {
@@ -36,8 +26,10 @@ module.exports.handler = async (event) => {
       });
     }
 
-    
-    const menuItems = hardcodedMenuData.menuItems;
+    const response = await axios.get(`${menuApiBaseUrl}/menu/${restaurantId}`);
+    const menuItems = response.data;
+
+    await Dynamo.put(menuItems, sessionId, tableName);
 
     return Responses._200(menuItems);
   } catch (error) {
