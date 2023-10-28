@@ -12,7 +12,7 @@ import ViewMenu from './Pages/Customer/Menu/ViewMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Restaurant from './Pages/Customer/Restaurant/Restaurant';
 import RestaurantList from './Pages/Customer/Restaurant/RestaurantList';
-import KommunicateChat from './Pages/ChatBot/chat';
+import KommunicateChat from './Pages/Customer/ChatBot/chat';
 const router = createBrowserRouter([
   {
     element: <LayoutWithNavbar />,
