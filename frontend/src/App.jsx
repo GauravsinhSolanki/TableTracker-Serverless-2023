@@ -12,26 +12,30 @@ import ViewMenu from './Pages/Customer/Menu/ViewMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Restaurant from './Pages/Customer/Restaurant/Restaurant';
 import RestaurantList from './Pages/Customer/Restaurant/RestaurantList';
-
+import KommunicateChat from './Pages/Customer/ChatBot/chat';
 const router = createBrowserRouter([
   {
     element: <LayoutWithNavbar />,
     children: [
       {
         path: "/",
-        element: <LandingPage />
+        element: <LandingPage />,
+        element:<KommunicateChat/>
       },
       {
         path: "/restaurantList",
-        element: <RestaurantList />
+        element: <RestaurantList />,
+        element:<KommunicateChat/>
       },
       {
         path: "/restaurantList/:restaurant_id",
-        element: <Restaurant />
+        element: <Restaurant />,
+        element:<KommunicateChat/>
       },
       {
         path: "/customer/menu/:restaurantId/:reservationId",
-        element: <ViewMenu />
+        element: <ViewMenu />,
+        element:<KommunicateChat/>
       },
     ]
   },
@@ -40,7 +44,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/user/login",
-        element: <Login />
+        element: <Login />,
+        element:<KommunicateChat/>
       },
       {
         path:"/user/signup",
