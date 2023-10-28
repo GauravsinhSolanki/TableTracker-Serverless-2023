@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Restaurant from "./Pages/Customer/Restaurant/Restaurant";
 import RestaurantList from "./Pages/Customer/Restaurant/RestaurantList";
 import ReservationForm from "./Pages/Customer/Reservation/ReservationForm";
+import KommunicateChat from "./Pages/Customer/ChatBot/chat";
 
 const router = createBrowserRouter([
   {
@@ -18,18 +19,22 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <LandingPage />,
+        element: <KommunicateChat />,
       },
       {
         path: "/restaurantList",
         element: <RestaurantList />,
+        element: <KommunicateChat />,
       },
       {
         path: "/restaurantList/:restaurant_id",
         element: <Restaurant />,
+        element: <KommunicateChat />,
       },
       {
         path: "/customer/menu/:restaurantId/:reservationId",
         element: <ViewMenu />,
+        element: <KommunicateChat />,
       },
       {
         path: "/restaurant/book",
@@ -43,6 +48,7 @@ const router = createBrowserRouter([
       {
         path: "/user/login",
         element: <Login />,
+        element: <KommunicateChat />,
       },
       {
         path: "/user/signup",
