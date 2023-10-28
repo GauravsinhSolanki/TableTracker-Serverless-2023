@@ -38,7 +38,7 @@ export const getReservationsById = async (reservationId) => {
   }
 };
 
-export const bookReservations = async (restaurantId) => {
+export const bookReservations = async (request) => {
   const userId = sessionStorage.getItem("uId");
   if (!userId) {
     return null;
@@ -48,9 +48,7 @@ export const bookReservations = async (restaurantId) => {
     const response = await axios.post(
       `https://4g2fc8txa1.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/book`,
       {
-        reservationDate: "2023-10-29 21:00:00",
-        requiredCapacity: 5,
-        restaurantId,
+        ...request,
         userId,
       }
     );
@@ -95,4 +93,25 @@ export const deleteReservation = async (reservationId) => {
     console.error("Error fetching restaurants by :", error);
     return null;
   }
+};
+
+export const formatDate = (date) => {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
+};
+
+export const findRestInList = (restaurants, resId) => {
+  if (!restaurants || restaurants.length == 0) {
+    return null;
+  }
+
+  const foundRest = restaurants.filter((res) => resId === res.restaurant_id);
+  return foundRest ? foundRest[0] : null;
 };
