@@ -18,23 +18,39 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <LandingPage />,
-        element: <KommunicateChat />,
+        element: (
+          <>
+            <LandingPage />,
+            <KommunicateChat />
+          </>
+        ),
       },
       {
         path: "/restaurantList",
-        element: <RestaurantList />,
-        element: <KommunicateChat />,
+        element: (
+          <>
+            <RestaurantList />
+            <KommunicateChat />
+          </>
+        ),
       },
       {
         path: "/restaurantList/:restaurant_id",
-        element: <Restaurant />,
-        element: <KommunicateChat />,
+        element: (
+          <>
+            <Restaurant />
+            <KommunicateChat />
+          </>
+        ),
       },
       {
         path: "/customer/menu/:restaurantId/:reservationId",
-        element: <ViewMenu />,
-        element: <KommunicateChat />,
+        element: (
+          <>
+            <ViewMenu />
+            <KommunicateChat />
+          </>
+        ),
       },
       {
         path: "/restaurant/book",
@@ -47,8 +63,12 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/user/login",
-        element: <Login />,
-        element: <KommunicateChat />,
+        element: (
+          <>
+            <Login />
+            <KommunicateChat />
+          </>
+        ),
       },
       {
         path: "/user/signup",
