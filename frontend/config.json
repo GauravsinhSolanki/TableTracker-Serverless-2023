@@ -1,0 +1,25 @@
+{
+  "Menu": {
+    "getApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu"
+  },
+  "MenuReservations": {
+    "getApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu-reservation",
+    "updateApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/update-menu-reservation",
+    "deleteApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/delete-menu-reservation",
+    "createApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/create-menu-reservation"
+  },
+  "RestaurantReservations": {
+    "getListApiUrl": "https://zsdz149rv0.execute-api.us-east-1.amazonaws.com/Dev/restaurant-reservations/list/${userId}",
+    "getByIdApiUrl": "https://gw8fpox6c3.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/${reservationId}",
+    "createApiUrl": "https://4g2fc8txa1.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/book",
+    "editApiUrl": "https://sitynadyuf.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/edit",
+    "deleteApiUrl": "https://snv4smf89c.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/delete/${reservationId}"
+  },
+  "Restaurants": {
+    "get-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants",
+    "put-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants",
+    "get-restaurant-id": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants/:restaurant_id",
+    "delete-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants/:restaurant_id",
+    "edit-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants"
+  }
+}

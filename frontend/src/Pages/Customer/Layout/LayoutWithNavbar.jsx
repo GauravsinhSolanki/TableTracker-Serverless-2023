@@ -1,13 +1,13 @@
-import { Outlet } from 'react-router-dom';
-import Navbar from '../../../components/Navbar/Navbar';
+import { Outlet } from "react-router-dom";
+import CustomNavbar from "../../../Components/Navbar/CustomNavbar";
 
 function LayoutWithNavbar() {
-    return (
-        <>
-            <Navbar />
-            <Outlet />
-        </>
-    );
+  return (
+    <>
+      <CustomNavbar />
+      <Outlet />
+    </>
+  );
 }
 
 export default LayoutWithNavbar;
