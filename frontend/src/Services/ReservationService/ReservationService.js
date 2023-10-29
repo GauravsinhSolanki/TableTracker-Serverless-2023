@@ -55,8 +55,11 @@ export const bookReservations = async (request) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error fetching restaurants by :", error);
-    return null;
+    console.error("Error booking restaurants by :", error);
+    return (
+      error?.response?.data ??
+      "Error booking restaurant. Please try again later"
+    );
   }
 };
 
@@ -105,6 +108,22 @@ export const formatDate = (date) => {
   if (day.length < 2) day = "0" + day;
 
   return [year, month, day].join("-");
+};
+
+export const formatDateTime = (date) => {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear(),
+    hours = d.getHours(),
+    mins = d.getMinutes();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+  if (hours < 10) hours = "0" + hours;
+  if (mins < 10) mins = "0" + mins;
+
+  return `${[year, month, day].join("-")} ${hours}:${mins}`;
 };
 
 export const findRestInList = (restaurants, resId) => {
