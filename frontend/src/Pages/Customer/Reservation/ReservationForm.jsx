@@ -5,8 +5,12 @@ import {
   bookReservations,
   findRestInList,
   formatDate,
+  formatDateTime,
+  getReservationsById,
 } from "../../../Services/ReservationService/ReservationService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import "./reservations.css";
+import { Spinner } from "@chakra-ui/react";
 
 const ReservationForm = (props) => {
   const [restaurants, setRestaurants] = useState(null);
@@ -17,7 +21,13 @@ const ReservationForm = (props) => {
     reservationTime: "",
   });
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+  const [isApiLoading, setApiLoading] = useState(false);
+
   const navigate = useNavigate();
+  const params = useParams();
+
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,13 +47,39 @@ const ReservationForm = (props) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    async function fetchReservationById(id) {
+      setLoading(true);
+      const reservation = await getReservationsById(id);
+      if (reservation?.data) {
+        const reservationDetails = { ...reservation.data };
+        setSelectedRestaurant(
+          findRestInList(restaurants, reservationDetails.restaurant_id)
+        );
+        const resTime = formatDateTime(
+          reservationDetails.reservation_date
+        ).split(" ")[1];
+        setFormData({
+          restaurantId: reservationDetails.restaurant_id,
+          requiredCapacity: reservationDetails.required_capacity ?? 1,
+          reservationDate: formatDate(reservationDetails.reservation_date),
+          reservationTime: resTime,
+        });
+      }
+      setLoading(false);
+    }
+
+    if (params?.reservationId) {
+      fetchReservationById(params.reservationId);
+    }
+  }, [params]);
+
   const handleChange = (e, key) => {
     let value = e.target.value;
 
     if (key === "restaurantId") {
       setSelectedRestaurant(findRestInList(restaurants, value));
     }
-    console.log(value);
     setFormData((prevState) => {
       let newState = { ...prevState };
       newState[key] = value;
@@ -51,13 +87,9 @@ const ReservationForm = (props) => {
     });
   };
 
-  useEffect(() => {
-    console.log(selectedRestaurant);
-  }, [selectedRestaurant]);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    setApiLoading(true);
 
     const request = { ...formData };
     request.reservationDate =
@@ -65,9 +97,28 @@ const ReservationForm = (props) => {
     delete request.reservationTime;
     const response = await bookReservations({ ...request });
     if (response?.reservation_id) {
-      navigate(`/restaurantList/${request.restaurantId}`);
+      navigate(`/restaurant/reservations`);
+    } else if (response?.message) {
+      setError(response.message);
     }
+    setApiLoading(false);
   };
+
+  if (isLoading) {
+    return (
+      <Container>
+        <Row style={{ justifyContent: "center", marginTop: "100px" }}>
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        </Row>
+      </Container>
+    );
+  }
 
   return (
     <Container style={{ maxWidth: "600px" }}>
@@ -75,7 +126,10 @@ const ReservationForm = (props) => {
         <Row>
           <Form.Group as={Col}>
             <Form.Label>Restaurant</Form.Label>
-            <Form.Select onChange={(e) => handleChange(e, "restaurantId")}>
+            <Form.Select
+              onChange={(e) => handleChange(e, "restaurantId")}
+              value={formData?.restaurantId ?? ""}
+            >
               <option>Select restaurant</option>
               {restaurants?.length > 0 ? (
                 restaurants.map((res, index) => {
@@ -90,6 +144,11 @@ const ReservationForm = (props) => {
               )}
             </Form.Select>
           </Form.Group>
+          <div style={{ margin: "5px 0 20px" }}>
+            {selectedRestaurant
+              ? `Restaurant timings: ${selectedRestaurant.opening_time} - ${selectedRestaurant.closing_time}`
+              : ""}
+          </div>
         </Row>
         <Row>
           <Form.Group as={Col}>
@@ -132,7 +191,23 @@ const ReservationForm = (props) => {
             as={Col}
             style={{ textAlign: "center", marginTop: "20px" }}
           >
-            <Button type="submit"> Book reservation</Button>
+            {isApiLoading ? (
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="lg"
+                style={{ marginTop: "20px" }}
+              />
+            ) : (
+              <>
+                {error ? (
+                  <div className="reservation-book-error">{error}</div>
+                ) : null}
+                <Button type="submit"> Book reservation</Button>
+              </>
+            )}
           </Form.Group>
         </Row>
       </Form>

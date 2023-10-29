@@ -11,6 +11,7 @@ import Restaurant from "./Pages/Customer/Restaurant/Restaurant";
 import RestaurantList from "./Pages/Customer/Restaurant/RestaurantList";
 import ReservationForm from "./Pages/Customer/Reservation/ReservationForm";
 import KommunicateChat from "./Pages/Customer/ChatBot/chat";
+import Reservations from "./Pages/Customer/Reservation/Reservations";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,14 @@ const router = createBrowserRouter([
       },
       {
         path: "/restaurant/book",
+        element: <ReservationForm />,
+      },
+      {
+        path: "/restaurant/reservations",
+        element: <Reservations />,
+      },
+      {
+        path: "/restaurant/book/:reservationId",
         element: <ReservationForm />,
       },
     ],
