@@ -21,7 +21,7 @@ const ReservationForm = (props) => {
     reservationTime: "",
   });
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [isApiLoading, setApiLoading] = useState(false);
 
   const navigate = useNavigate();
