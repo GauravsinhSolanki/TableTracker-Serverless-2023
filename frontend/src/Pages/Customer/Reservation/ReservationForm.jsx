@@ -8,7 +8,7 @@ import {
   formatDateTime,
   getReservationsById,
 } from "../../../Services/ReservationService/ReservationService";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./reservations.css";
 import { Spinner } from "@chakra-ui/react";
 
@@ -26,6 +26,7 @@ const ReservationForm = (props) => {
 
   const navigate = useNavigate();
   const params = useParams();
+  const location = useLocation();
 
   const [error, setError] = useState("");
 
@@ -34,7 +35,16 @@ const ReservationForm = (props) => {
       const data = await getRestaurants();
       setRestaurants(data);
 
-      if (data?.length > 0) {
+      if (location?.state?.restaurantId) {
+        const restaurant = findRestInList(data, location.state.restaurantId);
+        setSelectedRestaurant({ ...restaurant });
+        setFormData((prevState) => {
+          let newState = { ...prevState };
+          newState.restaurantId = restaurant.restaurant_id ?? "";
+          newState.reservationTime = restaurant.opening_time ?? "";
+          return newState;
+        });
+      } else if (data?.length > 0) {
         setSelectedRestaurant({ ...data[0] });
         setFormData((prevState) => {
           let newState = { ...prevState };
@@ -45,7 +55,7 @@ const ReservationForm = (props) => {
       }
     };
     fetchData();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     async function fetchReservationById(id) {
