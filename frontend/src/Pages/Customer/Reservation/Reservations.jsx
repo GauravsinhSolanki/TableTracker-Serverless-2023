@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
+  deleteReservation,
   formatDateTime,
   getReservations,
 } from "../../../Services/ReservationService/ReservationService";
@@ -17,16 +18,16 @@ const Reservations = (props) => {
   const [restaurants, setRestaurants] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchReservations() {
-      setLoading(true);
-      const reservations = await getReservations();
-      if (reservations?.data) {
-        setReservationList(reservations.data);
-      }
-      setLoading(false);
+  async function fetchReservations() {
+    setLoading(true);
+    const reservations = await getReservations();
+    if (reservations?.data) {
+      setReservationList(reservations.data);
     }
+    setLoading(false);
+  }
 
+  useEffect(() => {
     fetchReservations();
   }, []);
 
@@ -40,6 +41,13 @@ const Reservations = (props) => {
 
     fetchRestaurants();
   }, []);
+
+  const handleDelete = async (id) => {
+    const response = await deleteReservation(id);
+    if (response.success) {
+      fetchReservations();
+    }
+  };
 
   if (isLoading) {
     return (
@@ -113,6 +121,13 @@ const Reservations = (props) => {
                       className="reservations-list-card-link"
                     >
                       Book menu
+                    </Card.Link>
+
+                    <Card.Link
+                      onClick={() => handleDelete(reservation.id)}
+                      className="reservations-list-card-link"
+                    >
+                      Delete
                     </Card.Link>
                   </Card.Body>
                 </Card>
