@@ -8,7 +8,7 @@ export const getReservations = async () => {
 
   try {
     const response = await axios.get(
-      `https://zsdz149rv0.execute-api.us-east-1.amazonaws.com/Dev/restaurant-reservations/list/${userId}`
+      `https://ebgxkia7b6.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/list/${userId}`
     );
 
     const data = await response.data;
@@ -27,7 +27,7 @@ export const getReservationsById = async (reservationId) => {
 
   try {
     const response = await axios.get(
-      `https://gw8fpox6c3.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/${reservationId}`
+      `https://h3r8u603ef.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/${reservationId}`
     );
 
     const data = response.data;
@@ -46,7 +46,7 @@ export const bookReservations = async (request) => {
 
   try {
     const response = await axios.post(
-      `https://4g2fc8txa1.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/book`,
+      `https://wf7hxjb1s1.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations-book`,
       {
         ...request,
         userId,
@@ -63,7 +63,7 @@ export const bookReservations = async (request) => {
   }
 };
 
-export const editReservation = async (reservationId) => {
+export const editReservation = async (request) => {
   const userId = sessionStorage.getItem("uId");
   if (!userId) {
     return null;
@@ -71,10 +71,9 @@ export const editReservation = async (reservationId) => {
 
   try {
     const response = await axios.put(
-      `https://sitynadyuf.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/edit`,
+      `https://wf7hxjb1s1.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations-edit`,
       {
-        reservationId,
-        reservationDate: "2023-10-29 21:00:00",
+        ...request,
       }
     );
 
@@ -88,13 +87,13 @@ export const editReservation = async (reservationId) => {
 export const deleteReservation = async (reservationId) => {
   try {
     const response = await axios.delete(
-      `https://snv4smf89c.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/delete/${reservationId}`
+      `https://i3kpyc4qwi.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations-delete/${reservationId}`
     );
 
-    return response.data;
+    return { ...response.data, success: true };
   } catch (error) {
     console.error("Error fetching restaurants by :", error);
-    return null;
+    return { message: error.message, success: false };
   }
 };
 

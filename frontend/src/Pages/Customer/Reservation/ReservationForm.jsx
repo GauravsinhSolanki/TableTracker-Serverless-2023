@@ -3,6 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { getRestaurants } from "../../../Services/RestaurantServices/RestaurantServices";
 import {
   bookReservations,
+  editReservation,
   findRestInList,
   formatDate,
   formatDateTime,
@@ -105,8 +106,17 @@ const ReservationForm = (props) => {
     request.reservationDate =
       request.reservationDate + " " + request.reservationTime;
     delete request.reservationTime;
-    const response = await bookReservations({ ...request });
-    if (response?.reservation_id) {
+    let response = null;
+    if (params?.reservationId) {
+      response = await editReservation({
+        ...request,
+        reservationId: params.reservationId,
+      });
+    } else {
+      response = await bookReservations({ ...request });
+    }
+
+    if (response?.reservation_id || params?.reservationId) {
       navigate(`/restaurant/reservations`);
     } else if (response?.message) {
       setError(response.message);
