@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - cd frontend
+      - npm install
+  pre_build:
+    commands:
+      - npm run test # if you have tests to run
+  build:
+    commands:
+      - npm run build
+  post_build:
+    commands:
+      - mv dist ../dist # Move the dist folder to the root
+      - cd ..
+      - zip -r sdp3_react_app.zip dist -x "*.git*" # Zip the dist directory excluding git files
+
+artifacts:
+  files:
+    - sdp3_react_app.zip
