@@ -3,5 +3,5 @@ steps:
   args: ['build', '-t', 'gcr.io/sdp3-403516/sdp3-app', './frontend']
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
-  args: ['run', 'deploy', 'sdp3-app', '--image', 'gcr.io/sdp3-403516/sdp3-app', '--platform', 'managed', '--region', 'us-central1']
+  args: ['run', 'deploy', 'sdp3-app', '--image', 'gcr.io/sdp3-403516/sdp3-app:latest', '--platform', 'managed', '--region', 'us-central1']
 timeout: '1600s'
