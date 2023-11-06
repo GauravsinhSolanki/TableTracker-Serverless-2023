@@ -10,6 +10,8 @@ variables:
   SERVICE_NAME: sdp3-service-account@sdp3-403516.iam.gserviceaccount.com
   REGION: us-central1
   FRONTEND_DIR: frontend/
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_TLS_CERTDIR: ""
 
 before_script:
   - echo $GCP_SERVICE_KEY > gcloud-service-key.json
