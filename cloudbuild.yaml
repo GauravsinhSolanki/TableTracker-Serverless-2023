@@ -1,7 +1,13 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/sdp3-403516/sdp3-app', './frontend']
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'gcloud'
-  args: ['run', 'deploy', 'sdp3-app', '--image', 'gcr.io/sdp3-403516/sdp3-app:latest', '--platform', 'managed', '--region', 'us-central1']
-timeout: '1600s'
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/sdp3-403516/sdp3-app', './frontend']
+
+  # Push the Docker image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/sdp3-403516/sdp3-app']
+
+  # Deploy the image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: ['run', 'deploy', 'sdp3-app', '--image', 'gcr.io/sdp3-403516/sdp3-app', '--platform', 'managed', '--region', 'us-central1']
