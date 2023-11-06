@@ -1,8 +1,9 @@
-image: docker:latest
-
 stages:
   - build
   - deploy
+
+services:
+  - docker:dind
 
 variables:
   GCLOUD_PROJECT_ID: $GCP_PROJECT_ID
@@ -10,8 +11,6 @@ variables:
   SERVICE_NAME: sdp3-service-account@sdp3-403516.iam.gserviceaccount.com
   REGION: us-central1
   FRONTEND_DIR: frontend/
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_TLS_CERTDIR: ""
 
 before_script:
   - echo $GCP_SERVICE_KEY > gcloud-service-key.json
@@ -20,14 +19,17 @@ before_script:
   - docker rm gcloud-config
 
 build:
+  image: docker:latest
   stage: build
   script:
     - cd $FRONTEND_DIR
+    - docker info
     - docker build -t $IMAGE:$CI_COMMIT_REF_SLUG .
     - docker run --name gcloud-config google/cloud-sdk gcloud auth configure-docker --quiet
     - docker push $IMAGE:$CI_COMMIT_REF_SLUG
 
 deploy:
+  image: docker:latest
   stage: deploy
   script:
     - docker run --name gcloud-config google/cloud-sdk gcloud run deploy $SERVICE_NAME
