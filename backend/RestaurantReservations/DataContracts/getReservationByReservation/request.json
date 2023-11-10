@@ -1,0 +1,4 @@
+{
+  "url": "https://rrjxoik7c5.execute-api.us-east-1.amazonaws.com/dev/get-reservations-by-restaurant?restaurant_id=${5309de4a-65ec-479e-93b0-ab74d6b0e6d6}&user_id=${U1}",
+  "type": "GET"
+}

@@ -1,0 +1,19 @@
+{
+  "message": "Fetched reservations successfully",
+  "data": [
+    {
+      "id": "0QTr9JRgSHXL4vUJNb6Y",
+      "reservation_date": "2023-10-29T16:00:00.000Z",
+      "user_id": "Le92sW31hOSZxYG1qycBqByMImG3",
+      "restaurant_id": "5309de4a-65ec-479e-93b0-ab74d6b0e6d6",
+      "required_capacity": 1
+    },
+    {
+      "id": "BL6gei8LRiHWxa0z1mzn",
+      "reservation_date": "2023-11-06T16:00:00.000Z",
+      "user_id": "12lxQ1plUUMvfsouBMUvPsovxuQ2",
+      "restaurant_id": "5309de4a-65ec-479e-93b0-ab74d6b0e6d6",
+      "required_capacity": 1
+    }
+  ]
+}

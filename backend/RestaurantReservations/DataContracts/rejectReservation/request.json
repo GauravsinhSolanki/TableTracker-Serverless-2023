@@ -1,0 +1,7 @@
+{
+  "url": "https://chdma68oz4.execute-api.us-east-1.amazonaws.com/dev/reject-reservation",
+  "type": "PATCH",
+  "requestBody": {
+    "reservationId": "AEM5BRFEFqYuJ1u3rvut"
+  }
+}
