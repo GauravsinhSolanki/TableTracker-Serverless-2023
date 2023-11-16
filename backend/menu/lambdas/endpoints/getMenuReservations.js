@@ -1,40 +1,39 @@
 'use strict';
 const Responses = require('../common/API_Responses');
-const Dynamo = require('../common/Dynamo');
+const admin = require("firebase-admin");
+const serviceAccount = require("./sdp3-firestore.json"); // file path for service account credentials
 
-const tableName = process.env.menuReservationsTableName;
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://csci5410-f23-sdp3.firebaseio.com", // Firebase project URL
+});
 
 module.exports.handler = async (event) => {
 
-    if(!event.pathParameters || !event.pathParameters.Id) {
-        // failed to get as no id provided
+    try {
+        const db = admin.firestore();
+        const dbCollection = db.collection("MenuReservations");
+        
+        const reservationId = event.pathParameters.Id;
+
+        let menuReservationsDocs = null;
+
+        menuReservationsDocs = await dbCollection
+            .where("reservationId", "==", reservationId)
+            .get();
+
+        const reservations = menuReservationsDocs.docs.map((document) => ({
+            id: document.id,
+            ...document.data(),
+        }));
+    
+        return Responses._200(...reservations);
+    } catch (error) {
+        console.log(error);
         return Responses._400({
-            message: 'No id specified'
+            message: "Error fetching menu reservations",
+            error: error.message,
         });
     }
-
-    const reservationId = event.pathParameters.Id;
-
-    const params = {
-        TableName: tableName,
-        IndexName: 'reservation-index',
-        KeyConditionExpression: 'reservationId = :id',
-        ExpressionAttributeValues: { 
-            ':id': reservationId
-        }
-    };
-
-
-    const reservation = await Dynamo.query(params).catch((error) => {
-        console.log('Error fetching menu reservation', error);
-        return null;
-    });
-
-    if(!reservation) {
-        return Responses._400({
-            message: 'No matching items found in '+ tableName +' for the specifed reservation id: '+ reservationId
-        });
-    }
-
-    return Responses._200(reservation);
+    
 };

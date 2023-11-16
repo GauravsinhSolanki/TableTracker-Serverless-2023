@@ -56,16 +56,16 @@ function ViewMenu() {
       const url = config.MenuReservations.getApiUrl;
       try {
         let result = await axios.get(`${url}/${reservationId}`);
-        if (result.data.length > 0) {
+        if (result.data && result.data.items) {
           setFormValues((prevFormValues) => {
             const updatedFormValues = { ...prevFormValues };
-            result.data[0].items.forEach((item) => {
+            result.data.items.forEach((item) => {
               updatedFormValues[item.id] =
                 item.quantity > 0 ? item.quantity : 0;
             });
             return updatedFormValues;
           });
-          setMenuReservationId(result.data[0].id);
+          setMenuReservationId(result.data.id);
         }
       } catch (err) {
         setError(err);
@@ -104,13 +104,12 @@ function ViewMenu() {
         });
     } else {
       // If there is no menu reservation then create a new one
-      // TODO: 123 needs to be replaced with user Id from the session once the Auth tasks are completed
-      const newMenuReservationId = restaurantId + reservationId + 123; // 123 is the dummy user Id
+      const newMenuReservationId = restaurantId + reservationId + sessionStorage.getItem('uId'); 
       const requestBody = {
         items: formattedData,
         reservationId: reservationId,
         restaurantId: restaurantId,
-        userId: "123",
+        userId: sessionStorage.getItem('uId'),
       };
 
       axios
@@ -133,6 +132,7 @@ function ViewMenu() {
       .delete(`${config.MenuReservations.deleteApiUrl}/${menuReservationId}`)
       .then((response) => {
         console.log("Record deleted successfully", response.data);
+        window.location = '/restaurantList';
       })
       .catch((error) => {
         console.error("Error deleting record", error);

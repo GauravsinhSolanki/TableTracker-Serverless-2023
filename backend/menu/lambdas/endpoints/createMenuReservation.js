@@ -1,38 +1,39 @@
 'use strict';
 const Responses = require('../common/API_Responses');
-const Dynamo = require('../common/Dynamo');
+const admin = require("firebase-admin");
+const serviceAccount = require("./sdp3-firestore.json"); // file path for service account credentials
 
-const tableName = process.env.menuReservationsTableName;
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://csci5410-f23-sdp3.firebaseio.com", // Firebase project URL
+});
+
 
 module.exports.handler = async (event) => {
 
-    if(!event.pathParameters || !event.pathParameters.Id) {
-        // failed to get as no id provided
-        return Responses._400({
-            message: 'No id specified'
-        });
-    }
+    try {
+        const db = admin.firestore();
+        const menuReservationsDocs = db.collection("MenuReservations");
 
-    const data = JSON.parse(event.body);
-    data.id = event.pathParameters.Id;
+        if(!event.pathParameters || !event.pathParameters.Id) {
+            // failed to get as no id provided
+            return Responses._400({
+                message: 'No id specified'
+            });
+        }
     
-    const params = {
-        TableName: tableName,
-        Item: data
-    };
-
-    const reservation = await Dynamo.write(params).catch((error) => {
-        console.log('Error creating menu reservation', error);
-        return null;
-    });
-
-    if(!reservation) {
+        const addedReservation = await menuReservationsDocs.add({
+            id: event.pathParameters.Id,
+            ...JSON.parse(event.body)
+        });
+    
+        return Responses._200({
+            message: "Reservation successful",
+            reservation_id: addedReservation.id,
+        });
+    } catch (error) {
         return Responses._400({
             message: 'Error creating menu reservations'
         });
     }
-
-    return Responses._200({
-        message : 'Menu reservation created successfully'
-    });
 };
