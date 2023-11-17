@@ -39,6 +39,30 @@ functions:
           path: get-menu/{Id}
           method: GET
           cors: true
+  createMenu:
+    handler: lambdas/endpoints/createMenu.handler
+    name: create-menu-handler
+    events:
+      - http:
+          path: create-menu/{Id}
+          method: POST
+          cors: true
+  updateMenu:
+    handler: lambdas/endpoints/updateMenu.handler
+    name: update-menu-handler
+    events:
+      - http:
+          path: update-menu/{Id}
+          method: PUT
+          cors: true
+  deleteMenu:
+    handler: lambdas/endpoints/deleteMenu.handler
+    name: delete-menu-handler
+    events:
+      - http:
+          path: delete-menu/{Id}
+          method: DELETE
+          cors: true
   getMenuReservations:
     handler: lambdas/endpoints/getMenuReservations.handler
     name: get-menu-reservations-handler
