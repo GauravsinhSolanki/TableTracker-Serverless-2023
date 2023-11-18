@@ -26,7 +26,6 @@ const SignUp = () => {
       .then(async (val) =>  {
       await storeUserDetails(val.user.uid, { userType: signupType });
 
-      sessionStorage.setItem("userDetails", JSON.stringify({ email, userType: signupType, uid: val.user.uid }));
       sessionStorage.setItem("uId", val.user.uid);
       showToastSuccess("Sign up Successful");
       navigate(`/${signupType}/login`);
