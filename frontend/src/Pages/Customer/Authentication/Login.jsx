@@ -20,7 +20,7 @@ const Login = () => {
     }
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
-        sessionStorage.setItem("userDetails", email);
+        sessionStorage.setItem("userDetails", JSON.stringify({ email, userType: signupType, uid: val.user.uid }));
         sessionStorage.setItem("uId", result?.user?.uid ?? "");
         showToastSuccess("Login Successful");
         navigate("/restaurantList");
@@ -34,7 +34,7 @@ const Login = () => {
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        sessionStorage.setItem("userDetails", true);
+        sessionStorage.setItem("userDetails", JSON.stringify({ email, userType: signupType, uid: val.user.uid }));
         sessionStorage.setItem("uId", result?.user?.uid ?? "");
         showToastSuccess("Login Successful");
         navigate("/restaurantList");
