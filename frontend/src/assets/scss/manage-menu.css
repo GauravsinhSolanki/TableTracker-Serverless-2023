@@ -1,0 +1,12 @@
+.form-label {
+    font-weight: bold;
+    float: left;
+}
+
+.btn-add, .btn-update {
+    margin-top: 10px;
+}
+
+.row {
+    padding: 30px;
+}

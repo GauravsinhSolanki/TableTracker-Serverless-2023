@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Form, Card } from "react-bootstrap";
 import config from "../../../../config.json";
-import "../../../assets/scss/display-menu.css";
+import "../../../assets/scss/manage-menu.css";
 
 function RestaurantMenuManager() {
   const { restaurantId } = useParams();
 
     const [error, setError] = useState(false);
-    const [items, setItems] = useState(null);
+    const [items, setItems] = useState([]);
+    const [hasMenu, setHasMenu] = useState(true);
 
     // State for form inputs
     const [editedItems, setEditedItems] = useState(null);
@@ -19,6 +20,8 @@ function RestaurantMenuManager() {
         description: "",
         price: "",
         img: "",
+        availability: true,
+        discount: 0,
     });
 
     useEffect(() => {
@@ -30,6 +33,7 @@ function RestaurantMenuManager() {
                 // Initialize editedItems with the same data as items
                 setEditedItems(result.data.items);
             } catch (err) {
+                setHasMenu(false);
                 setError(err);
             }
         };
@@ -42,16 +46,74 @@ function RestaurantMenuManager() {
   };
 
   const handleAddNewItem = () => {
-    // Add the new item to the items state
-    setItems([...items, newItem]);
-    setEditedItems([...items, newItem]);
+    if(items == undefined) {
+        setItems([]);
+    } else {
+        // Add the new item to the items state
+        setItems([...items, newItem]);
+        setEditedItems([...items, newItem]);
+    }
     console.log(editedItems)
     // Clear the new item form fields after adding
-    setNewItem({ name: "", description: "", price: "", img: "" });
+    setNewItem({ 
+        name: "", 
+        description: "", 
+        price: "", 
+        img: "", 
+        availability: true,
+        discount: 0, 
+    });
   };
 
   const handleNewInputChange = (key, value) => {
     setNewItem({ ...newItem, [key]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    items.forEach(function (item, i) {
+        item.id = i+1;
+    });
+
+    console.log(items);
+
+    if (hasMenu) {
+        // If reservation already exists then update it
+        axios
+          .put(
+            `${config.Menu.updateApiUrl}/${restaurantId}`,
+            items
+          )
+          .then((response) => {
+            console.log("Update successful:", response.data);
+          })
+          .catch((error) => {
+            console.error("Update failed:", error);
+          });
+      } else {
+        // If there is no menu  then create a new one
+        const requestBody = {
+            id: restaurantId,
+            restaurantId: restaurantId,
+            items: items,
+            discount: 0,
+        };
+  
+        axios
+          .post(
+            `${config.Menu.createApiUrl}/${restaurantId}`,
+            requestBody
+          )
+          .then((response) => {
+            console.log("Response:", response.data);
+            setHasMenu(true);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    
   };
 
   return (
@@ -115,14 +177,40 @@ function RestaurantMenuManager() {
                     }}
                   />
                 </Form.Group>
-                <Button variant="primary" onClick={() => handleUpdateItem(index)}>
+                <Form.Group controlId={`formItemIsAvailable-${index}`}>
+                    <Form.Label>Availability</Form.Label>
+                    <Form.Control
+                        as="select"
+                        value={editedItems[index].availability} 
+                        onChange={(e) => {
+                        const newItems = [...editedItems];
+                        newItems[index].availability = e.target.value === 'true';
+                        setEditedItems(newItems);
+                        }}
+                    >
+                        <option value={true}>Yes</option>
+                        <option value={false}>No</option>
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group controlId={`formItemDiscount-${index}`}>
+                  <Form.Label>Discount</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editedItems[index].discount}
+                    onChange={(e) => {
+                      const newItems = [...editedItems];
+                      newItems[index].discount = e.target.value;
+                      setEditedItems(newItems);
+                    }}
+                  />
+                </Form.Group>
+                <Button variant="primary" onClick={() => handleUpdateItem(index)} className="btn-update">
                   Update Item
                 </Button>
               </Form>
             </Card.Body>
           </Card>
         ))}
-        {items && (
         <Card className="menu-item-cards" style={{ width: "18rem" }}>
           <Card.Body>
             <Form>
@@ -159,16 +247,33 @@ function RestaurantMenuManager() {
                   onChange={(e) => handleNewInputChange("img", e.target.value)}
                 />
               </Form.Group>
-              <Button variant="primary" onClick={handleAddNewItem}>
+              <Form.Group controlId="formItemIsAvailable">
+                    <Form.Label>Availability</Form.Label>
+                    <Form.Control
+                        as="select"
+                        value={newItem.availability} 
+                        onChange={(e) => {handleNewInputChange("availability", e.target.value)}}>
+                        <option value={true}>Yes</option>
+                        <option value={false}>No</option>
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group controlId="formItemDiscount">
+                  <Form.Label>Discount</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={newItem.discount}
+                    onChange={(e) => {handleNewInputChange("discount", e.target.value)}}
+                  />
+                </Form.Group>
+              <Button variant="primary" onClick={handleAddNewItem} className="btn-add">
                 Add Item
               </Button>
             </Form>
           </Card.Body>
         </Card>
-      )}
         <div className="row action-buttons">
-            <Button variant="danger">Cancel</Button>
-            <Button variant="success">Save Changes</Button>
+            <Button variant="danger" href={`/partner/menu/${restaurantId}`}>Cancel</Button>
+            <Button variant="success" onClick={handleSubmit}>Save Changes</Button>
       </div>
     </div>
   );

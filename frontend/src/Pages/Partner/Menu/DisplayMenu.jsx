@@ -29,14 +29,31 @@ function DisplayMenu() {
   }, [restaurantId]);
 
 
+  const processDelete = () => {
+    console.log(config);
+    axios
+      .delete(`${config.Menu.deleteApiUrl}/${restaurantId}`)
+      .then((response) => {
+        console.log("Record deleted successfully", response.data);
+        // TODO : Redirect to the dashboard which we will see after login
+        // Since that feature is pending, it needs to be changed
+        //window.location = '/';
+      })
+      .catch((error) => {
+        console.error("Error deleting record", error);
+      });
+  };
+
   return (
     <div>
         <div className="row action-buttons">
-            <Button>
+            <Button
+                href={`/partner/manage-menu/${restaurantId}`}>
                 Edit Menu
             </Button>
             <Button
                 variant="danger"
+                onClick={processDelete}
             >
                 Delete Menu
             </Button>
