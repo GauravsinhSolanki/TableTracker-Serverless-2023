@@ -11,12 +11,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getRestaurantsByID } from "../../../Services/RestaurantServices/RestaurantServices";
 import { theme } from "../../../theme";
 import { AuthCheck } from "../Authentication/AuthCheck";
+import { getReservationsByRestaurant } from "../../../Services/ReservationService/ReservationService";
 
 function Restaurant() {
   const isMobile = useMediaQuery({ query: "(max-width: 1080px)" });
   const [restaurant, setRestaurant] = useState(null);
   const { restaurant_id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      getReservationsByRestaurant(restaurant_id);
+    };
+    fetchReservations();
+  }, [restaurant_id]);
 
   useEffect(() => {
     const fetchData = async () => {
