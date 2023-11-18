@@ -8,6 +8,10 @@
     text-align-last: center;
 }
 
+.quantity-row > .col-sm-4 {
+    margin-left: 15px;
+}
+
 .submit-btn {
     margin-top: 10px;
     margin-right: 5px;
@@ -22,4 +26,8 @@
     margin-top: 10px;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.discounted-price {
+    text-decoration: line-through;
 }

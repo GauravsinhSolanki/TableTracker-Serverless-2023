@@ -1,6 +1,9 @@
 {
   "Menu": {
-    "getApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu"
+    "getApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu",
+    "updateApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/update-menu",
+    "deleteApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/delete-menu",
+    "createApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/create-menu"
   },
   "MenuReservations": {
     "getApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu-reservation",

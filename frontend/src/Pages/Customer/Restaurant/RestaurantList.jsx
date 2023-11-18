@@ -8,6 +8,7 @@ import {
   CircularProgress,
   Flex,
   Heading,
+  Spacer,
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -17,19 +18,41 @@ import { getRestaurants } from "../../../Services/RestaurantServices/RestaurantS
 import { theme } from "../../../theme";
 import { AuthCheck } from "../Authentication/AuthCheck";
 import { Button } from "react-bootstrap";
+import config from "../../../../config.json";
+import axios from "axios";
 
 function RestaurantList() {
   const isMobile = useMediaQuery({ query: "(max-width: 1080px)" });
   const [restaurants, setRestaurants] = useState(null);
   const navigate = useNavigate();
+  const [restaurantDiscount, setRestaurantDiscount] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getRestaurants();
+      const promises = data.map(async (restaurant) => {
+        const url = `${config.Menu.getApiUrl}/${restaurant.restaurant_id}`;
+        try {
+          const response = await axios.get(url);
+          return { id: restaurant.restaurant_id, discount: response.data.discount };
+        } catch (err) {
+          console.log(`Unable to fetch data for menu of restaurant ${restaurant.restaurant_id}`);
+          return { id: restaurant.restaurant_id, discount: null };
+        }
+      });
+
+      const discounts = await Promise.all(promises);
+      console.log(discounts);
+      setRestaurantDiscount(discounts);
       setRestaurants(data);
     };
     fetchData();
   }, []);
+
+  const getDiscountById = (id) => {
+    const foundDiscount = restaurantDiscount.find((restaurant) => restaurant.id === id);
+    return foundDiscount ? foundDiscount.discount : 'Discount Not Available';
+  };
 
   return isMobile ? (
     <Flex
@@ -96,7 +119,19 @@ function RestaurantList() {
                 padding="24px"
               >
                 <Text fontSize="2xl" fontWeight="semibold">
-                  {restaurant.restaurant_name}
+                  <Flex
+                  flexDirection="row"
+                  >
+                    <Box w='42%' />
+                    {restaurant.restaurant_name}
+                  <Spacer/>
+                  <Box
+                    bgColor="#7cf1c4"
+                    borderRadius="2px"
+                    padding="5px">
+                      {getDiscountById(restaurant.restaurant_id)} % Off
+                    </Box>
+                  </Flex>
                 </Text>
                 <Text>Rating {restaurant.google_rating}</Text>
               </Flex>

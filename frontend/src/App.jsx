@@ -12,6 +12,8 @@ import RestaurantList from "./Pages/Customer/Restaurant/RestaurantList";
 import ReservationForm from "./Pages/Customer/Reservation/ReservationForm";
 import KommunicateChat from "./Pages/Customer/ChatBot/chat";
 import Reservations from "./Pages/Customer/Reservation/Reservations";
+import DisplayMenu from "./Pages/Partner/Menu/DisplayMenu";
+import RestaurantMenuManager from "./Pages/Partner/Menu/RestaurantMenuManager";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +66,22 @@ const router = createBrowserRouter([
       {
         path: "/restaurant/book/:reservationId",
         element: <ReservationForm />,
+      },
+      {
+        path: "/partner/menu/:restaurantId",
+        element: (
+          <>
+            <DisplayMenu />
+          </>
+        ),
+      },
+      {
+        path: "/partner/manage-menu/:restaurantId",
+        element: (
+          <>
+            <RestaurantMenuManager />
+          </>
+        ),
       },
     ],
   },
