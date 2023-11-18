@@ -14,6 +14,7 @@ import KommunicateChat from "./Pages/Customer/ChatBot/chat";
 import Reservations from "./Pages/Customer/Reservation/Reservations";
 import DisplayMenu from "./Pages/Partner/Menu/DisplayMenu";
 import RestaurantMenuManager from "./Pages/Partner/Menu/RestaurantMenuManager";
+import Dashboard from "./Pages/Partner/Dashboard/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -57,20 +58,36 @@ const router = createBrowserRouter([
       },
       {
         path: "/restaurant/book",
-        element: <ReservationForm />,
+        element: (
+          <>
+            <KommunicateChat />
+            <ReservationForm />
+          </>
+        ),
       },
       {
         path: "/restaurant/reservations",
-        element: <Reservations />,
+        element: (
+          <>
+            <KommunicateChat />
+            <Reservations />
+          </>
+        ),
       },
       {
         path: "/restaurant/book/:reservationId",
-        element: <ReservationForm />,
+        element: (
+          <>
+            <KommunicateChat />
+            <ReservationForm />
+          </>
+        ),
       },
       {
         path: "/partner/menu/:restaurantId",
         element: (
           <>
+            <KommunicateChat />
             <DisplayMenu />
           </>
         ),
@@ -79,7 +96,17 @@ const router = createBrowserRouter([
         path: "/partner/manage-menu/:restaurantId",
         element: (
           <>
+            <KommunicateChat />
             <RestaurantMenuManager />
+          </>
+        ),
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <>
+            <KommunicateChat />
+            <Dashboard />
           </>
         ),
       },

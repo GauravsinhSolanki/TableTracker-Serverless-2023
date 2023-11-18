@@ -20,6 +20,7 @@ import { AuthCheck } from "../Authentication/AuthCheck";
 import { Button } from "react-bootstrap";
 import config from "../../../../config.json";
 import axios from "axios";
+import { getHolisticData } from "../../../Services/ReservationService/ReservationService";
 
 function RestaurantList() {
   const isMobile = useMediaQuery({ query: "(max-width: 1080px)" });
@@ -29,14 +30,30 @@ function RestaurantList() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const data = await getHolisticData(
+        "5309de4a-65ec-479e-93b0-ab74d6b0e6d6",
+        "monthly"
+      );
+      console.log(data);
+    };
+    fetchData();
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
       const data = await getRestaurants();
       const promises = data.map(async (restaurant) => {
         const url = `${config.Menu.getApiUrl}/${restaurant.restaurant_id}`;
         try {
           const response = await axios.get(url);
-          return { id: restaurant.restaurant_id, discount: response.data.discount };
+          return {
+            id: restaurant.restaurant_id,
+            discount: response.data.discount,
+          };
         } catch (err) {
-          console.log(`Unable to fetch data for menu of restaurant ${restaurant.restaurant_id}`);
+          console.log(
+            `Unable to fetch data for menu of restaurant ${restaurant.restaurant_id}`
+          );
           return { id: restaurant.restaurant_id, discount: null };
         }
       });
@@ -50,8 +67,10 @@ function RestaurantList() {
   }, []);
 
   const getDiscountById = (id) => {
-    const foundDiscount = restaurantDiscount.find((restaurant) => restaurant.id === id);
-    return foundDiscount ? foundDiscount.discount : 'Discount Not Available';
+    const foundDiscount = restaurantDiscount.find(
+      (restaurant) => restaurant.id === id
+    );
+    return foundDiscount ? foundDiscount.discount : "Discount Not Available";
   };
 
   return isMobile ? (
@@ -119,16 +138,11 @@ function RestaurantList() {
                 padding="24px"
               >
                 <Text fontSize="2xl" fontWeight="semibold">
-                  <Flex
-                  flexDirection="row"
-                  >
-                    <Box w='42%' />
+                  <Flex flexDirection="row">
+                    <Box w="42%" />
                     {restaurant.restaurant_name}
-                  <Spacer/>
-                  <Box
-                    bgColor="#7cf1c4"
-                    borderRadius="2px"
-                    padding="5px">
+                    <Spacer />
+                    <Box bgColor="#7cf1c4" borderRadius="2px" padding="5px">
                       {getDiscountById(restaurant.restaurant_id)} % Off
                     </Box>
                   </Flex>

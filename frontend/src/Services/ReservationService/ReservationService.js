@@ -97,6 +97,76 @@ export const deleteReservation = async (reservationId) => {
   }
 };
 
+export const getReservationsByRestaurant = async (restaurant_id) => {
+  if (!restaurant_id) {
+    return null;
+  }
+
+  const user_id = sessionStorage.getItem("uId");
+
+  try {
+    const response = await axios.get(
+      `https://rrjxoik7c5.execute-api.us-east-1.amazonaws.com/dev/get-reservations-by-restaurant?restaurant_id=${restaurant_id}&user_id=${user_id}`
+    );
+
+    const data = await response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching restaurants by :", error);
+    return null;
+  }
+};
+
+export const approveReservation = async (reservationId) => {
+  try {
+    const response = await axios.patch(
+      `https://chdma68oz4.execute-api.us-east-1.amazonaws.com/dev/approve-reservation`,
+      {
+        reservationId: reservationId,
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error approving reservation :", error);
+    return null;
+  }
+};
+
+export const rejectReservation = async (reservationId) => {
+  try {
+    const response = await axios.patch(
+      `https://chdma68oz4.execute-api.us-east-1.amazonaws.com/dev/reject-reservation`,
+      {
+        reservationId,
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error rejecting reservation :", error);
+    return null;
+  }
+};
+
+export const getHolisticData = async (restaurant_id, view = "monthly") => {
+  if (!restaurant_id) {
+    return null;
+  }
+
+  try {
+    const response = await axios.get(
+      `https://hpr2ad7deh.execute-api.us-east-1.amazonaws.com/dev/holistic-view?restaurantId=${restaurant_id}&view=${view}`
+    );
+
+    const data = await response.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching holistic view by :", error);
+    return null;
+  }
+};
+
 export const formatDate = (date) => {
   var d = new Date(date),
     month = "" + (d.getMonth() + 1),

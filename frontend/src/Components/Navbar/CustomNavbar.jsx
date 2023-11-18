@@ -1,74 +1,65 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { theme } from "../../theme";
+import { Container, Nav, Navbar } from "react-bootstrap";
 
-function logoutUser() {
-  sessionStorage.clear();
-}
-
-function CustomNavbar() {
-  const isMobile = useMediaQuery({ query: "(max-width: 1080px)" });
+function CustomNavbar(props) {
   const user = sessionStorage.getItem("userDetails");
+  const navigate = useNavigate();
+  const [isLoggedIn, setLoggedIn] = useState(false);
 
-  return isMobile ? (
-    <Flex
-      as="nav"
-      alignItems="center"
-      justify="space-between"
-      h="10vh"
-      w="100%"
-      backgroundColor={theme.secondaryBackground}
-    >
-      <Text color="white">This is Navbar</Text>
-    </Flex>
-  ) : (
-    <Flex
-      as="nav"
-      alignItems="center"
-      justify="space-between"
-      h="10vh"
-      w="100%"
-      backgroundColor={theme.secondaryBackground}
-    >
-      <Text color="white">This is Navbar</Text>
-      {!user ? (
-        <>
-          <Box>
-            <NavLink to="/user/login">
-              <Text fontWeight="medium" color="white" fontSize="lg">
-                Login
-              </Text>
-            </NavLink>
-          </Box>
-          <Box>
-            <NavLink to="/user/signup">
-              <Text fontWeight="medium" color="white" fontSize="lg">
-                Signup
-              </Text>
-            </NavLink>
-          </Box>
-        </>
-      ) : (
-        <>
-          <Box>
-            <NavLink to="/restaurantList">
-              <Text fontWeight="medium" color="white" fontSize="lg">
-                Restaurants
-              </Text>
-            </NavLink>
-          </Box>
-          <Box>
-            <NavLink to="/user/login" onClick={logoutUser}>
-              <Text fontWeight="medium" color="white" fontSize="lg">
+  useEffect(() => {
+    if (user) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }, [user]);
+
+  function logoutUser() {
+    sessionStorage.clear();
+    navigate("/");
+  }
+
+  return (
+    <Navbar className="bg-body-tertiary sdp3-navbar">
+      <Container>
+        <Navbar.Brand href="/dashboard">
+          <img
+            alt=""
+            src="/src/assets/logo.png"
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
+          />
+          TableTracker
+        </Navbar.Brand>
+        <Nav className="me-auto sdp3-navbar-links">
+          {!isLoggedIn ? (
+            <>
+              <Nav.Link href="/user/login">Login</Nav.Link>
+              <Nav.Link href="/user/signup">Signup</Nav.Link>
+            </>
+          ) : (
+            <>
+              <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+              <Nav.Link href="/restaurantList">Restaurants</Nav.Link>
+              <Nav.Link href="/restaurant/reservations">Reservations</Nav.Link>
+
+              <Nav.Link
+                href=""
+                onClick={logoutUser}
+                className="sdp3-navbar-logout"
+              >
                 Logout
-              </Text>
-            </NavLink>
-          </Box>
-        </>
-      )}
-    </Flex>
+              </Nav.Link>
+            </>
+          )}
+        </Nav>
+      </Container>
+    </Navbar>
   );
 }
 
