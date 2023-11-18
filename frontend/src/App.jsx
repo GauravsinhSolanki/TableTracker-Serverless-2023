@@ -80,7 +80,20 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/partner/login",
+        element: (
+          <>
+            <Login />
+            <KommunicateChat />
+          </>
+        ),
+      },
+      {
         path: "/user/signup",
+        element: <SignUp />,
+      },
+      {
+        path: "/partner/signup",
         element: <SignUp />,
       },
     ],
