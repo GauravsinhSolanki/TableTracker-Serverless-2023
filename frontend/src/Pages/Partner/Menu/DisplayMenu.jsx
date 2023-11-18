@@ -81,6 +81,8 @@ function DisplayMenu() {
                       </> :
                       <span> ${item.price}</span>
                     }
+                    <br/>
+                    <b>Availability</b> : {item.availability == true ? 'Available' : 'Unavailable'} 
                 </Card.Text>
               </Card.Body>
             </Card>

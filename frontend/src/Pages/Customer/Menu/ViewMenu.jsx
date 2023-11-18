@@ -16,6 +16,7 @@ function ViewMenu() {
   const [items, setItems] = useState(null);
   const [formValues, setFormValues] = useState({});
   const [menuReservationId, setMenuReservationId] = useState(null);
+  const [menuDiscount, setMenuDiscount] = useState(0);
 
   const handleChange = (e, itemId) => {
     // Update the formValues state when input changes
@@ -39,6 +40,9 @@ function ViewMenu() {
       try {
         let result = await axios.get(`${url}/${restaurantId}`);
         setItems(result.data.items);
+        if(result.data.discount > 0) {
+          setMenuDiscount(result.data.discount);
+        }
         setFormValues((prevFormValues) => {
           const updatedFormValues = { ...prevFormValues };
           result.data.items.forEach((item) => {
@@ -158,12 +162,16 @@ function ViewMenu() {
                     {item.description}
                     <br/>
                     <b>Price</b> : 
-                    { item.discount > 0 ?
-                      <>
-                        &nbsp;<span className="discounted-price">${item.price}</span>
-                        <span> ${item.price - ((item.price*item.discount)/100)}</span>
-                      </> :
-                      <span> ${item.price}</span>
+                    { menuDiscount > 0 ? 
+                        <>
+                          &nbsp;<span className="discounted-price">${item.price}</span>
+                          <span> ${item.price - ((item.price*menuDiscount)/100)}</span>
+                        </> : item.discount > 0 ?
+                        <>
+                          &nbsp;<span className="discounted-price">${item.price}</span>
+                          <span> ${item.price - ((item.price*item.discount)/100)}</span>
+                        </> :
+                        <span> ${item.price}</span>
                     }
                 </Card.Text>
                 <Row className="quantity-row">
