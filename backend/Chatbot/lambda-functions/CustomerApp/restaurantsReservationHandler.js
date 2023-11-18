@@ -1,7 +1,7 @@
 "use strict";
 
 const axios = require("axios");
-const Responses = require("../../RestaurantReservations/ApiResponses");
+const Responses = require("../../../RestaurantReservations/ApiResponses");
 
 const reservationApiBaseUrl =
   "jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants";
