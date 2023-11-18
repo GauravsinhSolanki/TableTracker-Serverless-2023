@@ -1,0 +1,91 @@
+.reservations-list{
+    padding: 20px 30px;
+}
+
+.reservations-list .reservations-list-row{
+    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reservations-list .reservations-list-row .reservations-list-card{
+    margin-bottom: 10px;
+    max-width: 300px;
+    box-shadow: 1px 1px 3px 1px #9b9b9b; 
+}
+
+.reservations-list-card-date{
+    margin-bottom: 10px !important;
+}
+
+.reservations-list-card-name{
+    margin-bottom: 10px !important;
+}
+
+.reservations-list .reservations-list-row .reservations-list-card .reservations-list-card-party{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 30px !important;
+}
+
+.reservations-list-card-icon{
+    font-size: 22px;
+}
+
+.reservations-list-card-link{
+    cursor: pointer;
+    color: blue;
+}
+
+.reservations-list-title {
+    width: auto !important;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.reservations-list-button {
+    width: 170px;
+    margin: 0 auto;
+    margin-right: 0;
+}
+
+.reservation-book-error{
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.reservations-list-card-footer.card-footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+p.reservations-list-card-footer-item.card-text {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+svg.reservations-list-card-footer-icon {
+    font-size: 18px;
+}
+
+svg.reservations-list-card-footer-icon.reservations-list-card-footer-icon--red {
+    color: #FF0000;
+}
+
+svg.reservations-list-card-footer-icon.reservations-list-card-footer-icon--green {
+    color: #50C878;
+}
+
+.reservations-list-loader-card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

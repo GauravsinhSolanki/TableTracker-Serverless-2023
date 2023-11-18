@@ -1,0 +1,33 @@
+{
+  "Menu": {
+    "getApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu",
+    "updateApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/update-menu",
+    "deleteApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/delete-menu",
+    "createApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/create-menu"
+  },
+  "MenuReservations": {
+    "getApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu-reservation",
+    "updateApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/update-menu-reservation",
+    "deleteApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/delete-menu-reservation",
+    "createApiUrl": "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/create-menu-reservation"
+  },
+  "RestaurantReservations": {
+    "getListApiUrl": "https://ebgxkia7b6.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/list/${userId}",
+    "getByIdApiUrl": "https://h3r8u603ef.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/${reservationId}",
+    "createApiUrl": "https://wf7hxjb1s1.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations-book",
+    "editApiUrl": "https://wf7hxjb1s1.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations-edit",
+    "deleteApiUrl": "https://i3kpyc4qwi.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations-delete/${reservationId}",
+    "getByRestaurant": "https://rrjxoik7c5.execute-api.us-east-1.amazonaws.com/dev/get-reservations-by-restaurant?restaurant_id=${restaurant_id}&user_id=${user_id}",
+    "note": "If user_id is null in above api then it will return all reservations of that restaurant regardless of user",
+    "approveReservation": "https://chdma68oz4.execute-api.us-east-1.amazonaws.com/dev/approve-reservation",
+    "rejectReservation": "https://chdma68oz4.execute-api.us-east-1.amazonaws.com/dev/reject-reservation",
+    "holisticView": "https://hpr2ad7deh.execute-api.us-east-1.amazonaws.com/dev/holistic-view?restaurantId={restaurant_id}&view=monthly"
+  },
+  "Restaurants": {
+    "get-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants",
+    "put-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants",
+    "get-restaurant-id": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants/:restaurant_id",
+    "delete-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants/:restaurant_id",
+    "edit-restaurants": "https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants"
+  }
+}
