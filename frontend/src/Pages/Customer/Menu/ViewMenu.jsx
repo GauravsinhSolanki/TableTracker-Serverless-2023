@@ -144,7 +144,8 @@ function ViewMenu() {
       <div className="row">
         {items &&
           items.map((item, index) => (
-            <Card
+            item.availability == true && 
+              <Card
               className="menu-item-cards"
               style={{ width: "18rem" }}
               key={index}
@@ -153,7 +154,18 @@ function ViewMenu() {
               <Card.Img variant="top" src={item.img} />
               <Card.Body>
                 <Card.Title>{item.name}</Card.Title>
-                <Card.Text>{item.description}</Card.Text>
+                <Card.Text>
+                    {item.description}
+                    <br/>
+                    <b>Price</b> : 
+                    { item.discount > 0 ?
+                      <>
+                        &nbsp;<span className="discounted-price">${item.price}</span>
+                        <span> ${item.price - ((item.price*item.discount)/100)}</span>
+                      </> :
+                      <span> ${item.price}</span>
+                    }
+                </Card.Text>
                 <Row className="quantity-row">
                   <Col sm="2">
                     <Button
@@ -187,7 +199,7 @@ function ViewMenu() {
                   </Col>
                 </Row>
               </Card.Body>
-            </Card>
+              </Card>
           ))}
       </div>
       <Button variant="success" type="submit" className="submit-btn">

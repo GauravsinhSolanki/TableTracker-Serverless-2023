@@ -73,7 +73,14 @@ function DisplayMenu() {
                 <Card.Text>
                     {item.description}
                     <br/>
-                    <b>Price</b> : {item.price}$
+                    <b>Price</b> : 
+                    { item.discount > 0 ?
+                      <>
+                        &nbsp;<span className="discounted-price">${item.price}</span>
+                        <span> ${item.price - ((item.price*item.discount)/100)}</span>
+                      </> :
+                      <span> ${item.price}</span>
+                    }
                 </Card.Text>
               </Card.Body>
             </Card>
