@@ -20,7 +20,7 @@ const Dashboard = (props) => {
       justifyContent="start"
     >
       <Container>
-        <Row style={{ flexWrap: "nowrap" }}>
+        <Row className="dashboard-row">
           <Col>
             <Card className="dashboard-card">
               <div className="dashboard-card-title">Monthly Trend</div>
@@ -34,7 +34,7 @@ const Dashboard = (props) => {
             </Card>
           </Col>
         </Row>
-        <Row>
+        <Row className="dashboard-row">
           <Col>
             <Card className="dashboard-card">
               <div className="dashboard-card-title">Daily view</div>
