@@ -38,7 +38,21 @@
         "restaurant_name": "Tawa Grill 2",
         "address": "1496 lower water st, Halifax, NS",
         "closing_time": "21:30",
-        "google_rating": "4.3"
+        "google_rating": "4.3",
+        "reviews": [
+            {
+                "user": "user1",
+                "review": "Great Experience, must visit",
+                "rating": "4.5"
+            },
+            {
+                "user": "user2",
+                "review": "Good must visit",
+                "rating": "4.0"
+            }
+        ],
+        "availability": true,
+        "max_tables": 10
     },
     {
         "twitter": "besharamhfxtweets",
@@ -79,6 +93,20 @@
         "restaurant_name": "Besharam",
         "address": "5680 Spring Garden Rd, Halifax, NS",
         "closing_time": "00:00",
-        "google_rating": "4.3"
+        "google_rating": "4.3",
+        "reviews": [
+            {
+                "user": "user1",
+                "review": "Great Experience, must visit",
+                "rating": "4.5"
+            },
+            {
+                "user": "user2",
+                "review": "Good must visit",
+                "rating": "4.0"
+            }
+        ],
+        "availability": true,
+        "max_tables": 10
     }
 ]

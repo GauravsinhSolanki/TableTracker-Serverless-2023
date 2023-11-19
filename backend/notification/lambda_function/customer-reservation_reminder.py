@@ -11,29 +11,28 @@ s3 = boto3.client('s3')
 
 getByIdApiUrl = "https://gw8fpox6c3.execute-api.us-east-1.amazonaws.com/dev/restaurant-reservations/"
 
-def lambda_handler(event, context):
+def lambda_handler(event):
     try:
-        # Fetch reservation details using http.client
+    
         reservationId = event['reservationId']
 
-        # Parse the URL and setup the connection
+ 
         url = urlparse(getByIdApiUrl + reservationId)
         conn = http.client.HTTPSConnection(url.netloc)
         conn.request("GET", url.path)
         response = conn.getresponse()
 
-        # Check if we received a successful response
+     
         if response.status != 200:
             raise ValueError(f"Failed to fetch data with status code: {response.status}")
 
-        # Load the response data into a dictionary
         data = response.read().decode('utf-8')
         reservation_data = json.loads(data).get('data', {})
         
         reservation_datetime = datetime.datetime.strptime(reservation_data.get('reservation_date', ''), '%Y-%m-%dT%H:%M:%S.%fZ')
         current_datetime = datetime.datetime.utcnow()
 
-        # Check if the reservation is within the next 30 minutes
+      
         if (reservation_datetime - current_datetime).total_seconds() <= 1800:
             email = fetch_email_by_user_id(reservation_data.get('user_id', ''))
             if not email:
@@ -44,7 +43,7 @@ def lambda_handler(event, context):
                 if not restaurant_name:
                     raise ValueError("Failed to fetch restaurant name.")
                 
-                # Send a notification
+           
                 message = f"Reminder: You have a reservation at {restaurant_name} in 30 minutes."
                 sns.publish(
                     TopicArn="arn:aws:sns:us-east-1:247203851890:Reservation-Reminder",
@@ -76,10 +75,10 @@ def is_customer_subscribed(email):
         print(f"Error checking subscription for {email}: {str(e)}")
         return False
 
-def fetch_email_by_user_id(user_id):
-    # This is a placeholder; you'll have to replace this with the actual logic to fetch email by user_id
+def fetch_email_by_user_id(uid):
+    
     return "example@example.com"
 
 def fetch_restaurant_name_by_id(restaurant_id):
-    # This is a placeholder; you'll have to replace this with the actual logic to fetch restaurant name by restaurant_id
+    
     return "Example Restaurant"
