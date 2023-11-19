@@ -7,3 +7,7 @@
     margin: 0 auto;
     margin-right: 0;
 }
+
+.btn-primary.btn{
+    background-color: #242582;
+}
