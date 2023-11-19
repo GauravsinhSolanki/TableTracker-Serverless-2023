@@ -2,9 +2,18 @@ import { Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { theme } from "../../../theme";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import "./landingPage.css";
 
 function LandingPage() {
   const isMobile = useMediaQuery({ query: "(max-width: 1080px)" });
+  const navigate = useNavigate();
+
+  const handleNavigate = (url) => {
+    navigate(url);
+  };
+
   return isMobile ? (
     <Flex
       w="100%"
@@ -14,7 +23,7 @@ function LandingPage() {
       alignItems="center"
       justifyContent="start"
     >
-      <Text color="white">This is the Landing Page</Text>
+      <LandingContent handleNavigate={handleNavigate} />
     </Flex>
   ) : (
     <Flex
@@ -24,9 +33,44 @@ function LandingPage() {
       alignItems="center"
       justifyContent="space-evenly"
     >
-      <Text color="white">This is the Landing Page</Text>
+      <LandingContent handleNavigate={handleNavigate} />
     </Flex>
   );
 }
+
+const LandingContent = ({ handleNavigate }) => (
+  <Container>
+    <Row className="landing-title">Customer links</Row>
+    <Row className="landing-buttons-container">
+      <Button
+        className="landing-button"
+        onClick={(e) => handleNavigate("/user/login")}
+      >
+        Customer login
+      </Button>
+      <Button
+        className="landing-button"
+        onClick={(e) => handleNavigate("/user/signup")}
+      >
+        Customer Signup
+      </Button>
+    </Row>
+    <Row className="landing-title">Partner links</Row>
+    <Row className="landing-buttons-container">
+      <Button
+        className="landing-button"
+        onClick={(e) => handleNavigate("/partner/login")}
+      >
+        Partner login
+      </Button>
+      <Button
+        className="landing-button"
+        onClick={(e) => handleNavigate("/partner/signup")}
+      >
+        Partner login
+      </Button>
+    </Row>
+  </Container>
+);
 
 export default LandingPage;

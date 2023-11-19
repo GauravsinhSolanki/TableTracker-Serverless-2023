@@ -12,6 +12,14 @@ import {
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./reservations.css";
 import { Spinner } from "@chakra-ui/react";
+import { AuthCheck } from "../Authentication/AuthCheck";
+import {
+  AiFillCheckCircle,
+  AiFillCloseCircle,
+  AiOutlineCheckCircle,
+  AiOutlineCloseCircle,
+} from "react-icons/ai";
+import "./reservationForm.css";
 
 const ReservationForm = (props) => {
   const [restaurants, setRestaurants] = useState(null);
@@ -20,10 +28,12 @@ const ReservationForm = (props) => {
     requiredCapacity: 1,
     reservationDate: formatDate(new Date()),
     reservationTime: "",
+    isApproved: null,
   });
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [isApiLoading, setApiLoading] = useState(false);
+  const [isPartner, setPartner] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -56,6 +66,11 @@ const ReservationForm = (props) => {
       }
     };
     fetchData();
+
+    const user = JSON.parse(sessionStorage.getItem("userDetails"));
+    if (user.userType === "partner") {
+      setPartner(true);
+    }
   }, [location]);
 
   useEffect(() => {
@@ -75,6 +90,10 @@ const ReservationForm = (props) => {
           requiredCapacity: reservationDetails.required_capacity ?? 1,
           reservationDate: formatDate(reservationDetails.reservation_date),
           reservationTime: resTime,
+          isApproved:
+            reservationDetails.isApproved === undefined
+              ? null
+              : reservationDetails.isApproved,
         });
       }
       setLoading(false);
@@ -107,6 +126,7 @@ const ReservationForm = (props) => {
       request.reservationDate + " " + request.reservationTime;
     delete request.reservationTime;
     let response = null;
+
     if (params?.reservationId) {
       response = await editReservation({
         ...request,
@@ -116,12 +136,22 @@ const ReservationForm = (props) => {
       response = await bookReservations({ ...request });
     }
 
-    if (response?.reservation_id || params?.reservationId) {
+    if (response?.error) {
+      setError(response?.message ?? "");
+    } else if (response?.reservation_id || params?.reservationId) {
       navigate(`/restaurant/reservations`);
     } else if (response?.message) {
       setError(response.message);
     }
     setApiLoading(false);
+  };
+
+  const handleApprovalChange = (isApproved) => {
+    setFormData((prevState) => {
+      let newState = { ...prevState };
+      newState.isApproved = isApproved;
+      return { ...newState };
+    });
   };
 
   if (isLoading) {
@@ -141,9 +171,12 @@ const ReservationForm = (props) => {
   }
 
   return (
-    <Container style={{ maxWidth: "600px" }}>
+    <Container
+      style={{ maxWidth: "600px" }}
+      className="reservation-form-container"
+    >
       <Form onSubmit={handleSubmit}>
-        <Row>
+        <Row className="reservation-form-row">
           <Form.Group as={Col}>
             <Form.Label>Restaurant</Form.Label>
             <Form.Select
@@ -170,7 +203,7 @@ const ReservationForm = (props) => {
               : ""}
           </div>
         </Row>
-        <Row>
+        <Row className="reservation-form-row">
           <Form.Group as={Col}>
             <Form.Label>Party size</Form.Label>
             <Form.Control
@@ -180,10 +213,11 @@ const ReservationForm = (props) => {
               value={formData.requiredCapacity}
               onChange={(e) => handleChange(e, "requiredCapacity")}
               min={1}
+              max={(selectedRestaurant?.max_tables ?? 20) * 4}
             />
           </Form.Group>
         </Row>
-        <Row>
+        <Row className="reservation-form-row">
           <Form.Group as={Col}>
             <Form.Label>Reservation date</Form.Label>
             <Form.Control
@@ -206,7 +240,38 @@ const ReservationForm = (props) => {
             />
           </Form.Group>
         </Row>
-        <Row>
+        {isPartner && params?.reservationId ? (
+          <Row className="reservation-form-row">
+            <Form.Group className="reservation-form-approval-group">
+              <Form.Label>Approval</Form.Label>
+              <Row className="reservation-form-approval">
+                <div
+                  className="reservation-form-approval-col"
+                  onClick={(e) => handleApprovalChange(true)}
+                >
+                  {formData.isApproved === true ? (
+                    <AiFillCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
+                  ) : (
+                    <AiOutlineCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
+                  )}
+                  {formData.isApproved === true ? "Approved" : "Approve"}
+                </div>
+                <div
+                  className="reservation-form-approval-col"
+                  onClick={(e) => handleApprovalChange(false)}
+                >
+                  {formData.isApproved === false ? (
+                    <AiFillCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
+                  ) : (
+                    <AiOutlineCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
+                  )}
+                  {formData.isApproved === false ? "Rejected" : "Reject"}
+                </div>
+              </Row>
+            </Form.Group>
+          </Row>
+        ) : null}
+        <Row className="reservation-form-row">
           <Form.Group
             as={Col}
             style={{ textAlign: "center", marginTop: "20px" }}
@@ -225,7 +290,11 @@ const ReservationForm = (props) => {
                 {error ? (
                   <div className="reservation-book-error">{error}</div>
                 ) : null}
-                <Button type="submit"> Book reservation</Button>
+                <Button type="submit">
+                  {params?.reservationId
+                    ? "Edit reservation"
+                    : "Book reservation"}
+                </Button>
               </>
             )}
           </Form.Group>
@@ -234,5 +303,5 @@ const ReservationForm = (props) => {
     </Container>
   );
 };
-
-export default ReservationForm;
+const ReservationFormPage = AuthCheck(ReservationForm);
+export default ReservationFormPage;

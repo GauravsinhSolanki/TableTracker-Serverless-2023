@@ -80,7 +80,7 @@ export const editReservation = async (request) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching restaurants by :", error);
-    return null;
+    return { error: true, message: error?.response?.data?.message ?? "" };
   }
 };
 
@@ -97,7 +97,10 @@ export const deleteReservation = async (reservationId) => {
   }
 };
 
-export const getReservationsByRestaurant = async (restaurant_id) => {
+export const getReservationsByRestaurant = async (
+  restaurant_id,
+  allUsers = false
+) => {
   if (!restaurant_id) {
     return null;
   }
@@ -106,7 +109,9 @@ export const getReservationsByRestaurant = async (restaurant_id) => {
 
   try {
     const response = await axios.get(
-      `https://rrjxoik7c5.execute-api.us-east-1.amazonaws.com/dev/get-reservations-by-restaurant?restaurant_id=${restaurant_id}&user_id=${user_id}`
+      `https://rrjxoik7c5.execute-api.us-east-1.amazonaws.com/dev/get-reservations-by-restaurant?restaurant_id=${restaurant_id}${
+        allUsers ? "" : `&user_id=${user_id}`
+      }`
     );
 
     const data = await response.data;

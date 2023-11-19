@@ -4,6 +4,7 @@ import {
   deleteReservation,
   formatDateTime,
   getReservations,
+  getReservationsByRestaurant,
   rejectReservation,
 } from "../../../Services/ReservationService/ReservationService";
 import { getRestaurants } from "../../../Services/RestaurantServices/RestaurantServices";
@@ -21,6 +22,9 @@ import "./reservations.css";
 import { useNavigate } from "react-router-dom";
 import { Flex, Spinner } from "@chakra-ui/react";
 import { theme } from "../../../theme";
+import { AuthCheck } from "../Authentication/AuthCheck";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../Authentication/firebase";
 
 const Reservations = (props) => {
   const navigate = useNavigate();
@@ -29,10 +33,31 @@ const Reservations = (props) => {
   const [restaurants, setRestaurants] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [cardLoading, setCardLoading] = useState([]);
+  const [isPartner, setPartner] = useState([]);
 
   async function fetchReservations() {
-    const reservations = await getReservations();
+    let reservations = await getReservations();
     if (reservations?.data) {
+      setReservationList(reservations.data);
+      const loaders = [];
+      for (let i = 0; i < reservations.data.length; i++) {
+        loaders.push(false);
+      }
+      setCardLoading([...loaders]);
+    }
+    setLoading(false);
+  }
+
+  async function fetchReservationsForRestaurant(restaurant_id) {
+    const reservations = await getReservationsByRestaurant(restaurant_id, true);
+    if (reservations?.data) {
+      const reservationData = [...reservations.data];
+      let i = 0;
+      for (let reservation of reservations.data) {
+        const userEmail = await getUserEmail(reservation.user_id);
+        reservationData[i].userEmail = userEmail ?? "Customer";
+        i++;
+      }
       setReservationList(reservations.data);
       const loaders = [];
       for (let i = 0; i < reservations.data.length; i++) {
@@ -45,8 +70,23 @@ const Reservations = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    fetchReservations();
+
+    const user = JSON.parse(sessionStorage.getItem("userDetails"));
+    if (user.userType === "partner") {
+      setPartner(true);
+      fetchReservationsForRestaurant(user.restaurant_id, true);
+    } else {
+      setPartner(false);
+      fetchReservations();
+    }
   }, []);
+
+  const getUserEmail = async (userId) => {
+    const docRef = doc(db, "userDetails", userId);
+    const docSnap = await getDoc(docRef);
+    const userDetails = docSnap.data();
+    return userDetails?.email ?? "Customer";
+  };
 
   useEffect(() => {
     async function fetchRestaurants() {
@@ -150,7 +190,9 @@ const Reservations = (props) => {
                       <>
                         <Card.Body>
                           <Card.Title className="reservations-list-card-name">
-                            {restaurant?.restaurant_name ?? ""}
+                            {isPartner
+                              ? reservation.userEmail
+                              : restaurant?.restaurant_name ?? ""}
                           </Card.Title>
                           <Card.Subtitle className="mb-2 text-muted reservations-list-card-date">
                             {reservationDateTime}
@@ -185,54 +227,56 @@ const Reservations = (props) => {
                             Delete
                           </Card.Link>
                         </Card.Body>
-                        <Card.Footer className="reservations-list-card-footer">
-                          {reservation.isApproved === undefined ||
-                          reservation.isApproved === null ? (
-                            <>
-                              <Card.Text
-                                onClick={(e) =>
-                                  reservationApproval(
-                                    true,
-                                    reservation.id,
-                                    index
-                                  )
-                                }
-                                className="reservations-list-card-footer-item"
-                              >
-                                <AiOutlineCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
-                                Approve
-                              </Card.Text>
+                        {isPartner ? (
+                          <Card.Footer className="reservations-list-card-footer">
+                            {reservation.isApproved === undefined ||
+                            reservation.isApproved === null ? (
+                              <>
+                                <Card.Text
+                                  onClick={(e) =>
+                                    reservationApproval(
+                                      true,
+                                      reservation.id,
+                                      index
+                                    )
+                                  }
+                                  className="reservations-list-card-footer-item"
+                                >
+                                  <AiOutlineCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
+                                  Approve
+                                </Card.Text>
 
-                              <Card.Text
-                                className="reservations-list-card-footer-item"
-                                onClick={(e) =>
-                                  reservationApproval(
-                                    false,
-                                    reservation.id,
-                                    index
-                                  )
-                                }
-                              >
-                                <AiOutlineCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
-                                Reject
+                                <Card.Text
+                                  className="reservations-list-card-footer-item"
+                                  onClick={(e) =>
+                                    reservationApproval(
+                                      false,
+                                      reservation.id,
+                                      index
+                                    )
+                                  }
+                                >
+                                  <AiOutlineCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
+                                  Reject
+                                </Card.Text>
+                              </>
+                            ) : (
+                              <Card.Text className="reservations-list-card-footer-item">
+                                {reservation.isApproved === true ? (
+                                  <>
+                                    <AiFillCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
+                                    Approved
+                                  </>
+                                ) : (
+                                  <>
+                                    <AiFillCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
+                                    Rejected
+                                  </>
+                                )}
                               </Card.Text>
-                            </>
-                          ) : (
-                            <Card.Text className="reservations-list-card-footer-item">
-                              {reservation.isApproved === true ? (
-                                <>
-                                  <AiFillCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
-                                  Approved
-                                </>
-                              ) : (
-                                <>
-                                  <AiFillCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
-                                  Rejected
-                                </>
-                              )}
-                            </Card.Text>
-                          )}
-                        </Card.Footer>
+                            )}
+                          </Card.Footer>
+                        ) : null}
                       </>
                     )}
                   </Card>
@@ -257,4 +301,5 @@ const getRestaurant = (id, restaurantList) => {
   return null;
 };
 
-export default Reservations;
+const ReservationsPage = AuthCheck(Reservations);
+export default ReservationsPage;
