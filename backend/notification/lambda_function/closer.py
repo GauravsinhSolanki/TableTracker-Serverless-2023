@@ -4,15 +4,13 @@ import boto3
 sns = boto3.client('sns')
 sns_topic_arn = 'arn:aws:sns:us-east-1:247203851890:closer'
 
-def lambda_handler(event, context):
-    # Extract email and closure reason from the incoming event
+def lambda_handler(event):
+ 
     email = event.get("email")
     closure_reason = event.get("reason", "Unexpected circumstances")
 
-    # Create the message for the customers
     message = f"The restaurant has closed suddenly due to: {closure_reason}. We apologize for the inconvenience. Email from session: {email}."
-
-    # Send the notification to the customers
+    
     response = send_notification_to_customers(message)
 
     return {
