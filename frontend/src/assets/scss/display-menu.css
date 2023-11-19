@@ -1,0 +1,16 @@
+.menu-item-cards {
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+}
+
+.action-buttons {
+    justify-content: center;
+    margin: 10px;
+}
+
+
+.action-buttons > .btn {
+    margin: 10px;
+    width: max-content;
+}

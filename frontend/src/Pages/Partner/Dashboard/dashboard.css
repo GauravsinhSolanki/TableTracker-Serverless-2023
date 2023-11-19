@@ -1,0 +1,11 @@
+.dashboard-card{
+    padding:15px; 
+    box-shadow: 1px 1px 3px 1px #9b9b9b;  
+    align-items: center;
+}
+
+.dashboard-card-title{
+    font-weight: 600;
+    margin-bottom: 10px;
+    align-self: flex-start;
+}
