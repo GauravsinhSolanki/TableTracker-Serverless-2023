@@ -15,6 +15,7 @@ import Reservations from "./Pages/Customer/Reservation/Reservations";
 import DisplayMenu from "./Pages/Partner/Menu/DisplayMenu";
 import RestaurantMenuManager from "./Pages/Partner/Menu/RestaurantMenuManager";
 import Dashboard from "./Pages/Partner/Dashboard/Dashboard";
+import RestaurantForm from "./Pages/Customer/Restaurant/RestaurantForm";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,15 @@ const router = createBrowserRouter([
         element: (
           <>
             <RestaurantList />
+            <KommunicateChat />
+          </>
+        ),
+      },
+      {
+        path: "/restaurantForm",
+        element: (
+          <>
+            <RestaurantForm />
             <KommunicateChat />
           </>
         ),
