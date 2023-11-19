@@ -1,0 +1,19 @@
+.reservation-form-container{
+    padding: 20px;
+}
+
+.reservation-form-row{
+    margin-bottom: 20px;
+}
+
+.reservation-form-approval-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.reservation-form-approval-col{
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    gap: 8px;
+}

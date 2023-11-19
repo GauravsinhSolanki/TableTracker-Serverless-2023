@@ -30,18 +30,8 @@ function RestaurantList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getHolisticData(
-        "5309de4a-65ec-479e-93b0-ab74d6b0e6d6",
-        "monthly"
-      );
-      console.log(data);
-    };
-    fetchData();
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
       const data = await getRestaurants();
+
       const promises = data.map(async (restaurant) => {
         const url = `${config.Menu.getApiUrl}/${restaurant.restaurant_id}`;
         try {
@@ -168,4 +158,5 @@ function RestaurantList() {
   );
 }
 
-export default AuthCheck(RestaurantList);
+const RestaurantListPage = AuthCheck(RestaurantList, false, true);
+export default RestaurantListPage;

@@ -1,7 +1,7 @@
 "use strict";
 
 const axios = require("axios");
-const Responses = require("../../menu/lambdas/common/API_Responses");
+const Responses = require("../../../menu/lambdas/common/API_Responses");
 // const Dynamo = require("../../menu/lambdas/common/Dynamo");
 const reservationApiBaseUrl =
   "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu-reservation";

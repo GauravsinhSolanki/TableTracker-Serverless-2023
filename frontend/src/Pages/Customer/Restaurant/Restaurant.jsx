@@ -160,4 +160,5 @@ function Restaurant() {
   );
 }
 
-export default AuthCheck(Restaurant);
+const RestaurantPage = AuthCheck(Restaurant);
+export default RestaurantPage;

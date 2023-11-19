@@ -1,5 +1,5 @@
 const axios = require("axios");
-const Responses = require("../../menu/lambdas/common/API_Responses");
+const Responses = require("../../../menu/lambdas/common/API_Responses");
 
 exports.handler = async (event) => {
   try {

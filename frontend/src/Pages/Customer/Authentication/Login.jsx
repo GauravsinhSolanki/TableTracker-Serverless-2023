@@ -1,16 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, provider } from "./firebase.js";
+import { auth, db, provider } from "./firebase.js";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { theme } from "../../../theme.jsx";
 import { Flex } from "@chakra-ui/react";
 import { showToastError, showToastSuccess } from "../../../Components/Toast.js";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import RestaurantPopup from "../../../Components/RestaurantPopup.jsx";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   // const [error, setError] = useState("");
   let navigate = useNavigate();
+  const signupType = location.pathname.includes("user") ? "user" : "partner";
 
   const signIn = (e) => {
     e.preventDefault();
@@ -18,12 +30,10 @@ const Login = () => {
       showToastError("Please enter email and password");
       return;
     }
+
     signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        sessionStorage.setItem("userDetails", JSON.stringify({ email, userType: signupType, uid: val.user.uid }));
-        sessionStorage.setItem("uId", result?.user?.uid ?? "");
-        showToastSuccess("Login Successful");
-        navigate("/restaurantList");
+      .then(async (result) => {
+        handleSignInSuccess(result);
       })
       .catch((error) => {
         showToastError("Invalid credentials");
@@ -34,14 +44,80 @@ const Login = () => {
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        sessionStorage.setItem("userDetails", JSON.stringify({ email, userType: signupType, uid: val.user.uid }));
-        sessionStorage.setItem("uId", result?.user?.uid ?? "");
-        showToastSuccess("Login Successful");
-        navigate("/restaurantList");
+        handleSignInSuccess(result);
       })
       .catch((error) => {
         showToastError("Error Logging in!");
       });
+  };
+
+  const handleSignInSuccess = async (result) => {
+    sessionStorage.setItem("uId", result?.user?.uid ?? "");
+    sessionStorage.setItem(
+      "userDetails",
+      JSON.stringify({
+        email,
+        userType: signupType,
+        uid: result.user.uid,
+      })
+    );
+
+    if (signupType === "partner") {
+      const docRef = doc(db, "userDetails", result.user.uid);
+      const docSnap = await getDoc(docRef);
+      const userDetails = docSnap.data();
+
+      if (!userDetails?.restaurant_id) {
+        setShowRestaurantModal(true);
+      } else {
+        sessionStorage.setItem(
+          "userDetails",
+          JSON.stringify({
+            email,
+            userType: signupType,
+            uid: result.user.uid,
+            restaurant_id: userDetails?.restaurant_id,
+            restaurant_name: userDetails?.restaurant_name ?? "",
+          })
+        );
+        showToastSuccess("Login Successful");
+        navigate("/dashboard");
+      }
+    } else {
+      showToastSuccess("Login Successful");
+      navigate("/restaurantList");
+    }
+  };
+
+  const handleRestaurantSave = async (restaurant_id, restaurant_name) => {
+    const userId = sessionStorage.getItem("uId");
+    const docRef = collection(db, "userDetails");
+    const partnerQuery = query(
+      docRef,
+      where("restaurant_id", "==", restaurant_id)
+    );
+    const partners = await getDocs(partnerQuery);
+    if (!partners?.empty) {
+      showToastError("Partner restaurant already exists!!");
+    } else {
+      const userDetails = JSON.parse(sessionStorage.getItem("userDetails"));
+      await storeUserDetails(userId, {
+        ...userDetails,
+        userType: signupType,
+        restaurant_id,
+        restaurant_name,
+      });
+      showToastSuccess("Login Successful");
+      setShowRestaurantModal(false);
+      navigate("/dashboard");
+    }
+  };
+
+  const storeUserDetails = async (uid, details) => {
+    const userCollectionRef = collection(db, "userDetails");
+    const userDocRef = doc(userCollectionRef, uid);
+
+    await setDoc(userDocRef, details, { merge: true });
   };
 
   return (
@@ -52,6 +128,11 @@ const Login = () => {
       alignItems="center"
       justifyContent="start"
     >
+      <RestaurantPopup
+        show={showRestaurantModal}
+        handleClose={() => setShowRestaurantModal(false)}
+        handleSave={handleRestaurantSave}
+      />
       <main className="form-signin w-100 m-auto">
         <form onSubmit={signIn}>
           <h1

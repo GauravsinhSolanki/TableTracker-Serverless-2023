@@ -7,6 +7,6 @@
     margin-top: 10px;
 }
 
-.row {
+.row.manage-menu-row {
     padding: 30px;
 }

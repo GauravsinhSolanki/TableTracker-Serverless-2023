@@ -1,0 +1,14 @@
+.landing-title.row {
+    justify-content: center;
+    font-weight: bold;
+}
+
+.landing-buttons-container.row {
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+button.landing-button {
+    max-width: 250px;
+}

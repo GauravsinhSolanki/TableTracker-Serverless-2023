@@ -5,14 +5,13 @@ import config from "../../../../config.json";
 import axios from "axios";
 import "../../../assets/scss/display-menu.css";
 import { Button } from "react-bootstrap";
+import { AuthCheck } from "../../Customer/Authentication/AuthCheck";
 
 function DisplayMenu() {
-
   const { restaurantId } = useParams();
 
   const [error, setError] = useState(false);
   const [items, setItems] = useState(null);
-
 
   useEffect(() => {
     const getMenuData = async () => {
@@ -27,7 +26,6 @@ function DisplayMenu() {
 
     getMenuData();
   }, [restaurantId]);
-
 
   const processDelete = () => {
     console.log(config);
@@ -46,19 +44,13 @@ function DisplayMenu() {
 
   return (
     <div>
-        <div className="row action-buttons">
-            <Button
-                href={`/partner/manage-menu/${restaurantId}`}>
-                Edit Menu
-            </Button>
-            <Button
-                variant="danger"
-                onClick={processDelete}
-            >
-                Delete Menu
-            </Button>
-        </div>
-        <div className="row">
+      <div className="row action-buttons">
+        <Button href={`/partner/manage-menu/${restaurantId}`}>Edit Menu</Button>
+        <Button variant="danger" onClick={processDelete}>
+          Delete Menu
+        </Button>
+      </div>
+      <div className="row">
         {items &&
           items.map((item, index) => (
             <Card
@@ -71,18 +63,24 @@ function DisplayMenu() {
               <Card.Body>
                 <Card.Title>{item.name}</Card.Title>
                 <Card.Text>
-                    {item.description}
-                    <br/>
-                    <b>Price</b> : 
-                    { item.discount > 0 ?
-                      <>
-                        &nbsp;<span className="discounted-price">${item.price}</span>
-                        <span> ${item.price - ((item.price*item.discount)/100)}</span>
-                      </> :
-                      <span> ${item.price}</span>
-                    }
-                    <br/>
-                    <b>Availability</b> : {item.availability == true ? 'Available' : 'Unavailable'} 
+                  {item.description}
+                  <br />
+                  <b>Price</b> :
+                  {item.discount > 0 ? (
+                    <>
+                      &nbsp;
+                      <span className="discounted-price">${item.price}</span>
+                      <span>
+                        {" "}
+                        ${item.price - (item.price * item.discount) / 100}
+                      </span>
+                    </>
+                  ) : (
+                    <span> ${item.price}</span>
+                  )}
+                  <br />
+                  <b>Availability</b> :{" "}
+                  {item.availability == true ? "Available" : "Unavailable"}
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -92,4 +90,5 @@ function DisplayMenu() {
   );
 }
 
-export default DisplayMenu;
+const DisplayMenuPage = AuthCheck(DisplayMenu);
+export default DisplayMenuPage;

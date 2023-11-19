@@ -15,6 +15,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@kommunicate/kommunicate-chatbot-plugin": "^0.0.7",
+    "aws-sdk": "^2.1499.0",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
     "chart.js": "^4.4.0",
