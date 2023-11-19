@@ -1,8 +1,8 @@
 "use strict";
 
 const axios = require("axios");
-const Responses = require("../../menu/lambdas/common/API_Responses");
-const Dynamo = require("../../menu/lambdas/common/Dynamo");
+const Responses = require("../../../menu/lambdas/common/API_Responses");
+const Dynamo = require("../../../menu/lambdas/common/Dynamo");
 
 const menuApiBaseUrl =
   "https://xp3qns9hlf.execute-api.us-east-2.amazonaws.com/dev/get-menu";

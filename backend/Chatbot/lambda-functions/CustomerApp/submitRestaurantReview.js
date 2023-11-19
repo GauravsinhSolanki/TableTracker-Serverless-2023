@@ -1,7 +1,7 @@
 "use strict";
 
 const AWS = require("aws-sdk");
-const Responses = require("../../menu/lambdas/common/API_Responses");       
+const Responses = require("../../../menu/lambdas/common/API_Responses");
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const tableName = process.env.restaurantReviewsTableName;
 
