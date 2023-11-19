@@ -75,7 +75,10 @@ export const handler = async (event, context) => {
                             opening_time: requestJSON.opening_time,
                             phone_no: requestJSON.phone_no,
                             restaurant_name: requestJSON.restaurant_name,
-                            twitter: requestJSON.twitter
+                            twitter: requestJSON.twitter,
+                            availability: requestJSON.availability,
+                            max_tables: requestJSON.max_tables,
+                            reviews: requestJSON.reviews
                         },
                     })
                 );
