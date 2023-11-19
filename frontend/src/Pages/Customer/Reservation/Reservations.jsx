@@ -133,17 +133,26 @@ const Reservations = (props) => {
 
   if (isLoading) {
     return (
-      <Container>
-        <Row style={{ justifyContent: "center", marginTop: "100px" }}>
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-          />
-        </Row>
-      </Container>
+      <Flex
+        w="100%"
+        minHeight="90vh"
+        backgroundColor={theme.primaryBackground}
+        flexDir="column"
+        alignItems="center"
+        justifyContent="start"
+      >
+        <Container>
+          <Row style={{ justifyContent: "center", marginTop: "100px" }}>
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </Row>
+        </Container>
+      </Flex>
     );
   }
 
@@ -276,7 +285,25 @@ const Reservations = (props) => {
                               </Card.Text>
                             )}
                           </Card.Footer>
-                        ) : null}
+                        ) : (
+                          <Card.Footer className="reservations-list-card-footer">
+                            <Card.Text className="reservations-list-card-footer-item">
+                              {reservation.isApproved === true ? (
+                                <>
+                                  <AiFillCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
+                                  Approved
+                                </>
+                              ) : reservation.isApproved === false ? (
+                                <>
+                                  <AiFillCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
+                                  Rejected
+                                </>
+                              ) : (
+                                "Approval Pending"
+                              )}
+                            </Card.Text>
+                          </Card.Footer>
+                        )}
                       </>
                     )}
                   </Card>

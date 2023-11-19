@@ -11,7 +11,7 @@ import {
 } from "../../../Services/ReservationService/ReservationService";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./reservations.css";
-import { Spinner } from "@chakra-ui/react";
+import { Flex, Spinner } from "@chakra-ui/react";
 import { AuthCheck } from "../Authentication/AuthCheck";
 import {
   AiFillCheckCircle,
@@ -20,6 +20,7 @@ import {
   AiOutlineCloseCircle,
 } from "react-icons/ai";
 import "./reservationForm.css";
+import { theme } from "../../../theme";
 
 const ReservationForm = (props) => {
   const [restaurants, setRestaurants] = useState(null);
@@ -156,151 +157,172 @@ const ReservationForm = (props) => {
 
   if (isLoading) {
     return (
-      <Container>
-        <Row style={{ justifyContent: "center", marginTop: "100px" }}>
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-          />
-        </Row>
-      </Container>
+      <Flex
+        w="100%"
+        minHeight="90vh"
+        backgroundColor={theme.primaryBackground}
+        flexDir="column"
+        alignItems="center"
+        justifyContent="start"
+      >
+        <Container>
+          <Row style={{ justifyContent: "center", marginTop: "100px" }}>
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </Row>
+        </Container>
+      </Flex>
     );
   }
 
   return (
-    <Container
-      style={{ maxWidth: "600px" }}
-      className="reservation-form-container"
+    <Flex
+      w="100%"
+      minHeight="90vh"
+      backgroundColor={theme.primaryBackground}
+      flexDir="column"
+      alignItems="center"
+      justifyContent="start"
     >
-      <Form onSubmit={handleSubmit}>
-        <Row className="reservation-form-row">
-          <Form.Group as={Col}>
-            <Form.Label>Restaurant</Form.Label>
-            <Form.Select
-              onChange={(e) => handleChange(e, "restaurantId")}
-              value={formData?.restaurantId ?? ""}
-            >
-              <option>Select restaurant</option>
-              {restaurants?.length > 0 ? (
-                restaurants.map((res, index) => {
-                  return (
-                    <option key={`res-book-${index}`} value={res.restaurant_id}>
-                      {res.restaurant_name}
-                    </option>
-                  );
-                })
-              ) : (
-                <option>No restaurants found</option>
-              )}
-            </Form.Select>
-          </Form.Group>
-          <div style={{ margin: "5px 0 20px" }}>
-            {selectedRestaurant
-              ? `Restaurant timings: ${selectedRestaurant.opening_time} - ${selectedRestaurant.closing_time}`
-              : ""}
-          </div>
-        </Row>
-        <Row className="reservation-form-row">
-          <Form.Group as={Col}>
-            <Form.Label>Party size</Form.Label>
-            <Form.Control
-              required
-              type="number"
-              placeholder="Number of guests"
-              value={formData.requiredCapacity}
-              onChange={(e) => handleChange(e, "requiredCapacity")}
-              min={1}
-              max={(selectedRestaurant?.max_tables ?? 20) * 4}
-            />
-          </Form.Group>
-        </Row>
-        <Row className="reservation-form-row">
-          <Form.Group as={Col}>
-            <Form.Label>Reservation date</Form.Label>
-            <Form.Control
-              required
-              type="date"
-              placeholder="Date of reservation"
-              value={formData.reservationDate}
-              onChange={(e) => handleChange(e, "reservationDate")}
-              min={formatDate(new Date())}
-            />
-          </Form.Group>
-          <Form.Group as={Col}>
-            <Form.Label>Reservation time</Form.Label>
-            <Form.Control
-              required
-              type="time"
-              placeholder="Time of reservation"
-              value={formData.reservationTime}
-              onChange={(e) => handleChange(e, "reservationTime")}
-            />
-          </Form.Group>
-        </Row>
-        {isPartner && params?.reservationId ? (
+      <Container
+        style={{ maxWidth: "600px" }}
+        className="reservation-form-container"
+      >
+        <Form onSubmit={handleSubmit}>
           <Row className="reservation-form-row">
-            <Form.Group className="reservation-form-approval-group">
-              <Form.Label>Approval</Form.Label>
-              <Row className="reservation-form-approval">
-                <div
-                  className="reservation-form-approval-col"
-                  onClick={(e) => handleApprovalChange(true)}
-                >
-                  {formData.isApproved === true ? (
-                    <AiFillCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
-                  ) : (
-                    <AiOutlineCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
-                  )}
-                  {formData.isApproved === true ? "Approved" : "Approve"}
-                </div>
-                <div
-                  className="reservation-form-approval-col"
-                  onClick={(e) => handleApprovalChange(false)}
-                >
-                  {formData.isApproved === false ? (
-                    <AiFillCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
-                  ) : (
-                    <AiOutlineCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
-                  )}
-                  {formData.isApproved === false ? "Rejected" : "Reject"}
-                </div>
-              </Row>
+            <Form.Group as={Col}>
+              <Form.Label>Restaurant</Form.Label>
+              <Form.Select
+                onChange={(e) => handleChange(e, "restaurantId")}
+                value={formData?.restaurantId ?? ""}
+              >
+                <option>Select restaurant</option>
+                {restaurants?.length > 0 ? (
+                  restaurants.map((res, index) => {
+                    return (
+                      <option
+                        key={`res-book-${index}`}
+                        value={res.restaurant_id}
+                      >
+                        {res.restaurant_name}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <option>No restaurants found</option>
+                )}
+              </Form.Select>
+            </Form.Group>
+            <div style={{ margin: "5px 0 20px" }}>
+              {selectedRestaurant
+                ? `Restaurant timings: ${selectedRestaurant.opening_time} - ${selectedRestaurant.closing_time}`
+                : ""}
+            </div>
+          </Row>
+          <Row className="reservation-form-row">
+            <Form.Group as={Col}>
+              <Form.Label>Party size</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                placeholder="Number of guests"
+                value={formData.requiredCapacity}
+                onChange={(e) => handleChange(e, "requiredCapacity")}
+                min={1}
+                max={(selectedRestaurant?.max_tables ?? 20) * 4}
+              />
             </Form.Group>
           </Row>
-        ) : null}
-        <Row className="reservation-form-row">
-          <Form.Group
-            as={Col}
-            style={{ textAlign: "center", marginTop: "20px" }}
-          >
-            {isApiLoading ? (
-              <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="blue.500"
-                size="lg"
-                style={{ marginTop: "20px" }}
+          <Row className="reservation-form-row">
+            <Form.Group as={Col}>
+              <Form.Label>Reservation date</Form.Label>
+              <Form.Control
+                required
+                type="date"
+                placeholder="Date of reservation"
+                value={formData.reservationDate}
+                onChange={(e) => handleChange(e, "reservationDate")}
+                min={formatDate(new Date())}
               />
-            ) : (
-              <>
-                {error ? (
-                  <div className="reservation-book-error">{error}</div>
-                ) : null}
-                <Button type="submit">
-                  {params?.reservationId
-                    ? "Edit reservation"
-                    : "Book reservation"}
-                </Button>
-              </>
-            )}
-          </Form.Group>
-        </Row>
-      </Form>
-    </Container>
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Form.Label>Reservation time</Form.Label>
+              <Form.Control
+                required
+                type="time"
+                placeholder="Time of reservation"
+                value={formData.reservationTime}
+                onChange={(e) => handleChange(e, "reservationTime")}
+              />
+            </Form.Group>
+          </Row>
+          {isPartner && params?.reservationId ? (
+            <Row className="reservation-form-row">
+              <Form.Group className="reservation-form-approval-group">
+                <Form.Label>Approval</Form.Label>
+                <Row className="reservation-form-approval">
+                  <div
+                    className="reservation-form-approval-col"
+                    onClick={(e) => handleApprovalChange(true)}
+                  >
+                    {formData.isApproved === true ? (
+                      <AiFillCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
+                    ) : (
+                      <AiOutlineCheckCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--green" />
+                    )}
+                    {formData.isApproved === true ? "Approved" : "Approve"}
+                  </div>
+                  <div
+                    className="reservation-form-approval-col"
+                    onClick={(e) => handleApprovalChange(false)}
+                  >
+                    {formData.isApproved === false ? (
+                      <AiFillCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
+                    ) : (
+                      <AiOutlineCloseCircle className="reservations-list-card-footer-icon reservations-list-card-footer-icon--red" />
+                    )}
+                    {formData.isApproved === false ? "Rejected" : "Reject"}
+                  </div>
+                </Row>
+              </Form.Group>
+            </Row>
+          ) : null}
+          <Row className="reservation-form-row">
+            <Form.Group
+              as={Col}
+              style={{ textAlign: "center", marginTop: "20px" }}
+            >
+              {isApiLoading ? (
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="lg"
+                  style={{ marginTop: "20px" }}
+                />
+              ) : (
+                <>
+                  {error ? (
+                    <div className="reservation-book-error">{error}</div>
+                  ) : null}
+                  <Button type="submit">
+                    {params?.reservationId
+                      ? "Edit reservation"
+                      : "Book reservation"}
+                  </Button>
+                </>
+              )}
+            </Form.Group>
+          </Row>
+        </Form>
+      </Container>
+    </Flex>
   );
 };
 const ReservationFormPage = AuthCheck(ReservationForm);

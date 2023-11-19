@@ -1,5 +1,8 @@
 .reservation-form-container{
-    padding: 20px;
+    padding: 30px;
+    background: #f8f9fa;
+    margin-top: 20px;
+    border-radius: 6px;
 }
 
 .reservation-form-row{

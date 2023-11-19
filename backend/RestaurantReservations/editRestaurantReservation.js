@@ -18,6 +18,7 @@ exports.handler = async (event) => {
       reservationDate,
       requiredCapacity,
       userId,
+      isApproved,
     } = reservationDetails;
 
     const reservationDocRef = db
@@ -117,6 +118,10 @@ exports.handler = async (event) => {
 
         if (userId) {
           updatedReservation.user_id = userId;
+        }
+
+        if (isApproved !== undefined && isApproved !== null) {
+          updatedReservation.isApproved = isApproved;
         }
 
         await reservationDocRef.update(updatedReservation);
