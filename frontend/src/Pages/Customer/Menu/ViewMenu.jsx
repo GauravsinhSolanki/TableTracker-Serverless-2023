@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import config from "../../../../config.json";
 import axios from "axios";
 import "../../../assets/scss/view-menu.css";
+import { AuthCheck } from "../Authentication/AuthCheck";
 
 function ViewMenu() {
   const { restaurantId, reservationId } = useParams();
@@ -40,7 +41,7 @@ function ViewMenu() {
       try {
         let result = await axios.get(`${url}/${restaurantId}`);
         setItems(result.data.items);
-        if(result.data.discount > 0) {
+        if (result.data.discount > 0) {
           setMenuDiscount(result.data.discount);
         }
         setFormValues((prevFormValues) => {
@@ -108,12 +109,13 @@ function ViewMenu() {
         });
     } else {
       // If there is no menu reservation then create a new one
-      const newMenuReservationId = restaurantId + reservationId + sessionStorage.getItem('uId'); 
+      const newMenuReservationId =
+        restaurantId + reservationId + sessionStorage.getItem("uId");
       const requestBody = {
         items: formattedData,
         reservationId: reservationId,
         restaurantId: restaurantId,
-        userId: sessionStorage.getItem('uId'),
+        userId: sessionStorage.getItem("uId"),
       };
 
       axios
@@ -136,7 +138,7 @@ function ViewMenu() {
       .delete(`${config.MenuReservations.deleteApiUrl}/${menuReservationId}`)
       .then((response) => {
         console.log("Record deleted successfully", response.data);
-        window.location = '/restaurantList';
+        window.location = "/restaurantList";
       })
       .catch((error) => {
         console.error("Error deleting record", error);
@@ -147,68 +149,84 @@ function ViewMenu() {
     <Form className="container mt-5 text-center" onSubmit={handleSubmit}>
       <div className="row">
         {items &&
-          items.map((item, index) => (
-            item.availability == true && 
-              <Card
-              className="menu-item-cards"
-              style={{ width: "18rem" }}
-              key={index}
-              id={"item-" + index}
-            >
-              <Card.Img variant="top" src={item.img} />
-              <Card.Body>
-                <Card.Title>{item.name}</Card.Title>
-                <Card.Text>
-                    {item.description}
-                    <br/>
-                    <b>Price</b> : 
-                    { menuDiscount > 0 ? 
+          items.map(
+            (item, index) =>
+              item.availability == true && (
+                <Card
+                  className="menu-item-cards"
+                  style={{ width: "18rem" }}
+                  key={index}
+                  id={"item-" + index}
+                >
+                  <Card.Img variant="top" src={item.img} />
+                  <Card.Body>
+                    <Card.Title>{item.name}</Card.Title>
+                    <Card.Text>
+                      {item.description}
+                      <br />
+                      <b>Price</b> :
+                      {menuDiscount > 0 ? (
                         <>
-                          &nbsp;<span className="discounted-price">${item.price}</span>
-                          <span> ${item.price - ((item.price*menuDiscount)/100)}</span>
-                        </> : item.discount > 0 ?
+                          &nbsp;
+                          <span className="discounted-price">
+                            ${item.price}
+                          </span>
+                          <span>
+                            {" "}
+                            ${item.price - (item.price * menuDiscount) / 100}
+                          </span>
+                        </>
+                      ) : item.discount > 0 ? (
                         <>
-                          &nbsp;<span className="discounted-price">${item.price}</span>
-                          <span> ${item.price - ((item.price*item.discount)/100)}</span>
-                        </> :
+                          &nbsp;
+                          <span className="discounted-price">
+                            ${item.price}
+                          </span>
+                          <span>
+                            {" "}
+                            ${item.price - (item.price * item.discount) / 100}
+                          </span>
+                        </>
+                      ) : (
                         <span> ${item.price}</span>
-                    }
-                </Card.Text>
-                <Row className="quantity-row">
-                  <Col sm="2">
-                    <Button
-                      variant="primary input-group-prepend"
-                      onClick={() =>
-                        updateItemValue(item.id, --formValues[item.id])
-                      }
-                      disabled={formValues[item.id] == 0}
-                    >
-                      -
-                    </Button>
-                  </Col>
-                  <Col sm="4">
-                    <Form.Control
-                      id={item.id}
-                      type="qty"
-                      placeholder="0"
-                      onChange={(e) => handleChange(e, item.id)}
-                      value={formValues[item.id] || 0}
-                    />
-                  </Col>
-                  <Col sm="2">
-                    <Button
-                      variant="primary input-group-append"
-                      onClick={() =>
-                        updateItemValue(item.id, ++formValues[item.id])
-                      }
-                    >
-                      +
-                    </Button>
-                  </Col>
-                </Row>
-              </Card.Body>
-              </Card>
-          ))}
+                      )}
+                    </Card.Text>
+                    <Row className="quantity-row">
+                      <Col sm="2">
+                        <Button
+                          variant="primary input-group-prepend"
+                          onClick={() =>
+                            updateItemValue(item.id, --formValues[item.id])
+                          }
+                          disabled={formValues[item.id] == 0}
+                        >
+                          -
+                        </Button>
+                      </Col>
+                      <Col sm="4">
+                        <Form.Control
+                          id={item.id}
+                          type="qty"
+                          placeholder="0"
+                          onChange={(e) => handleChange(e, item.id)}
+                          value={formValues[item.id] || 0}
+                        />
+                      </Col>
+                      <Col sm="2">
+                        <Button
+                          variant="primary input-group-append"
+                          onClick={() =>
+                            updateItemValue(item.id, ++formValues[item.id])
+                          }
+                        >
+                          +
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              )
+          )}
       </div>
       <Button variant="success" type="submit" className="submit-btn">
         Submit Reservation
@@ -227,4 +245,5 @@ function ViewMenu() {
   );
 }
 
-export default ViewMenu;
+const ViewMenuPage = AuthCheck(ViewMenu);
+export default ViewMenuPage;

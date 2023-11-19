@@ -9,12 +9,18 @@ function CustomNavbar(props) {
   const user = sessionStorage.getItem("userDetails");
   const navigate = useNavigate();
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isPartner, setPartner] = useState(false);
 
   useEffect(() => {
     if (user) {
       setLoggedIn(true);
+      const userDetails = JSON.parse(user);
+      if (userDetails?.userType === "partner") {
+        setPartner(true);
+      }
     } else {
       setLoggedIn(false);
+      setPartner(false);
     }
   }, [user]);
 
@@ -39,13 +45,19 @@ function CustomNavbar(props) {
         <Nav className="me-auto sdp3-navbar-links">
           {!isLoggedIn ? (
             <>
-              <Nav.Link href="/user/login">Login</Nav.Link>
-              <Nav.Link href="/user/signup">Signup</Nav.Link>
+              <Nav.Link href="/partner/login">Partner Login</Nav.Link>
+              <Nav.Link href="/partner/signup">Partner Signup</Nav.Link>
+              <Nav.Link href="/user/login">Customer Login</Nav.Link>
+              <Nav.Link href="/user/signup">Customer Signup</Nav.Link>
             </>
           ) : (
             <>
-              <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-              <Nav.Link href="/restaurantList">Restaurants</Nav.Link>
+              {isPartner ? (
+                <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+              ) : null}
+              {isPartner ? null : (
+                <Nav.Link href="/restaurantList">Restaurants</Nav.Link>
+              )}
               <Nav.Link href="/restaurant/reservations">Reservations</Nav.Link>
 
               <Nav.Link

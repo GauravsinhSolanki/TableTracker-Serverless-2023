@@ -7,6 +7,7 @@ import WeeklyChart from "./WeeklyChart";
 import MonthlyChart from "./MonthlyChart";
 import { Flex } from "@chakra-ui/react";
 import { theme } from "../../../theme";
+import { AuthCheck } from "../../Customer/Authentication/AuthCheck";
 
 const Dashboard = (props) => {
   return (
@@ -46,4 +47,5 @@ const Dashboard = (props) => {
   );
 };
 
-export default Dashboard;
+const DashboardPage = AuthCheck(Dashboard, true);
+export default DashboardPage;

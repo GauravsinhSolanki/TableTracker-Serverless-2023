@@ -55,18 +55,18 @@ const MonthlyChart = () => {
 
   const fetcMonthlyData = async () => {
     setLoading(true);
-    const response = await getHolisticData(
-      "5309de4a-65ec-479e-93b0-ab74d6b0e6d6",
-      "monthly"
-    );
+    const user = JSON.parse(sessionStorage.getItem("userDetails"));
+    if (user?.restaurant_id) {
+      const response = await getHolisticData(user.restaurant_id, "monthly");
 
-    const { labels, graphData } = transformData(response?.data ?? []);
-    const dataset = {
-      labels,
-      datasets: [...graphData],
-    };
-    setMonthlyData({ ...dataset });
-    setLoading(false);
+      const { labels, graphData } = transformData(response?.data ?? []);
+      const dataset = {
+        labels,
+        datasets: [...graphData],
+      };
+      setMonthlyData({ ...dataset });
+      setLoading(false);
+    }
   };
 
   if (isLoading) {
