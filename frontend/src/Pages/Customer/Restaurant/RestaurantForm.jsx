@@ -52,20 +52,6 @@ const RestaurantForm = () => {
     });
   };
 
-  const handleMenuChange = (category, index, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      menu: {
-        ...prevData.menu,
-        [category]: [
-          ...prevData.menu[category].slice(0, index),
-          value,
-          ...prevData.menu[category].slice(index + 1),
-        ],
-      },
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 

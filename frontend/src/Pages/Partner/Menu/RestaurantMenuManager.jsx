@@ -228,7 +228,7 @@ function RestaurantMenuManager() {
               <Form.Label>Description</Form.Label>
               <Form.Control
                 as="textarea"
-                rows={3}
+                rows={2}
                 value={newItem.description}
                 onChange={(e) =>
                   handleNewInputChange("description", e.target.value)

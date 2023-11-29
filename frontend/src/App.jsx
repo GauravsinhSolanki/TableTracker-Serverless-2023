@@ -49,6 +49,15 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/restaurant/:restaurant_id",
+        element: (
+          <>
+            <Restaurant />
+            <KommunicateChat />
+          </>
+        ),
+      },
+      {
         path: "/customer/menu/:restaurantId/:reservationId",
         element: (
           <>

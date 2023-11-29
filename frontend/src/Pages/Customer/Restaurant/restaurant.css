@@ -1,0 +1,35 @@
+svg.star-svg{
+    display: inline !important;
+}
+
+.restaurant-card{
+    margin-top: 30px;
+}
+
+.restaurant-card{
+    padding: 50px 30px;
+}
+
+.restaurant-card-divider{
+    border-left: 1px solid gray;
+}
+
+.restaurant-create-review{
+    width: 100%;
+    padding-right: 30px;
+}
+
+.restaurant-reviews{
+    width: 100%;
+    padding-right: 30px;
+}
+
+.restaurant-review-card{
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.restaurant-review-card .chakra-text{
+    margin-bottom: 0px;
+    margin-top: 5px;
+}

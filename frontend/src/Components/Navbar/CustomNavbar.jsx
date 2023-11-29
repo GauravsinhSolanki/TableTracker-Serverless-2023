@@ -1,12 +1,9 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import { NavLink, useNavigate } from "react-router-dom";
-import { theme } from "../../theme";
+import { useNavigate } from "react-router-dom";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
 function CustomNavbar(props) {
-  const user = sessionStorage.getItem("userDetails");
+  const user = JSON.parse(sessionStorage.getItem("userDetails"));
   const navigate = useNavigate();
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isPartner, setPartner] = useState(false);
@@ -14,7 +11,7 @@ function CustomNavbar(props) {
   useEffect(() => {
     if (user) {
       setLoggedIn(true);
-      const userDetails = JSON.parse(user);
+      const userDetails = user;
       if (userDetails?.userType === "partner") {
         setPartner(true);
       }
@@ -58,6 +55,11 @@ function CustomNavbar(props) {
               {isPartner ? null : (
                 <Nav.Link href="/restaurantList">Restaurants</Nav.Link>
               )}
+              {isPartner ? (
+                <Nav.Link href={`/restaurant/${user?.restaurant_id ?? ""}`}>
+                  Restaurant
+                </Nav.Link>
+              ) : null}
               <Nav.Link href="/restaurant/reservations">Reservations</Nav.Link>
 
               <Nav.Link

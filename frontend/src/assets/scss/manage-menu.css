@@ -8,5 +8,9 @@
 }
 
 .row.manage-menu-row {
-    padding: 30px;
+    padding: 10px 20px;
+}
+
+.restaurant-create-review-textarea{
+    margin: 10px 0px;
 }
