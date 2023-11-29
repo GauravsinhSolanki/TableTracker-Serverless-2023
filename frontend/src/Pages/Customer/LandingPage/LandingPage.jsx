@@ -67,7 +67,7 @@ const LandingContent = ({ handleNavigate }) => (
         className="landing-button"
         onClick={(e) => handleNavigate("/partner/signup")}
       >
-        Partner login
+        Partner signup
       </Button>
     </Row>
   </Container>

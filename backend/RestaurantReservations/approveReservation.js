@@ -1,5 +1,4 @@
 var admin = require("firebase-admin");
-const axios = require("axios");
 var serviceAccount = require("./sdp3-firestore.json");
 const Responses = require("./ApiResponses");
 
