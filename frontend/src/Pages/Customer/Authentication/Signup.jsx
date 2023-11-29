@@ -20,7 +20,6 @@ import RestaurantPopup from "../../../Components/RestaurantPopup.jsx";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showRestaurantModal, setShowRestaurantModal] = useState(false);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -33,50 +32,17 @@ const SignUp = () => {
       return;
     }
     try {
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      ).then(async (val) => {
-        sessionStorage.setItem("uId", val.user.uid);
+      await createUserWithEmailAndPassword(auth, email, password).then(
+        async (val) => {
+          sessionStorage.setItem("uId", val.user.uid);
 
-        if (signupType === "partner") {
-          const docRef = doc(db, "userDetails", val.user.uid);
-          const docSnap = await getDoc(docRef);
-          const userDetails = docSnap.data();
-          if (!userDetails?.restaurant_id) {
-            setShowRestaurantModal(true);
-          }
-        } else {
           await storeUserDetails(val.user.uid, { userType: signupType });
           showToastSuccess("Sign up Successful");
           navigate(`/${signupType}/login`);
         }
-      });
+      );
     } catch (error) {
       showToastError(error.code);
-    }
-  };
-
-  const handleRestaurantSave = async (restaurant_id, restaurant_name) => {
-    const userId = sessionStorage.getItem("uId");
-    const docRef = collection(db, "userDetails");
-    const partnerQuery = query(
-      docRef,
-      where("restaurant_id", "==", restaurant_id)
-    );
-    const partners = await getDocs(partnerQuery);
-    if (!partners?.empty) {
-      showToastError("Partner restaurant already exists!!");
-    } else {
-      await storeUserDetails(userId, {
-        userType: signupType,
-        restaurant_id,
-        restaurant_name,
-      });
-      showToastSuccess("Sign up Successful");
-      setShowRestaurantModal(false);
-      navigate(`/${signupType}/login`);
     }
   };
 
@@ -95,11 +61,6 @@ const SignUp = () => {
       alignItems="center"
       justifyContent="start"
     >
-      <RestaurantPopup
-        show={showRestaurantModal}
-        handleClose={() => setShowRestaurantModal(false)}
-        handleSave={handleRestaurantSave}
-      />
       <main className="form-signin w-100 m-auto">
         <form onSubmit={signUp}>
           <h1

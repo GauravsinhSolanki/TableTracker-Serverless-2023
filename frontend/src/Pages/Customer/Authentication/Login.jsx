@@ -5,15 +5,7 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { theme } from "../../../theme.jsx";
 import { Flex } from "@chakra-ui/react";
 import { showToastError, showToastSuccess } from "../../../Components/Toast.js";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import RestaurantPopup from "../../../Components/RestaurantPopup.jsx";
 
 const Login = () => {
@@ -43,7 +35,12 @@ const Login = () => {
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
+        await storeUserDetails(result.user.uid, {
+          uid: result.user.uid,
+          userType: signupType,
+          email: result.user.email,
+        });
         handleSignInSuccess(result);
       })
       .catch((error) => {
@@ -51,12 +48,19 @@ const Login = () => {
       });
   };
 
+  const storeUserDetails = async (uid, details) => {
+    const userCollectionRef = collection(db, "userDetails");
+    const userDocRef = doc(userCollectionRef, uid);
+
+    await setDoc(userDocRef, details, { merge: true });
+  };
+
   const handleSignInSuccess = async (result) => {
     sessionStorage.setItem("uId", result?.user?.uid ?? "");
     sessionStorage.setItem(
       "userDetails",
       JSON.stringify({
-        email,
+        email: result?.user?.email,
         userType: signupType,
         uid: result.user.uid,
       })
@@ -67,57 +71,26 @@ const Login = () => {
       const docSnap = await getDoc(docRef);
       const userDetails = docSnap.data();
 
+      sessionStorage.setItem(
+        "userDetails",
+        JSON.stringify({
+          email: result?.user?.email,
+          userType: signupType,
+          uid: result.user.uid,
+          restaurant_id: userDetails?.restaurant_id,
+          restaurant_name: userDetails?.restaurant_name ?? "",
+        })
+      );
+      showToastSuccess("Login Successful");
       if (!userDetails?.restaurant_id) {
         setShowRestaurantModal(true);
       } else {
-        sessionStorage.setItem(
-          "userDetails",
-          JSON.stringify({
-            email,
-            userType: signupType,
-            uid: result.user.uid,
-            restaurant_id: userDetails?.restaurant_id,
-            restaurant_name: userDetails?.restaurant_name ?? "",
-          })
-        );
-        showToastSuccess("Login Successful");
         navigate("/dashboard");
       }
     } else {
       showToastSuccess("Login Successful");
       navigate("/restaurantList");
     }
-  };
-
-  const handleRestaurantSave = async (restaurant_id, restaurant_name) => {
-    const userId = sessionStorage.getItem("uId");
-    const docRef = collection(db, "userDetails");
-    const partnerQuery = query(
-      docRef,
-      where("restaurant_id", "==", restaurant_id)
-    );
-    const partners = await getDocs(partnerQuery);
-    if (!partners?.empty) {
-      showToastError("Partner restaurant already exists!!");
-    } else {
-      const userDetails = JSON.parse(sessionStorage.getItem("userDetails"));
-      await storeUserDetails(userId, {
-        ...userDetails,
-        userType: signupType,
-        restaurant_id,
-        restaurant_name,
-      });
-      showToastSuccess("Login Successful");
-      setShowRestaurantModal(false);
-      navigate("/dashboard");
-    }
-  };
-
-  const storeUserDetails = async (uid, details) => {
-    const userCollectionRef = collection(db, "userDetails");
-    const userDocRef = doc(userCollectionRef, uid);
-
-    await setDoc(userDocRef, details, { merge: true });
   };
 
   return (
@@ -131,7 +104,6 @@ const Login = () => {
       <RestaurantPopup
         show={showRestaurantModal}
         handleClose={() => setShowRestaurantModal(false)}
-        handleSave={handleRestaurantSave}
       />
       <main className="form-signin w-100 m-auto">
         <form onSubmit={signIn}>
@@ -176,14 +148,12 @@ const Login = () => {
         </form>
 
         <button className="google-btn" onClick={signInWithGoogle}>
-          <span>
-            <img
-              className="google-icon"
-              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-              alt="google-icon"
-            />
-            <p className="btn-text">Sign in with Google</p>
-          </span>
+          <img
+            className="google-icon"
+            src="/google-logo.png"
+            alt="google-icon"
+          />
+          <p className="btn-text">Sign in with Google</p>
         </button>
       </main>
     </Flex>

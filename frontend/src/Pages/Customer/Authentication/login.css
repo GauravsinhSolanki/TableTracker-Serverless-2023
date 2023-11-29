@@ -26,22 +26,23 @@ body {
 }
 
 .google-icon {
-  display: inline-block;
   cursor: pointer;
   position: relative;
   vertical-align: text-top;
+  width:35px;
+  height:35px;
+  margin-right: 10px;
   }
-.btn-text {
-  display: inline-block;
-  text-align: left;
-  margin-left: 10%;
-  vertical-align: top;
+p.btn-text {
+  margin-bottom: 0;
 }
 .google-btn {
   width: 100%;
-  padding-top: 1rem;
+  padding: 5px;
   margin-top: 2rem;
   border: 1px solid #357ae8;
   border-radius: 10px;
-  padding-bottom: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

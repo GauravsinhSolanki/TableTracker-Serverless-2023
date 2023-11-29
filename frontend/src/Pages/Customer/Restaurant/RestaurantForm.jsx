@@ -10,8 +10,15 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { AuthCheck } from "../Authentication/AuthCheck";
+import axios, { Axios } from "axios";
+import { useNavigate } from "react-router-dom";
+import { collection, doc, updateDoc } from "firebase/firestore";
+import { db } from "../Authentication/firebase";
+import { updateRestaurant } from "../../../Services/RestaurantServices/RestaurantServices";
 
 const RestaurantForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     twitter: "",
     menu: {
@@ -24,7 +31,7 @@ const RestaurantForm = () => {
     opening_time: "",
     instagram: "",
     phone_no: "",
-    restaurant_id: "",
+    restaurant_id: crypto.randomUUID(),
     image: "",
     restaurant_name: "",
     address: "",
@@ -37,10 +44,12 @@ const RestaurantForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prevData) => {
+      return {
+        ...prevData,
+        [name]: value,
+      };
+    });
   };
 
   const handleMenuChange = (category, index, value) => {
@@ -57,10 +66,37 @@ const RestaurantForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform any necessary actions with the form data
-    console.log(formData);
+
+    try {
+      const response = await axios.put(
+        `https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants`,
+        {
+          ...formData,
+        }
+      );
+
+      const userDetails = JSON.parse(sessionStorage.getItem("userDetails"));
+      const userCollectionRef = collection(db, "userDetails");
+      const userDocRef = doc(userCollectionRef, userDetails.uid);
+      updateDoc(userDocRef, {
+        restaurant_id: formData.restaurant_id,
+        restaurant_name: formData.restaurant_name,
+      });
+      userDetails.restaurant_id = formData.restaurant_id;
+      sessionStorage.setItem("userDetails", JSON.stringify(userDetails));
+      const updateResponse = await updateRestaurant({
+        restaurant_id: formData.restaurant_id,
+        restaurant_name: formData.restaurant_name,
+        opening_time: formData.opening_time,
+        closing_time: formData.closing_time,
+        max_tables: Number(formData.max_tables),
+      });
+      navigate("/dashboard");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -106,54 +142,60 @@ const RestaurantForm = () => {
         <FormControl>
           <FormLabel>Twitter:</FormLabel>
           <Input
+            name="twitter"
             type="text"
-            value={formData.menu.main_course[0]}
-            onChange={(e) => handleMenuChange("main_course", 0, e.target.value)}
+            value={formData.twitter}
+            onChange={handleChange}
           />
         </FormControl>
 
         <FormControl>
           <FormLabel>Instagram:</FormLabel>
           <Input
+            name="instagram"
             type="text"
-            value={formData.menu.starter[0]}
-            onChange={(e) => handleMenuChange("starter", 0, e.target.value)}
+            value={formData.instagram}
+            onChange={handleChange}
           />
         </FormControl>
 
         <FormControl>
           <FormLabel>Opening Time:</FormLabel>
           <Input
+            name="opening_time"
             type="text"
-            value={formData.menu.starter[0]}
-            onChange={(e) => handleMenuChange("starter", 0, e.target.value)}
+            value={formData.opening_time}
+            onChange={handleChange}
           />
         </FormControl>
 
         <FormControl>
           <FormLabel>Closing Time:</FormLabel>
           <Input
+            name="closing_time"
             type="text"
-            value={formData.menu.starter[0]}
-            onChange={(e) => handleMenuChange("starter", 0, e.target.value)}
+            value={formData.closing_time}
+            onChange={handleChange}
           />
         </FormControl>
 
         <FormControl>
           <FormLabel>Availability:</FormLabel>
           <Input
+            name="availability"
             type="text"
-            value={formData.menu.starter[0]}
-            onChange={(e) => handleMenuChange("starter", 0, e.target.value)}
+            value={formData.availability}
+            onChange={handleChange}
           />
         </FormControl>
 
         <FormControl>
           <FormLabel>Maximum tables:</FormLabel>
           <Input
+            name="max_tables"
             type="text"
-            value={formData.menu.starter[0]}
-            onChange={(e) => handleMenuChange("starter", 0, e.target.value)}
+            value={formData.max_tables}
+            onChange={handleChange}
           />
         </FormControl>
 

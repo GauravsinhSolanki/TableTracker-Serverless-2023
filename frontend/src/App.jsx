@@ -40,15 +40,6 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/restaurantForm",
-        element: (
-          <>
-            <RestaurantForm />
-            <KommunicateChat />
-          </>
-        ),
-      },
-      {
         path: "/restaurantList/:restaurant_id",
         element: (
           <>
@@ -150,6 +141,15 @@ const router = createBrowserRouter([
       {
         path: "/partner/signup",
         element: <SignUp />,
+      },
+      {
+        path: "/restaurantForm",
+        element: (
+          <>
+            <RestaurantForm />
+            <KommunicateChat />
+          </>
+        ),
       },
     ],
   },
