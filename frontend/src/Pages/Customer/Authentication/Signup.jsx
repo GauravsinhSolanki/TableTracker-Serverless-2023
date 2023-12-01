@@ -5,17 +5,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import { theme } from "../../../theme.jsx";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { showToastError, showToastSuccess } from "../../../Components/Toast.js";
-import RestaurantPopup from "../../../Components/RestaurantPopup.jsx";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -36,7 +27,11 @@ const SignUp = () => {
         async (val) => {
           sessionStorage.setItem("uId", val.user.uid);
 
-          await storeUserDetails(val.user.uid, { userType: signupType });
+          await storeUserDetails(val.user.uid, {
+            userType: signupType,
+            uid: val.user.uid,
+            email: val.user.email,
+          });
           showToastSuccess("Sign up Successful");
           navigate(`/${signupType}/login`);
         }
