@@ -12,7 +12,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
-  // const [error, setError] = useState("");
   let navigate = useNavigate();
   const signupType = location.pathname.includes("user") ? "user" : "partner";
 
@@ -56,39 +55,43 @@ const Login = () => {
   };
 
   const handleSignInSuccess = async (result) => {
-    sessionStorage.setItem("uId", result?.user?.uid ?? "");
-    sessionStorage.setItem(
-      "userDetails",
-      JSON.stringify({
-        email: result?.user?.email,
-        userType: signupType,
-        uid: result.user.uid,
-      })
-    );
+    let userData = {
+      uid: result.user.uid,
+      email: result.user.email,
+      signupType: signupType,
+    };
 
     if (signupType === "partner") {
       const docRef = doc(db, "userDetails", result.user.uid);
       const docSnap = await getDoc(docRef);
       const userDetails = docSnap.data();
 
-      sessionStorage.setItem(
-        "userDetails",
-        JSON.stringify({
-          email: result?.user?.email,
-          userType: signupType,
-          uid: result.user.uid,
-          restaurant_id: userDetails?.restaurant_id,
-          restaurant_name: userDetails?.restaurant_name ?? "",
-        })
-      );
-      showToastSuccess("Login Successful");
-      if (!userDetails?.restaurant_id) {
+      userData = {
+        ...userData,
+        restaurant_id: userDetails?.restaurant_id ?? "",
+        restaurant_name: userDetails?.restaurant_name ?? "",
+      };
+    }
+
+    postSignIn(userData);
+  };
+
+  const postSignIn = (userData) => {
+    sessionStorage.setItem(
+      "userDetails",
+      JSON.stringify({
+        ...userData,
+      })
+    );
+    sessionStorage.setItem("uId", userData?.uid ?? "");
+    showToastSuccess("Login Successful");
+    if (signupType === "partner") {
+      if (!userData?.restaurant_id) {
         setShowRestaurantModal(true);
       } else {
         navigate("/dashboard");
       }
     } else {
-      showToastSuccess("Login Successful");
       navigate("/restaurantList");
     }
   };
