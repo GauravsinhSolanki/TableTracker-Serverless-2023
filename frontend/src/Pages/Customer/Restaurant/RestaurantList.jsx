@@ -56,11 +56,23 @@ function RestaurantList() {
     fetchData();
   }, []);
 
-  const getDiscountById = (id) => {
+  const getDiscountById = (restaurant) => {
     const foundDiscount = restaurantDiscount.find(
-      (restaurant) => restaurant.id === id
+      (rest) => rest.id === restaurant.restaurant_id
     );
-    return foundDiscount ? foundDiscount.discount : "Discount Not Available";
+    return foundDiscount.discount > 0 ? 
+    (
+      <Flex flexDirection="row">
+        <Box w="42%" />
+        {restaurant.restaurant_name}
+        <Spacer />
+        <Box bgColor="#7cf1c4" borderRadius="2px" padding="5px">
+          {foundDiscount.discount} % Off
+        </Box>
+      </Flex>
+    ) : (
+      <span>{restaurant.restaurant_name}</span>
+    );
   };
 
   return isMobile ? (
@@ -128,14 +140,7 @@ function RestaurantList() {
                 padding="24px"
               >
                 <Text fontSize="2xl" fontWeight="semibold">
-                  <Flex flexDirection="row">
-                    <Box w="42%" />
-                    {restaurant.restaurant_name}
-                    <Spacer />
-                    <Box bgColor="#7cf1c4" borderRadius="2px" padding="5px">
-                      {getDiscountById(restaurant.restaurant_id)} % Off
-                    </Box>
-                  </Flex>
+                  {getDiscountById(restaurant)} 
                 </Text>
                 <Text>Rating {restaurant.google_rating}</Text>
               </Flex>
