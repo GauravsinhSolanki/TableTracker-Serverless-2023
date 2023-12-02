@@ -78,6 +78,10 @@ function CustomNavbar(props) {
                 <Nav.Link href="/admin/restaurant-reviews">Reviews</Nav.Link>
               ) : null}
 
+              {isAdmin ? (
+                <Nav.Link href="/admin/restaurant-most-orders">Most Orders</Nav.Link>
+              ) : null}
+
               <Nav.Link
                 href=""
                 onClick={logoutUser}
