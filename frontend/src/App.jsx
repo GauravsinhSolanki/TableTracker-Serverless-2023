@@ -17,6 +17,7 @@ import RestaurantMenuManager from "./Pages/Partner/Menu/RestaurantMenuManager";
 import Dashboard from "./Pages/Partner/Dashboard/Dashboard";
 import RestaurantForm from "./Pages/Customer/Restaurant/RestaurantForm";
 import RestaurantReviews from "./Pages/Admin/RestaurantReviews";
+import Top10Orders from "./Pages/Admin/Top10Orders";
 
 const router = createBrowserRouter([
   {
@@ -127,6 +128,15 @@ const router = createBrowserRouter([
           <>
             <KommunicateChat />
             <RestaurantReviews />
+          </>
+        ),
+      },
+      {
+        path: "/admin/top10-orders",
+        element: (
+          <>
+            <KommunicateChat />
+            <Top10Orders />
           </>
         ),
       },
