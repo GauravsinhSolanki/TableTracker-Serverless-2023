@@ -16,6 +16,7 @@ import DisplayMenu from "./Pages/Partner/Menu/DisplayMenu";
 import RestaurantMenuManager from "./Pages/Partner/Menu/RestaurantMenuManager";
 import Dashboard from "./Pages/Partner/Dashboard/Dashboard";
 import RestaurantForm from "./Pages/Customer/Restaurant/RestaurantForm";
+import RestaurantReviews from "./Pages/Admin/RestaurantReviews";
 
 const router = createBrowserRouter([
   {
@@ -120,11 +121,29 @@ const router = createBrowserRouter([
           </>
         ),
       },
+      {
+        path: "/admin/restaurant-reviews",
+        element: (
+          <>
+            <KommunicateChat />
+            <RestaurantReviews />
+          </>
+        ),
+      },
     ],
   },
   {
     element: <LayoutWithoutNavbar />,
     children: [
+      {
+        path: "/admin/login",
+        element: (
+          <>
+            <Login />
+            <KommunicateChat />
+          </>
+        ),
+      },
       {
         path: "/user/login",
         element: (
