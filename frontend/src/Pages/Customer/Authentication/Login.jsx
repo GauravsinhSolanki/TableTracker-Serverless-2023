@@ -13,7 +13,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   let navigate = useNavigate();
-  const signupType = location.pathname.includes("user") ? "user" : "partner";
+  const signupType = location.pathname.includes("admin")
+    ? "admin"
+    : location.pathname.includes("user")
+    ? "user"
+    : "partner";
 
   const signIn = (e) => {
     e.preventDefault();
@@ -58,7 +62,7 @@ const Login = () => {
     let userData = {
       uid: result.user.uid,
       email: result.user.email,
-      signupType: signupType,
+      userType: signupType,
     };
 
     if (signupType === "partner") {
@@ -85,7 +89,9 @@ const Login = () => {
     );
     sessionStorage.setItem("uId", userData?.uid ?? "");
     showToastSuccess("Login Successful");
-    if (signupType === "partner") {
+    if (signupType === "admin") {
+      navigate("/admin/restaurant-reviews");
+    } else if (signupType === "partner") {
       if (!userData?.restaurant_id) {
         setShowRestaurantModal(true);
       } else {

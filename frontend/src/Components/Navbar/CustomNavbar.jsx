@@ -7,6 +7,8 @@ function CustomNavbar(props) {
   const navigate = useNavigate();
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isPartner, setPartner] = useState(false);
+  const [isAdmin, setAdmin] = useState(false);
+  const [isCustomer, setCustomer] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -14,6 +16,12 @@ function CustomNavbar(props) {
       const userDetails = user;
       if (userDetails?.userType === "partner") {
         setPartner(true);
+      }
+      if (userDetails?.userType === "admin") {
+        setAdmin(true);
+      }
+      if (userDetails?.userType === "user") {
+        setCustomer(true);
       }
     } else {
       setLoggedIn(false);
@@ -52,15 +60,23 @@ function CustomNavbar(props) {
               {isPartner ? (
                 <Nav.Link href="/dashboard">Dashboard</Nav.Link>
               ) : null}
-              {isPartner ? null : (
-                <Nav.Link href="/restaurantList">Restaurants</Nav.Link>
-              )}
               {isPartner ? (
                 <Nav.Link href={`/restaurant/${user?.restaurant_id ?? ""}`}>
                   Restaurant
                 </Nav.Link>
               ) : null}
-              <Nav.Link href="/restaurant/reservations">Reservations</Nav.Link>
+              {isCustomer ? (
+                <Nav.Link href="/restaurantList">Restaurants</Nav.Link>
+              ) : null}
+              {isCustomer ? (
+                <Nav.Link href="/restaurant/reservations">
+                  Reservations
+                </Nav.Link>
+              ) : null}
+
+              {isAdmin ? (
+                <Nav.Link href="/admin/restaurant-reviews">Reviews</Nav.Link>
+              ) : null}
 
               <Nav.Link
                 href=""
