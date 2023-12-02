@@ -12,7 +12,6 @@ function CustomNavbar(props) {
 
   useEffect(() => {
     if (user) {
-      debugger;
       setLoggedIn(true);
       const userDetails = user;
       if (userDetails?.userType === "partner") {
