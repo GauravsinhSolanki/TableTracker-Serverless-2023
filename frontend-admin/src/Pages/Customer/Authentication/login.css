@@ -1,0 +1,48 @@
+html,
+body {
+  height: 100%;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.google-icon {
+  cursor: pointer;
+  position: relative;
+  vertical-align: text-top;
+  width:35px;
+  height:35px;
+  margin-right: 10px;
+  }
+p.btn-text {
+  margin-bottom: 0;
+}
+.google-btn {
+  width: 100%;
+  padding: 5px;
+  margin-top: 2rem;
+  border: 1px solid #357ae8;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

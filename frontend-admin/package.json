@@ -1,0 +1,47 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@kommunicate/kommunicate-chatbot-plugin": "^0.0.7",
+    "aws-sdk": "^2.1499.0",
+    "axios": "^1.5.1",
+    "bootstrap": "^5.3.2",
+    "chart.js": "^4.4.0",
+    "cors": "^2.8.5",
+    "firebase": "^10.5.0",
+    "formik": "^2.4.5",
+    "framer-motion": "^10.16.4",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.9.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.11.0",
+    "react-responsive": "^9.0.2",
+    "react-router-dom": "^6.17.0",
+    "react-simple-star-rating": "^5.1.7",
+    "react-toastify": "^9.1.3",
+    "yup": "^1.3.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "vite": "^4.4.5"
+  }
+}
