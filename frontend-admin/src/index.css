@@ -1,0 +1,13 @@
+.sdp3-navbar .sdp3-navbar-links{
+    width: 100%;
+    padding:10px;
+}
+
+.sdp3-navbar .sdp3-navbar-logout{
+    margin: 0 auto;
+    margin-right: 0;
+}
+
+.btn-primary.btn{
+    background-color: #242582;
+}

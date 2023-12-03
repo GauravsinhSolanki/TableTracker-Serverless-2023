@@ -1,0 +1,33 @@
+.menu-item-cards {
+    padding: 10px;
+    margin: 10px;
+}
+
+.quantity-row {
+    justify-content: center;
+    text-align-last: center;
+}
+
+.quantity-row > .col-sm-4 {
+    margin-left: 15px;
+}
+
+.submit-btn {
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+.cancel-btn {
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.delete-btn {
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.discounted-price {
+    text-decoration: line-through;
+}
