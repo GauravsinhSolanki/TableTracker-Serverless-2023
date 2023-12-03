@@ -107,6 +107,15 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/customer/menu/:restaurantId",
+        element: (
+          <>
+            <KommunicateChat />
+            <DisplayMenu />
+          </>
+        ),
+      },
+      {
         path: "/partner/manage-menu/:restaurantId",
         element: (
           <>
@@ -148,10 +157,10 @@ const router = createBrowserRouter([
           <>
             <KommunicateChat />
             <FoodMostOrderedTime />
-            </>
+          </>
         ),
-        },
-        {
+      },
+      {
         path: "/admin/top10-orders",
         element: (
           <>

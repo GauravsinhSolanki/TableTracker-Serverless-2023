@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Form, Card } from "react-bootstrap";
@@ -8,6 +8,7 @@ import { AuthCheck } from "../../Customer/Authentication/AuthCheck";
 
 function RestaurantMenuManager() {
   const { restaurantId } = useParams();
+  const navigate = useNavigate();
 
   const [error, setError] = useState(false);
   const [items, setItems] = useState([]);
@@ -89,6 +90,9 @@ function RestaurantMenuManager() {
         .put(`${config.Menu.updateApiUrl}/${restaurantId}`, items)
         .then((response) => {
           console.log("Update successful:", response.data);
+          navigate(`/partner/menu/${restaurantId}`, {
+            state: { restaurantId: restaurantId },
+          });
         })
         .catch((error) => {
           console.error("Update failed:", error);
@@ -107,6 +111,9 @@ function RestaurantMenuManager() {
         .then((response) => {
           console.log("Response:", response.data);
           setHasMenu(true);
+          navigate(`/partner/menu/${restaurantId}`, {
+            state: { restaurantId: restaurantId },
+          });
         })
         .catch((error) => {
           console.error("Error:", error);
