@@ -18,6 +18,7 @@ import Dashboard from "./Pages/Partner/Dashboard/Dashboard";
 import RestaurantForm from "./Pages/Customer/Restaurant/RestaurantForm";
 import RestaurantReviews from "./Pages/Admin/RestaurantReviews";
 import RestaurantMostOrders from "./Pages/Admin/RestaurantMostOrders";
+import FoodMostOrderedTime from "./Pages/Admin/FoodMostOrderedTime";
 
 const router = createBrowserRouter([
   {
@@ -137,6 +138,15 @@ const router = createBrowserRouter([
           <>
             <KommunicateChat />
             <RestaurantMostOrders />
+          </>
+        ),
+      },
+      {
+        path: "/admin/food-most-ordered-time",
+        element: (
+          <>
+            <KommunicateChat />
+            <FoodMostOrderedTime />
           </>
         ),
       },
