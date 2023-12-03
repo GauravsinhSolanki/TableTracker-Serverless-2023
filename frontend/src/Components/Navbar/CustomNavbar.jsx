@@ -68,11 +68,8 @@ function CustomNavbar(props) {
               {isCustomer ? (
                 <Nav.Link href="/restaurantList">Restaurants</Nav.Link>
               ) : null}
-              {isCustomer ? (
-                <Nav.Link href="/restaurant/reservations">
-                  Reservations
-                </Nav.Link>
-              ) : null}
+
+              <Nav.Link href="/restaurant/reservations">Reservations</Nav.Link>
 
               <Nav.Link
                 href=""
