@@ -34,9 +34,14 @@ Explore the live demo of the project:
 
 ## Team Members and Features
 
-Rashmi: Sign Up & Login Module
-Preeti: List Restaurants
-Dheeraj: Book, edit, delete, view a reservation
-Arihant: Book, edit, delete, view menu for a reservation
-Gaurav: Chatbot
-Riya: Notifications
+**Rashmi**: Sign Up & Login Module
+
+**Preeti**: List Restaurants
+
+**Dheeraj**: Book, edit, delete, view a reservation
+
+**Arihant**: Book, edit, delete, view menu for a reservation
+
+**Gauravsinh**: Chatbot
+
+**Riya**: Notifications
