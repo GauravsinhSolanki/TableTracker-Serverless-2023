@@ -81,7 +81,7 @@ function CustomNavbar(props) {
               ) : null}
 
               {isAdmin ? (
-                <Nav.Link href="/admin/top10-orders">Top 10 Orders</Nav.Link>
+                <Nav.Link href="/admin/topcustomers">Top Customers </Nav.Link>
               ) : null}
 
               {isAdmin ? (
@@ -92,6 +92,10 @@ function CustomNavbar(props) {
                 <Nav.Link href="/admin/food-most-ordered-time">
                   Periodic Food Orders
                 </Nav.Link>
+              ) : null}
+
+              {isAdmin ? (
+                <Nav.Link href="/admin/top10-orders">Top 10 Orders</Nav.Link>
               ) : null}
 
               <Nav.Link
