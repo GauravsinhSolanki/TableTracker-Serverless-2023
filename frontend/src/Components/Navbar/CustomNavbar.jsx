@@ -85,7 +85,9 @@ function CustomNavbar(props) {
               {isAdmin ? (
                 <Nav.Link href="/admin/food-most-ordered-time">Time Period For Most Food Ordered</Nav.Link>
               ) : null}
-              
+                 {isAdmin ? (
+                <Nav.Link href="/admin/topcustomers">Top Customers </Nav.Link>
+              ) : null}
               <Nav.Link
                 href=""
                 onClick={logoutUser}

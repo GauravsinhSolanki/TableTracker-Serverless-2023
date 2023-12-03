@@ -5,7 +5,7 @@ const RestaurantReviews = () => {
   return (
     <div style={{ height: "100vh", width: "100vw", overflow: "hidden" }}>
       <iframe
-        src="https://lookerstudio.google.com/embed/reporting/6d3970b8-656d-4c20-9e71-6a001f1e4d0e/page/p_m5psgs69bd"
+        src="https://lookerstudio.google.com/reporting/5af98ddd-676e-4765-bcd6-0f846be13831"
         frameBorder="0"
         style={{
           border: "0",
