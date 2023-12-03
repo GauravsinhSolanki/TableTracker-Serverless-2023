@@ -6,26 +6,10 @@ function CustomNavbar(props) {
   const user = JSON.parse(sessionStorage.getItem("userDetails"));
   const navigate = useNavigate();
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const [isPartner, setPartner] = useState(false);
-  const [isAdmin, setAdmin] = useState(false);
-  const [isCustomer, setCustomer] = useState(false);
 
   useEffect(() => {
     if (user) {
       setLoggedIn(true);
-      const userDetails = user;
-      if (userDetails?.userType === "partner") {
-        setPartner(true);
-      }
-      if (userDetails?.userType === "admin") {
-        setAdmin(true);
-      }
-      if (userDetails?.userType === "user") {
-        setCustomer(true);
-      }
-    } else {
-      setLoggedIn(false);
-      setPartner(false);
     }
   }, [user]);
 
@@ -50,53 +34,23 @@ function CustomNavbar(props) {
         <Nav className="me-auto sdp3-navbar-links">
           {!isLoggedIn ? (
             <>
-              <Nav.Link href="/partner/login">Partner Login</Nav.Link>
-              <Nav.Link href="/partner/signup">Partner Signup</Nav.Link>
-              <Nav.Link href="/user/login">Customer Login</Nav.Link>
-              <Nav.Link href="/user/signup">Customer Signup</Nav.Link>
+              <Nav.Link href="/admin/login">Admin Login</Nav.Link>
             </>
           ) : (
             <>
-              {isPartner ? (
-                <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-              ) : null}
-              {isPartner ? (
-                <Nav.Link href={`/restaurant/${user?.restaurant_id ?? ""}`}>
-                  Restaurant
-                </Nav.Link>
-              ) : null}
-              {isCustomer ? (
-                <Nav.Link href="/restaurantList">Restaurants</Nav.Link>
-              ) : null}
-              {isCustomer ? (
-                <Nav.Link href="/restaurant/reservations">
-                  Reservations
-                </Nav.Link>
-              ) : null}
+              <Nav.Link href="/admin/restaurant-most-orders">
+                Most Orders
+              </Nav.Link>
 
-              {isAdmin ? (
-                <Nav.Link href="/admin/restaurant-most-orders">
-                  Most Orders
-                </Nav.Link>
-              ) : null}
+              <Nav.Link href="/admin/topcustomers">Top Customers </Nav.Link>
 
-              {isAdmin ? (
-                <Nav.Link href="/admin/topcustomers">Top Customers </Nav.Link>
-              ) : null}
+              <Nav.Link href="/admin/restaurant-reviews">Reviews</Nav.Link>
 
-              {isAdmin ? (
-                <Nav.Link href="/admin/restaurant-reviews">Reviews</Nav.Link>
-              ) : null}
+              <Nav.Link href="/admin/food-most-ordered-time">
+                Periodic Food Orders
+              </Nav.Link>
 
-              {isAdmin ? (
-                <Nav.Link href="/admin/food-most-ordered-time">
-                  Periodic Food Orders
-                </Nav.Link>
-              ) : null}
-
-              {isAdmin ? (
-                <Nav.Link href="/admin/top10-orders">Top 10 Orders</Nav.Link>
-              ) : null}
+              <Nav.Link href="/admin/top10-orders">Top 10 Orders</Nav.Link>
 
               <Nav.Link
                 href=""
