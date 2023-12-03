@@ -1,9 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Box,
   CircularProgress,
   Flex,
@@ -14,13 +9,16 @@ import {
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
-import { getRestaurants } from "../../../Services/RestaurantServices/RestaurantServices";
+import {
+  getFirestoreRestaurant,
+  getFirestoreRestaurantList,
+  getRestaurants,
+} from "../../../Services/RestaurantServices/RestaurantServices";
 import { theme } from "../../../theme";
 import { AuthCheck } from "../Authentication/AuthCheck";
 import { Button } from "react-bootstrap";
 import config from "../../../../config.json";
 import axios from "axios";
-import { getHolisticData } from "../../../Services/ReservationService/ReservationService";
 
 function RestaurantList() {
   const isMobile = useMediaQuery({ query: "(max-width: 1080px)" });
@@ -48,10 +46,31 @@ function RestaurantList() {
         }
       });
 
+      const restaurantsData = [...data];
+      const firestoreRestaurants = await getFirestoreRestaurantList();
+      data.map((restaurant, index) => {
+        try {
+          const response = firestoreRestaurants.filter(
+            (restaurant1) =>
+              restaurant1.restaurant_id === restaurant.restaurant_id
+          )[0];
+          restaurantsData[index] = {
+            ...restaurantsData[index],
+            ...response,
+          };
+          return { ...restaurant };
+        } catch (err) {
+          console.log(
+            `Unable to fetch data for firestore restaurant ${restaurant.restaurant_id}`
+          );
+          return { ...restaurant };
+        }
+      });
+
       const discounts = await Promise.all(promises);
       console.log(discounts);
       setRestaurantDiscount(discounts);
-      setRestaurants(data);
+      setRestaurants(restaurantsData);
     };
     fetchData();
   }, []);
@@ -60,8 +79,7 @@ function RestaurantList() {
     const foundDiscount = restaurantDiscount.find(
       (rest) => rest.id === restaurant.restaurant_id
     );
-    return foundDiscount.discount > 0 ? 
-    (
+    return foundDiscount.discount > 0 ? (
       <Flex flexDirection="row">
         <Box w="42%" />
         {restaurant.restaurant_name}
@@ -140,9 +158,11 @@ function RestaurantList() {
                 padding="24px"
               >
                 <Text fontSize="2xl" fontWeight="semibold">
-                  {getDiscountById(restaurant)} 
+                  {getDiscountById(restaurant)}
                 </Text>
-                <Text>Rating {restaurant.google_rating}</Text>
+                <Text>
+                  Rating {parseFloat(restaurant.rating + "").toFixed(1)}
+                </Text>
               </Flex>
             </button>
           );

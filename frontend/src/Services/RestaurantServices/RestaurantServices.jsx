@@ -74,6 +74,20 @@ export const getFirestoreRestaurant = async (restaurant_id) => {
   }
 };
 
+export const getFirestoreRestaurantList = async () => {
+  try {
+    const response = await axios.get(
+      `https://3q7amqzq07.execute-api.us-east-1.amazonaws.com/dev/get-firestore-restaurants`
+    );
+
+    const data = response.data?.data ?? [];
+    return data;
+  } catch (error) {
+    console.error("Error fetching restaurants by :", error);
+    return null;
+  }
+};
+
 export const createRestaurantReview = async (restaurant_id, review) => {
   try {
     const response = await axios.post(

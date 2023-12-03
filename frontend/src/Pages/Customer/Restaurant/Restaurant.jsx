@@ -38,13 +38,17 @@ function Restaurant() {
   const fetchFirestoreRestaurant = async (data = null) => {
     const response = await getFirestoreRestaurant(restaurant_id);
     if (response === null && data !== null) {
-      updateRestaurant({
+      const rest = {
         restaurant_id: restaurant_id,
         restaurant_name: data?.restaurant_name ?? "",
         opening_time: data?.opening_time ?? "",
         closing_time: data?.closing_time ?? "",
         max_tables: data?.max_tables ?? 0,
+      };
+      updateRestaurant({
+        ...rest,
       });
+      setFirestoreRestaurant({ ...rest });
     } else {
       setFirestoreRestaurant(response?.data);
     }

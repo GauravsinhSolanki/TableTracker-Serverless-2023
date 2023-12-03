@@ -18,10 +18,10 @@ exports.handler = async (event) => {
 
     const newReservationDate = new Date(reservationDate);
 
-    const response = await axios.get(
-      `https://jrcigezb1g.execute-api.us-east-1.amazonaws.com/restaurants/${restaurantId}`
-    );
-    const restaurantDetails = response.data;
+    const restaurantDoc = db.collection("Restaurants").doc(restaurantId);
+    const response = await restaurantDoc.get();
+
+    const restaurantDetails = response.data();
 
     if (restaurantId !== restaurantDetails.restaurant_id) {
       return Responses._400({
