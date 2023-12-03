@@ -16,11 +16,6 @@ import DisplayMenu from "./Pages/Partner/Menu/DisplayMenu";
 import RestaurantMenuManager from "./Pages/Partner/Menu/RestaurantMenuManager";
 import Dashboard from "./Pages/Partner/Dashboard/Dashboard";
 import RestaurantForm from "./Pages/Customer/Restaurant/RestaurantForm";
-import RestaurantReviews from "./Pages/Admin/RestaurantReviews";
-import RestaurantMostOrders from "./Pages/Admin/RestaurantMostOrders";
-import FoodMostOrderedTime from "./Pages/Admin/FoodMostOrderedTime";
-import Top10Orders from "./Pages/Admin/Top10Orders";
-import TopCustomers from "./Pages/Admin/TopCustomers"
 
 const router = createBrowserRouter([
   {
@@ -134,65 +129,11 @@ const router = createBrowserRouter([
           </>
         ),
       },
-      {
-        path: "/admin/restaurant-reviews",
-        element: (
-          <>
-            <KommunicateChat />
-            <RestaurantReviews />
-          </>
-        ),
-      },
-      {
-        path: "/admin/restaurant-most-orders",
-        element: (
-          <>
-            <KommunicateChat />
-            <RestaurantMostOrders />
-          </>
-        ),
-      },
-      {
-        path: "/admin/food-most-ordered-time",
-        element: (
-          <>
-            <KommunicateChat />
-            <FoodMostOrderedTime />
-          </>
-        ),
-      },
-      {
-        path: "/admin/top10-orders",
-        element: (
-          <>
-            <KommunicateChat />
-            <Top10Orders />
-          </>
-        ),
-      },
-        {
-        path: "/admin/topcustomers",
-        element: (
-          <>
-            <KommunicateChat />
-            <TopCustomers />
-          </>
-        ),
-      },
     ],
   },
   {
     element: <LayoutWithoutNavbar />,
     children: [
-      {
-        path: "/admin/login",
-        element: (
-          <>
-            <Login />
-            <KommunicateChat />
-          </>
-        ),
-      },
       {
         path: "/user/login",
         element: (

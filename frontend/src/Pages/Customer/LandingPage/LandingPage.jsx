@@ -44,14 +44,6 @@ const LandingContent = ({ handleNavigate }) => (
     <Row className="landing-buttons-container">
       <Button
         className="landing-button"
-        onClick={(e) => handleNavigate("/admin/login")}
-      >
-        Admin Login
-      </Button>
-    </Row>
-    <Row className="landing-buttons-container">
-      <Button
-        className="landing-button"
         onClick={(e) => handleNavigate("/user/login")}
       >
         Customer login

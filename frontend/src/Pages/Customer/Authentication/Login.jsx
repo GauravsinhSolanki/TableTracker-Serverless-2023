@@ -98,14 +98,14 @@ const Login = () => {
       userDetails?.userType === "admin"
     ) {
       showToastError("Invalid user. Please login as a admin. Redirecting...");
-      navigate("/admin/login");
+      window.open("https://sdp3-app-admin-ego5ocsnya-uc.a.run.app/");
       return false;
     } else if (
       (signupType === "admin" || signupType === "user") &&
       userDetails?.userType === "partner"
     ) {
       showToastError("Invalid user. Please login as a partner. Redirecting...");
-      navigate("/admin/login");
+      navigate("/partner/login");
       return false;
     }
 
@@ -121,9 +121,7 @@ const Login = () => {
     );
     sessionStorage.setItem("uId", userData?.uid ?? "");
     showToastSuccess("Login Successful");
-    if (signupType === "admin") {
-      navigate("/admin/restaurant-most-orders");
-    } else if (signupType === "partner") {
+    if (signupType === "partner") {
       if (!userData?.restaurant_id) {
         setShowRestaurantModal(true);
       } else {
