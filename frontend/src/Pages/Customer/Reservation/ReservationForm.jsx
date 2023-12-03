@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { getRestaurants } from "../../../Services/RestaurantServices/RestaurantServices";
+import {
+  getFirestoreRestaurantList,
+  getRestaurants,
+} from "../../../Services/RestaurantServices/RestaurantServices";
 import {
   bookReservations,
   editReservation,
@@ -33,6 +36,7 @@ const ReservationForm = (props) => {
   });
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [isRestaurantsLoading, setRestaurantsLoading] = useState(false);
   const [isApiLoading, setApiLoading] = useState(false);
   const [isPartner, setPartner] = useState(false);
 
@@ -44,7 +48,8 @@ const ReservationForm = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getRestaurants();
+      setRestaurantsLoading(true);
+      const data = await getFirestoreRestaurantList();
       setRestaurants(data);
 
       if (location?.state?.restaurantId) {
@@ -65,6 +70,7 @@ const ReservationForm = (props) => {
           return newState;
         });
       }
+      setRestaurantsLoading(false);
     };
     fetchData();
 
@@ -197,26 +203,37 @@ const ReservationForm = (props) => {
           <Row className="reservation-form-row">
             <Form.Group as={Col}>
               <Form.Label>Restaurant</Form.Label>
-              <Form.Select
-                onChange={(e) => handleChange(e, "restaurantId")}
-                value={formData?.restaurantId ?? ""}
-              >
-                <option>Select restaurant</option>
-                {restaurants?.length > 0 ? (
-                  restaurants.map((res, index) => {
-                    return (
-                      <option
-                        key={`res-book-${index}`}
-                        value={res.restaurant_id}
-                      >
-                        {res.restaurant_name}
-                      </option>
-                    );
-                  })
-                ) : (
-                  <option>No restaurants found</option>
-                )}
-              </Form.Select>
+              {isRestaurantsLoading ? (
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="md"
+                  style={{ marginTop: "35px" }}
+                />
+              ) : (
+                <Form.Select
+                  onChange={(e) => handleChange(e, "restaurantId")}
+                  value={formData?.restaurantId ?? ""}
+                >
+                  <option>Select restaurant</option>
+                  {restaurants?.length > 0 ? (
+                    restaurants.map((res, index) => {
+                      return (
+                        <option
+                          key={`res-book-${index}`}
+                          value={res.restaurant_id}
+                        >
+                          {res.restaurant_name}
+                        </option>
+                      );
+                    })
+                  ) : (
+                    <option>No restaurants found</option>
+                  )}
+                </Form.Select>
+              )}
             </Form.Group>
             <div style={{ margin: "5px 0 20px" }}>
               {selectedRestaurant
