@@ -97,6 +97,18 @@ function Restaurant() {
     setIsCreateReviewLoading(false);
   };
 
+  const handleViewMenuClick = () => {
+    if (user.userType === "partner") {
+      navigate(`/partner/menu/${restaurant_id}`, {
+        state: { restaurantId: restaurant_id },
+      });
+    } else {
+      navigate(`/customer/menu/${restaurant_id}`, {
+        state: { restaurantId: restaurant_id },
+      });
+    }
+  };
+
   return isMobile ? (
     <Flex
       w="100%"
@@ -162,11 +174,7 @@ function Restaurant() {
                 <Button
                   borderColor={theme.secondaryForeground}
                   bgColor={theme.accent}
-                  onClick={() =>
-                    navigate(`/partner/menu/${restaurant_id}`, {
-                      state: { restaurantId: restaurant_id },
-                    })
-                  }
+                  onClick={handleViewMenuClick}
                 >
                   View Menu
                 </Button>

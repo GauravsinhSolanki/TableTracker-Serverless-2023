@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 import { AuthCheck } from "../../Customer/Authentication/AuthCheck";
 
 function DisplayMenu() {
+  const user = JSON.parse(sessionStorage.getItem("userDetails"));
   const { restaurantId } = useParams();
 
   const [error, setError] = useState(false);
@@ -44,12 +45,16 @@ function DisplayMenu() {
 
   return (
     <div>
-      <div className="row action-buttons">
-        <Button href={`/partner/manage-menu/${restaurantId}`}>Edit Menu</Button>
-        <Button variant="danger" onClick={processDelete}>
-          Delete Menu
-        </Button>
-      </div>
+      {user.userType === "partner" ? (
+        <div className="row action-buttons">
+          <Button href={`/partner/manage-menu/${restaurantId}`}>
+            Edit Menu
+          </Button>
+          <Button variant="danger" onClick={processDelete}>
+            Delete Menu
+          </Button>
+        </div>
+      ) : null}
       <div className="row">
         {items &&
           items.map((item, index) => (
