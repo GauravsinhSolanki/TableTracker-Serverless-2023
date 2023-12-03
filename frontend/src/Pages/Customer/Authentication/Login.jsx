@@ -65,19 +65,51 @@ const Login = () => {
       userType: signupType,
     };
 
-    if (signupType === "partner") {
-      const docRef = doc(db, "userDetails", result.user.uid);
-      const docSnap = await getDoc(docRef);
-      const userDetails = docSnap.data();
+    const docRef = doc(db, "userDetails", result.user.uid);
+    const docSnap = await getDoc(docRef);
+    const userDetails = docSnap.data();
 
-      userData = {
-        ...userData,
-        restaurant_id: userDetails?.restaurant_id ?? "",
-        restaurant_name: userDetails?.restaurant_name ?? "",
-      };
+    const isValid = checkUserType(userDetails);
+    if (isValid) {
+      if (signupType === "partner") {
+        userData = {
+          ...userData,
+          restaurant_id: userDetails?.restaurant_id ?? "",
+          restaurant_name: userDetails?.restaurant_name ?? "",
+        };
+      }
+
+      postSignIn(userData);
+    }
+  };
+
+  const checkUserType = (userDetails) => {
+    if (
+      (signupType === "partner" || signupType === "admin") &&
+      userDetails?.userType === "user"
+    ) {
+      showToastError(
+        "Invalid user. Please login as a customer. Redirecting..."
+      );
+      navigate("/user/login");
+      return false;
+    } else if (
+      (signupType === "partner" || signupType === "user") &&
+      userDetails?.userType === "admin"
+    ) {
+      showToastError("Invalid user. Please login as a admin. Redirecting...");
+      navigate("/admin/login");
+      return false;
+    } else if (
+      (signupType === "admin" || signupType === "user") &&
+      userDetails?.userType === "partner"
+    ) {
+      showToastError("Invalid user. Please login as a partner. Redirecting...");
+      navigate("/admin/login");
+      return false;
     }
 
-    postSignIn(userData);
+    return true;
   };
 
   const postSignIn = (userData) => {
@@ -90,7 +122,7 @@ const Login = () => {
     sessionStorage.setItem("uId", userData?.uid ?? "");
     showToastSuccess("Login Successful");
     if (signupType === "admin") {
-      navigate("/admin/restaurant-reviews");
+      navigate("/admin/restaurant-most-orders");
     } else if (signupType === "partner") {
       if (!userData?.restaurant_id) {
         setShowRestaurantModal(true);
@@ -120,6 +152,11 @@ const Login = () => {
             className="h3 mb-3 fw-normal"
             style={{ color: theme.secondaryBackground }}
           >
+            {signupType === "admin"
+              ? "Admin"
+              : signupType === "partner"
+              ? "Partner"
+              : "Customer"}{" "}
             Please sign in
           </h1>
 

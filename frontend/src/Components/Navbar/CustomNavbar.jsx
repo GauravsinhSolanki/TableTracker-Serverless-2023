@@ -75,17 +75,25 @@ function CustomNavbar(props) {
               ) : null}
 
               {isAdmin ? (
+                <Nav.Link href="/admin/restaurant-most-orders">
+                  Most Orders
+                </Nav.Link>
+              ) : null}
+
+              {isAdmin ? (
+                <Nav.Link href="/admin/top10-orders">Top 10 Orders</Nav.Link>
+              ) : null}
+
+              {isAdmin ? (
                 <Nav.Link href="/admin/restaurant-reviews">Reviews</Nav.Link>
               ) : null}
 
               {isAdmin ? (
-                <Nav.Link href="/admin/restaurant-most-orders">Most Orders</Nav.Link>
+                <Nav.Link href="/admin/food-most-ordered-time">
+                  Periodic Food Orders
+                </Nav.Link>
               ) : null}
 
-              {isAdmin ? (
-                <Nav.Link href="/admin/food-most-ordered-time">Time Period For Most Food Ordered</Nav.Link>
-              ) : null}
-              
               <Nav.Link
                 href=""
                 onClick={logoutUser}
